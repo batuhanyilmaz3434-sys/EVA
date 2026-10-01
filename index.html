@@ -1,654 +1,672 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Eva Global | Premium Architectural Systems</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
-    body { background: #0b0f19; color: #f1f5f9; overflow-x: hidden; scroll-behavior: smooth;}
-    
-    header { background: rgba(11,15,25,0.85); backdrop-filter: blur(12px); border-bottom: 1px solid #1e293b; height: 85px; display: flex; justify-content: space-between; align-items: center; padding: 0 5%; position: fixed; top: 0; width: 100%; z-index: 100; }
-    
-    /* LOGO GÜVENLİK VE GÖRÜNÜRLÜK AYARI */
-    .header-logo img { height: 55px; border-radius: 8px; object-fit: contain; filter: drop-shadow(0 0 8px rgba(255,255,255,0.3));}
-    
-    .header-nav { display: flex; gap: 30px; }
-    .header-nav a { color: #cbd5e1; text-decoration: none; font-weight: 600; cursor: pointer; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px;}
-    .header-nav a:hover, .header-nav a.active { color: #38bdf8; text-shadow: 0 0 10px rgba(56,189,248,0.4); }
-    .header-contact { background: #38bdf8; color: #0b0f19; padding: 12px 25px; border-radius: 30px; font-weight: 800; text-decoration: none; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; cursor: pointer; transition: 0.3s;}
-    .header-contact:hover { background: #0ea5e9; box-shadow: 0 4px 15px rgba(14,165,233,0.3); }
-    
-    .page-section { display: none; min-height: 100vh; padding-top: 85px; animation: fadeIn 0.5s; }
-    .page-section.active { display: block; }
-    #configurator-section.active { display: flex !important; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px);} to { opacity: 1; transform: translateY(0);} }
-
-    #home-section { padding-top: 0; }
-    .hero { position: relative; height: 100vh; display: flex; align-items: center; padding-left: 10%; overflow: hidden; }
-    .hero video { position: absolute; width: 100%; height: 100%; object-fit: cover; z-index: -2; opacity: 0.6; }
-    .hero-overlay { position: absolute; inset: 0; background: linear-gradient(to right, #0b0f19 30%, transparent); z-index: -1; }
-    .hero h1 { font-size: 4.5rem; font-weight: 800; margin-bottom: 20px; color: #fff; letter-spacing: -1.5px;}
-    .hero h1 span { color: #38bdf8; }
-    .hero p { font-size: 1.2rem; color: #cbd5e1; max-width: 600px; margin-bottom: 40px; line-height: 1.6;}
-    .hero-btn { background: #38bdf8; color: #0b0f19; padding: 18px 35px; border-radius: 30px; font-weight: 800; cursor: pointer; display: inline-block; border: none; font-size: 1.05rem; transition: 0.3s;}
-    .hero-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(56,189,248,0.3); background: #0ea5e9;}
-    .stats { position: absolute; bottom: 0; width: 100%; background: rgba(11,15,25,0.9); display: flex; justify-content: space-around; padding: 25px; border-top: 1px solid #1e293b; z-index: 10; backdrop-filter: blur(5px);}
-    .stat { color: #fff; display: flex; align-items: center; gap: 15px; }
-    .stat span { color: #38bdf8; font-size: 2rem; }
-    .stat h4 { font-size: 1.2rem; font-weight: 800; margin-bottom: 2px;}
-    .stat p { font-size: 0.85rem; color: #94a3b8; text-transform: uppercase;}
-    
-    .section-header { text-align: center; margin: 80px 0 50px; padding: 0 5%;}
-    .section-header h2 { font-size: 3rem; color: #fff; font-weight: 800; margin-bottom: 15px; letter-spacing:-1px;}
-    .section-header p { color: #94a3b8; max-width: 700px; margin: 0 auto; font-size: 1.1rem; line-height: 1.6;}
-    
-    .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 35px; max-width: 1400px; margin: 0 auto; padding: 0 5%; }
-    .product-card { background: #111827; border-radius: 20px; overflow: hidden; cursor: pointer; border: 1px solid #1e293b; transition: 0.4s; position: relative;}
-    .product-card:hover { border-color: #38bdf8; transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0,0,0,0.5);}
-    .product-img { width: 100%; height: 280px; position: relative; overflow: hidden; }
-    .product-img img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s;}
-    .product-card:hover .product-img img { transform: scale(1.05); }
-    .product-body { padding: 30px; position: relative; z-index: 2; background: linear-gradient(to top, #111827 90%, transparent); margin-top: -30px;}
-    .product-body h3 { color: #fff; margin-bottom: 10px; font-size: 1.5rem; font-weight: 800;}
-    .product-body p { color: #94a3b8; font-size: 0.95rem; line-height: 1.5; margin-bottom: 15px;}
-    .badges { display: flex; gap: 8px; margin-bottom: 15px; flex-wrap: wrap;}
-    .badge { background: rgba(56,189,248,0.1); color: #38bdf8; padding: 6px 12px; border-radius: 6px; font-size: 0.75rem; font-weight: 700; border: 1px solid rgba(56,189,248,0.2);}
-    .badge.thermal { background: rgba(239, 68, 68, 0.1); color: #ef4444; border-color: rgba(239, 68, 68, 0.2); }
-
-    .banner-container { padding: 100px 5%; background: #0b0f19; text-align: center;}
-    .banner { max-width: 1200px; margin: 0 auto; background: #fff; border-radius: 20px; padding: 25px; box-shadow: 0 30px 60px rgba(0,0,0,0.4); border: 1px solid #334155;}
-    .banner img { width: 100%; border-radius: 10px; display: block;}
-    
-    .split { display: grid; grid-template-columns: 1fr 1fr; background: #0b0f19; border-bottom: 1px solid #1e293b; align-items: center;}
-    .split.rev { direction: rtl; } .split.rev .split-content { direction: ltr; }
-    .split-content { padding: 80px 10%; display: flex; flex-direction: column; justify-content: center; }
-    .split-content h3 { font-size: 3rem; color: #fff; font-weight: 800; margin-bottom: 20px; line-height: 1.1; letter-spacing: -1px;}
-    .split-content h3 span { color: #38bdf8; }
-    .split-content p { color: #94a3b8; font-size: 1.15rem; line-height: 1.8; margin-bottom: 30px;}
-    .split img { width: 100%; height: 500px; object-fit: cover; }
-
-    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; max-width: 1200px; margin: 0 auto; padding: 0 5% 100px; }
-    .contact-card { background: #111827; border: 1px solid #1e293b; border-radius: 20px; padding: 50px; transition: 0.4s; }
-    .contact-card:hover { border-color: #38bdf8; box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
-    .contact-card h3 { font-size: 2.2rem; color: #fff; margin-bottom: 30px; font-weight: 800; }
-    .c-item { display: flex; align-items: center; gap: 20px; margin-bottom: 25px; }
-    .c-icon { background: rgba(56,189,248,0.1); color: #38bdf8; width: 50px; height: 50px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1.5rem; border: 1px solid rgba(56,189,248,0.2);}
-    .c-text h4 { color: #cbd5e1; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; font-weight: 700;}
-    .c-text p { color: #fff; font-size: 1.1rem; font-weight: 500;}
-    
-    .partnership-card { background: linear-gradient(145deg, #0ea5e9, #0284c7); border-radius: 20px; padding: 50px; color: #fff; display: flex; flex-direction: column; justify-content: center; position: relative; overflow: hidden;}
-    .partnership-card::after { content: ''; position: absolute; top: -50%; right: -20%; width: 300px; height: 300px; background: rgba(255,255,255,0.1); border-radius: 50%; pointer-events: none;}
-    .partnership-card h3 { font-size: 2.5rem; font-weight: 800; margin-bottom: 20px; line-height: 1.1; letter-spacing:-1px; position: relative; z-index: 2;}
-    .partnership-card p { font-size: 1.15rem; line-height: 1.7; margin-bottom: 35px; opacity: 0.95; position: relative; z-index: 2;}
-    .partner-btn { background: #0b0f19; color: #fff; padding: 18px 35px; border-radius: 30px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; border: none; cursor: pointer; transition: 0.3s; width: fit-content; position: relative; z-index: 2;}
-    .partner-btn:hover { background: #fff; color: #0284c7; transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.2);}
-
-    #product-detail-section { padding: 50px 5% 100px; max-width: 1200px; margin: 0 auto; color: #fff;}
-    .detail-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center; margin-top: 30px;}
-    #product-detail-section img { width: 100%; border-radius: 20px; height: 500px; object-fit: cover; box-shadow: 0 20px 40px rgba(0,0,0,0.5); border: 1px solid #1e293b;}
-    #product-detail-section h1 { font-size: 3.5rem; margin-bottom: 15px; color: #fff; font-weight: 800; letter-spacing: -1px;}
-    #product-detail-section p { font-size: 1.15rem; color: #94a3b8; line-height: 1.8; margin-bottom: 30px;}
-    .detail-table { width: 100%; border-collapse: collapse; background: #111827; border-radius: 12px; overflow: hidden; border: 1px solid #1e293b; margin-bottom: 30px;}
-    .detail-table th, .detail-table td { padding: 15px 20px; text-align: left; border-bottom: 1px solid #1e293b; }
-    .detail-table th { background: rgba(56,189,248,0.05); color: #38bdf8; font-weight: 700; width: 35%; text-transform: uppercase; font-size: 0.85rem;}
-
-    #configurator-section { display: none; height: 100vh; padding-top: 85px; overflow: hidden; }
-    #sidebar { width: 480px; background: #111827; padding: 30px; overflow-y: auto; border-right: 1px solid #1e293b; display: flex; flex-direction: column; gap: 20px; box-shadow: 10px 0 30px rgba(0,0,0,0.5); z-index: 10;}
-    #sidebar::-webkit-scrollbar { width: 6px; } #sidebar::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
-    h2.sidebar-title { font-size: 1.6rem; color: #fff; font-weight: 800; margin-bottom: 5px; }
-    .form-group { display: flex; flex-direction: column; gap: 8px; }
-    label { font-size: 0.75rem; font-weight: 800; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px;}
-    input[type=number], select { width: 100%; background: #0b0f19; color: #fff; border: 1px solid #334155; padding: 12px; border-radius: 8px; font-size: 0.95rem; font-weight: 500; outline: none; transition: 0.2s;}
-    input:focus, select:focus { border-color: #38bdf8; }
-    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-    .roof-selector { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .roof-btn { background: #0b0f19; border: 1px solid #334155; color: #94a3b8; padding: 14px; border-radius: 8px; cursor: pointer; font-weight: 700; transition: 0.2s;}
-    .roof-btn.active { background: #38bdf8; color: #0b0f19; border-color: #38bdf8; box-shadow: 0 4px 15px rgba(56,189,248,0.3);}
-    .module-box { background: #0f172a; padding: 20px; border-radius: 12px; border: 1px solid #1e293b; display: flex; flex-direction: column; gap: 15px; }
-    .module-title { font-size: 0.85rem; color: #38bdf8; font-weight: 800; border-bottom: 1px solid #1e293b; padding-bottom: 10px;}
-    .facade-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-    .checkbox-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
-    .checkbox-label { display: flex; align-items: center; gap: 12px; font-size: 0.95rem; color: #cbd5e1; cursor: pointer; font-weight: 600;}
-    input[type=checkbox] { width: 20px; height: 20px; accent-color: #38bdf8; }
-    .slider-container { background: #0f172a; padding: 18px; border-radius: 12px; border: 1px solid #1e293b; margin-top: 5px; }
-    .slider-header { display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 12px; color: #cbd5e1; font-weight: 700;}
-    input[type=range] { width: 100%; accent-color: #38bdf8; height: 6px; cursor: pointer; margin-top: 8px;}
-    .action-btn { background: #10b981; color: #fff; border: none; padding: 18px; border-radius: 12px; font-weight: 800; cursor: pointer; margin-top: auto; font-size: 1.05rem; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s;}
-    .action-btn:hover { background: #059669; }
-    
-    #canvas-container { flex: 1; position: relative; background: #e2e8f0; width: 100%; height: 100vh; }
-    #canvas-container canvas { width: 100% !important; height: 100% !important; outline: none; }
-    .hud { position: absolute; top: 30px; left: 30px; background: rgba(11,15,25,0.85); backdrop-filter: blur(12px); padding: 25px; border-radius: 16px; border: 1px solid rgba(56,189,248,0.2); color: #fff; width: 320px; pointer-events: none; z-index: 5;}
-    .hud h5 { font-size: 1rem; text-transform: uppercase; margin-bottom: 20px; border-bottom: 1px solid #1e293b; padding-bottom: 10px; font-weight: 800;}
-    .hud-label { display: flex; justify-content: space-between; font-size: 0.75rem; color: #94a3b8; text-transform: uppercase; font-weight: 700; margin-bottom: 6px;}
-    .hud-label span.val { color: #fff; }
-    .bar-bg { width: 100%; height: 6px; background: #1e293b; margin-bottom: 15px; border-radius: 3px; overflow: hidden;}
-    .bar { height: 100%; background: #38bdf8; border-radius: 3px;}
-    .night-mode-tag { position: absolute; bottom: 30px; left: 30px; background:#1e293b; border: 1px solid #334155; padding: 15px 25px; border-radius: 30px; box-shadow: 0 10px 20px rgba(0,0,0,0.3); z-index: 5;}
-    .night-mode-tag label { color:#38bdf8; cursor:pointer; display:flex; align-items:center; gap:10px; font-size:0.9rem; font-weight: 800; text-transform: uppercase;}
-    
-    footer { background: #0b0f19; border-top: 1px solid #1e293b; text-align: center; padding: 40px 0; color: #94a3b8; }
-    /* Alt Kısım Logosu Parlama Ayarı */
-    footer img { height: 40px; margin-bottom: 15px; opacity: 0.8; filter: drop-shadow(0 0 5px rgba(255,255,255,0.2)); }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eva Global | Premium Architectural Systems</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Inter',sans-serif}
+body{background:#0b0f19;color:#f1f5f9;overflow-x:hidden;scroll-behavior:smooth}
+header{background:rgba(11,15,25,0.85);backdrop-filter:blur(12px);border-bottom:1px solid #1e293b;height:85px;display:flex;justify-content:space-between;align-items:center;padding:0 5%;position:fixed;top:0;width:100%;z-index:100}
+.header-logo img{height:55px;border-radius:8px;filter:drop-shadow(0 0 5px rgba(255,255,255,0.2));object-fit:contain}
+.header-nav{display:flex;gap:30px}
+.header-nav a{color:#cbd5e1;text-decoration:none;font-weight:600;cursor:pointer;text-transform:uppercase;font-size:0.85rem;letter-spacing:1px;transition:0.3s}
+.header-nav a:hover,.header-nav a.active{color:#38bdf8;text-shadow:0 0 10px rgba(56,189,248,0.4)}
+.header-contact{background:#38bdf8;color:#0b0f19;padding:12px 25px;border-radius:30px;font-weight:800;text-decoration:none;text-transform:uppercase;font-size:0.85rem;letter-spacing:1px;cursor:pointer;transition:.3s}
+.header-contact:hover{background:#0ea5e9;box-shadow:0 4px 15px rgba(14,165,233,0.3)}
+.page-section{display:none;min-height:100vh;padding-top:85px;animation:fadeIn .5s}
+.page-section.active{display:block}
+#configurator-section.active{display:flex !important}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+#home-section{padding-top:0}
+.hero{position:relative;height:100vh;display:flex;align-items:center;padding-left:10%;overflow:hidden}
+.hero video{position:absolute;width:100%;height:100%;object-fit:cover;z-index:-2;opacity:0.6;pointer-events:none}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(to right,#0b0f19 30%,transparent);z-index:-1}
+.hero-content{position:relative;z-index:2;max-width:800px}
+.hero h1{font-size:4.5rem;font-weight:800;margin-bottom:20px;color:#fff;letter-spacing:-1.5px}
+.hero h1 span{color:#38bdf8}
+.hero p{font-size:1.2rem;color:#cbd5e1;max-width:600px;margin-bottom:40px;line-height:1.6}
+.hero-btn{background:#38bdf8;color:#0b0f19;padding:18px 35px;border-radius:30px;font-weight:800;cursor:pointer;display:inline-block;border:none;font-size:1.05rem;transition:.3s}
+.hero-btn:hover{transform:translateY(-3px);box-shadow:0 10px 20px rgba(56,189,248,0.3);background:#0ea5e9}
+.stats{position:absolute;bottom:0;width:100%;background:rgba(11,15,25,0.9);display:flex;justify-content:space-around;padding:25px;border-top:1px solid #1e293b;z-index:10;backdrop-filter:blur(5px)}
+.stat{color:#fff;display:flex;align-items:center;gap:15px}
+.stat span{color:#38bdf8;font-size:2rem}
+.stat h4{font-size:1.2rem;font-weight:800;margin-bottom:2px}
+.stat p{font-size:0.85rem;color:#94a3b8;text-transform:uppercase}
+.section-header{text-align:center;margin:80px 0 50px;padding:0 5%}
+.section-header h2{font-size:3rem;color:#fff;font-weight:800;margin-bottom:15px;letter-spacing:-1px}
+.section-header p{color:#94a3b8;max-width:700px;margin:0 auto;font-size:1.1rem;line-height:1.6}
+.products-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:35px;max-width:1400px;margin:0 auto;padding:0 5%}
+.product-card{background:#111827;border-radius:20px;overflow:hidden;cursor:pointer;border:1px solid #1e293b;transition:.4s;position:relative}
+.product-card:hover{border-color:#38bdf8;transform:translateY(-8px);box-shadow:0 20px 40px rgba(0,0,0,0.5)}
+.product-img{width:100%;height:280px;position:relative;overflow:hidden}
+.product-img img{width:100%;height:100%;object-fit:cover;transition:.5s}
+.product-card:hover .product-img img{transform:scale(1.05)}
+.product-body{padding:30px;position:relative;z-index:2;background:linear-gradient(to top,#111827 90%,transparent);margin-top:-30px}
+.product-body h3{color:#fff;margin-bottom:10px;font-size:1.5rem;font-weight:800}
+.product-body p{color:#94a3b8;font-size:0.95rem;line-height:1.5;margin-bottom:15px}
+.badges{display:flex;gap:8px;margin-bottom:15px;flex-wrap:wrap}
+.badge{background:rgba(56,189,248,0.1);color:#38bdf8;padding:6px 12px;border-radius:6px;font-size:0.75rem;font-weight:700;border:1px solid rgba(56,189,248,0.2)}
+.badge.thermal{background:rgba(239,68,68,0.1);color:#ef4444;border-color:rgba(239,68,68,0.2)}
+.banner-container{padding:100px 5%;background:#0b0f19;text-align:center}
+.banner{max-width:1200px;margin:0 auto;background:#fff;border-radius:20px;padding:25px;box-shadow:0 30px 60px rgba(0,0,0,0.4);border:1px solid #334155}
+.banner img{width:100%;border-radius:10px;display:block}
+.split{display:grid;grid-template-columns:1fr 1fr;background:#0b0f19;border-bottom:1px solid #1e293b;align-items:center}
+.split.rev{direction:rtl} .split.rev .split-content{direction:ltr}
+.split-content{padding:80px 10%;display:flex;flex-direction:column;justify-content:center}
+.split-content h3{font-size:3rem;color:#fff;font-weight:800;margin-bottom:20px;line-height:1.1;letter-spacing:-1px}
+.split-content h3 span{color:#38bdf8}
+.split-content p{color:#94a3b8;font-size:1.15rem;line-height:1.8;margin-bottom:30px}
+.split img{width:100%;height:500px;object-fit:cover}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;max-width:1200px;margin:0 auto;padding:0 5% 100px}
+.contact-card{background:#111827;border:1px solid #1e293b;border-radius:20px;padding:50px;transition:.4s}
+.contact-card:hover{border-color:#38bdf8;box-shadow:0 20px 40px rgba(0,0,0,0.4)}
+.contact-card h3{font-size:2.2rem;color:#fff;margin-bottom:30px;font-weight:800}
+.c-item{display:flex;align-items:center;gap:20px;margin-bottom:25px}
+.c-icon{background:rgba(56,189,248,0.1);color:#38bdf8;width:50px;height:50px;border-radius:50%;display:flex;justify-content:center;align-items:center;font-size:1.5rem;border:1px solid rgba(56,189,248,0.2)}
+.c-text h4{color:#cbd5e1;font-size:0.85rem;text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;font-weight:700}
+.c-text p{color:#fff;font-size:1.1rem;font-weight:500}
+.partnership-card{background:linear-gradient(145deg,#0ea5e9,#0284c7);border-radius:20px;padding:50px;color:#fff;display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden}
+.partnership-card::after{content:'';position:absolute;top:-50%;right:-20%;width:300px;height:300px;background:rgba(255,255,255,0.1);border-radius:50%;pointer-events:none}
+.partnership-card h3{font-size:2.5rem;font-weight:800;margin-bottom:20px;line-height:1.1;letter-spacing:-1px;position:relative;z-index:2}
+.partnership-card p{font-size:1.15rem;line-height:1.7;margin-bottom:35px;opacity:0.95;position:relative;z-index:2}
+.partner-btn{background:#0b0f19;color:#fff;padding:18px 35px;border-radius:30px;font-weight:800;text-transform:uppercase;letter-spacing:1px;border:none;cursor:pointer;transition:.3s;width:fit-content;position:relative;z-index:2}
+.partner-btn:hover{background:#fff;color:#0284c7;transform:translateY(-3px);box-shadow:0 10px 20px rgba(0,0,0,0.2)}
+#product-detail-section{padding:50px 5% 100px;max-width:1200px;margin:0 auto;color:#fff}
+.detail-layout{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:center;margin-top:30px}
+#product-detail-section img{width:100%;border-radius:20px;height:500px;object-fit:cover;box-shadow:0 20px 40px rgba(0,0,0,0.5);border:1px solid #1e293b}
+#product-detail-section h1{font-size:3.5rem;margin-bottom:15px;color:#fff;font-weight:800;letter-spacing:-1px}
+#product-detail-section p{font-size:1.15rem;color:#94a3b8;line-height:1.8;margin-bottom:30px}
+.detail-table{width:100%;border-collapse:collapse;background:#111827;border-radius:12px;overflow:hidden;border:1px solid #1e293b;margin-bottom:30px}
+.detail-table th,.detail-table td{padding:15px 20px;text-align:left;border-bottom:1px solid #1e293b}
+.detail-table th{background:rgba(56,189,248,0.05);color:#38bdf8;font-weight:700;width:35%;text-transform:uppercase;font-size:0.85rem}
+#configurator-section{display:none;height:100vh;padding-top:85px;overflow:hidden}
+#sidebar{width:480px;background:#111827;padding:30px;overflow-y:auto;border-right:1px solid #1e293b;display:flex;flex-direction:column;gap:20px;box-shadow:10px 0 30px rgba(0,0,0,0.5);z-index:10}
+#sidebar::-webkit-scrollbar{width:6px}#sidebar::-webkit-scrollbar-thumb{background:#334155;border-radius:4px}
+h2.sidebar-title{font-size:1.6rem;color:#fff;font-weight:800;margin-bottom:5px}
+.form-group{display:flex;flex-direction:column;gap:8px}
+label{font-size:0.75rem;font-weight:800;color:#94a3b8;text-transform:uppercase;letter-spacing:1px}
+input[type=number],select{width:100%;background:#0b0f19;color:#fff;border:1px solid #334155;padding:12px;border-radius:8px;font-size:0.95rem;font-weight:500;outline:none;transition:.2s}
+input:focus,select:focus{border-color:#38bdf8}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+.roof-selector{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.roof-btn{background:#0b0f19;border:1px solid #334155;color:#94a3b8;padding:14px;border-radius:8px;cursor:pointer;font-weight:700;transition:.2s}
+.roof-btn.active{background:#38bdf8;color:#0b0f19;border-color:#38bdf8;box-shadow:0 4px 15px rgba(56,189,248,0.3)}
+.module-box{background:#0f172a;padding:20px;border-radius:12px;border:1px solid #1e293b;display:flex;flex-direction:column;gap:15px}
+.module-title{font-size:0.85rem;color:#38bdf8;font-weight:800;border-bottom:1px solid #1e293b;padding-bottom:10px}
+.facade-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+.checkbox-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}
+.checkbox-label{display:flex;align-items:center;gap:12px;font-size:0.95rem;color:#cbd5e1;cursor:pointer;font-weight:600}
+input[type=checkbox]{width:20px;height:20px;accent-color:#38bdf8}
+.slider-container{background:#0f172a;padding:18px;border-radius:12px;border:1px solid #1e293b;margin-top:5px}
+.slider-header{display:flex;justify-content:space-between;font-size:0.9rem;margin-bottom:12px;color:#cbd5e1;font-weight:700}
+input[type=range]{width:100%;accent-color:#38bdf8;height:6px;cursor:pointer;margin-top:8px}
+.action-btn{background:#10b981;color:#fff;border:none;padding:18px;border-radius:12px;font-weight:800;cursor:pointer;margin-top:auto;font-size:1.05rem;text-transform:uppercase;letter-spacing:1px;transition:.3s}
+.action-btn:hover{background:#059669}
+#canvas-container{flex:1;position:relative;background:#e2e8f0;width:100%;height:100vh}
+#canvas-container canvas{width:100% !important;height:100% !important;outline:none}
+.hud{position:absolute;top:30px;left:30px;background:rgba(11,15,25,0.85);backdrop-filter:blur(12px);padding:25px;border-radius:16px;border:1px solid rgba(56,189,248,0.2);color:#fff;width:320px;pointer-events:none;z-index:5}
+.hud h5{font-size:1rem;text-transform:uppercase;margin-bottom:20px;border-bottom:1px solid #1e293b;padding-bottom:10px;font-weight:800}
+.hud-label{display:flex;justify-content:space-between;font-size:0.75rem;color:#94a3b8;text-transform:uppercase;font-weight:700;margin-bottom:6px}
+.hud-label span.val{color:#fff}
+.bar-bg{width:100%;height:6px;background:#1e293b;margin-bottom:15px;border-radius:3px;overflow:hidden}
+.bar{height:100%;background:#38bdf8;border-radius:3px}
+.night-mode-tag{position:absolute;bottom:30px;left:30px;background:#1e293b;border:1px solid #334155;padding:15px 25px;border-radius:30px;box-shadow:0 10px 20px rgba(0,0,0,0.3);z-index:5}
+.night-mode-tag label{color:#38bdf8;cursor:pointer;display:flex;align-items:center;gap:10px;font-size:0.9rem;font-weight:800;text-transform:uppercase}
+footer{background:#0b0f19;border-top:1px solid #1e293b;text-align:center;padding:40px 0;color:#94a3b8}
+footer img{height:40px;margin-bottom:15px;opacity:0.8;filter:drop-shadow(0 0 5px rgba(255,255,255,0.2))}
+</style>
 </head>
 <body>
 
-  <!-- HEADER -->
-  <header>
-    <!-- LOGO BURADA: src=logo.png olmazsa otomatik logo.jpg dener -->
-    <div class="header-logo"><img src="logo.png" onerror="this.onerror=null; this.src='logo.jpg';" alt="Eva Global Logo"></div>
-    <nav class="header-nav">
-      <a onclick="showPage('home')" class="nav-link active" id="nav-home">Home</a>
-      <a onclick="showPage('products')" class="nav-link" id="nav-products">Outdoor Systems</a>
-      <a onclick="showPage('profiles')" class="nav-link" id="nav-profiles">Profile Systems</a>
-      <a onclick="showPage('manufacturing')" class="nav-link" id="nav-manufacturing">Manufacturing</a>
-      <a onclick="showPage('configurator')" class="nav-link" id="nav-configurator">3D Configurator</a>
-    </nav>
-    <a onclick="showPage('contact')" class="header-contact" id="nav-contact">Contact Us</a>
-  </header>
+<header>
+<div class="header-logo"><img src="logo.png" onerror="this.onerror=null;this.src='logo.jpg';" alt="Eva Global Logo"></div>
+<nav class="header-nav">
+<a onclick="showPage('home')" class="nav-link active" id="nav-home">Home</a>
+<a onclick="showPage('products')" class="nav-link" id="nav-products">Outdoor Systems</a>
+<a onclick="showPage('profiles')" class="nav-link" id="nav-profiles">Profile Systems</a>
+<a onclick="showPage('manufacturing')" class="nav-link" id="nav-manufacturing">Manufacturing</a>
+<a onclick="showPage('configurator')" class="nav-link" id="nav-configurator">3D Configurator</a>
+</nav>
+<a onclick="showPage('contact')" class="header-contact" id="nav-contact">Contact Us</a>
+</header>
 
-  <!-- HOME SECTION -->
-  <section id="home-section" class="page-section active">
-    <div class="hero-container">
-        <video class="hero-bg" autoplay loop muted playsinline><source src="anasayfa.mp4" type="video/mp4"></video>
-        <div class="hero-overlay"></div>
-        <div class="hero-content">
-          <h1>Architectural <br><span>Perfection.</span></h1>
-          <p>Official solutions powered by Eva Global aluminum engineering. Forte Bioclimatic pergolas, Velura Winter Gardens, and insulated facade profiles.</p>
-          <button onclick="showPage('configurator')" class="hero-btn">Launch 3D Simulator &rarr;</button>
-        </div>
-        <div class="tech-stats-bar">
-          <div class="stat-item"><div class="icon">🛡️</div><div><h4>6063-T5</h4><p>Certified Alloy</p></div></div>
-          <div class="stat-item"><div class="icon">⚙️</div><div><h4>Somfy</h4><p>Automation</p></div></div>
-          <div class="stat-item"><div class="icon">❄️</div><div><h4>200 kg/m²</h4><p>Snow Load</p></div></div>
-          <div class="stat-item"><div class="icon">💨</div><div><h4>120 km/h</h4><p>Wind Tested</p></div></div>
-        </div>
-    </div>
-    
-    <div class="banner-container">
-        <h2>Complete Architectural Ecosystem</h2>
-        <p>From bioclimatic pergolas to insulated sliding systems, Eva Global provides a fully integrated ecosystem for all your living spaces.</p>
-        <div class="banner-wrapper"><img src="emre_offer_banner.jpg" alt="Ecosystem"></div>
-    </div>
+<section id="home-section" class="page-section active">
+<div class="hero-container">
+<video class="hero-bg" autoplay loop muted playsinline><source src="anasayfa.mp4" type="video/mp4"></video>
+<div class="hero-overlay"></div>
+<div class="hero-content">
+<h1>Architectural <br><span>Perfection.</span></h1>
+<p>Official solutions powered by Eva Global aluminum engineering. Forte Bioclimatic pergolas, Velura Winter Gardens, and insulated facade profiles.</p>
+<button onclick="showPage('configurator')" class="hero-btn">Launch 3D Simulator &rarr;</button>
+</div>
+<div class="tech-stats-bar">
+<div class="stat-item"><div class="icon">🛡️</div><div><h4>6063-T5</h4><p>Certified Alloy</p></div></div>
+<div class="stat-item"><div class="icon">⚙️</div><div><h4>Somfy</h4><p>Automation</p></div></div>
+<div class="stat-item"><div class="icon">❄️</div><div><h4>200 kg/m²</h4><p>Snow Load</p></div></div>
+<div class="stat-item"><div class="icon">💨</div><div><h4>120 km/h</h4><p>Wind Tested</p></div></div>
+</div>
+</div>
 
-    <div class="split">
-        <div class="split-content">
-            <h3>Precision <br><span>Manufacturing</span></h3>
-            <p>Our 6063-T5 aluminum profiles are processed in 5-axis CNC machining centers ensuring sub-millimeter precision for perfect joints and hidden water drainage.</p>
-            <a onclick="showPage('manufacturing')" style="color:#fff; font-weight:700; cursor:pointer; text-transform:uppercase;">Discover Manufacturing &rarr;</a>
-        </div>
-        <div class="split-img"><img src="cnc.JPG" alt="CNC"></div>
-    </div>
-    <div class="split rev">
-        <div class="split-content">
-            <h3>Advanced Thermal <br><span>Engineering</span></h3>
-            <p>Engineered to achieve low U-values in variable climates. Fitted with continuous polyamide thermal barrier struts to prevent condensation.</p>
-            <a onclick="showPage('profiles')" style="color:#fff; font-weight:700; cursor:pointer; text-transform:uppercase;">View Profile Systems &rarr;</a>
-        </div>
-        <div class="split-img"><img src="Thermal.JPG" alt="Thermal"></div>
-    </div>
-  </section>
+<div class="banner-container">
+<h2>Complete Architectural Ecosystem</h2>
+<p>From bioclimatic pergolas to insulated sliding systems, Eva Global provides a fully integrated ecosystem for all your living spaces.</p>
+<div class="banner-wrapper"><img src="emre_offer_banner.jpg" alt="Ecosystem"></div>
+</div>
 
-  <!-- OUTDOOR SYSTEMS SECTION -->
-  <section id="products-section" class="page-section">
-    <div class="section-header"><h2>Outdoor Architectural Systems</h2><p>Engineered outdoor pergola, veranda, carport and winter garden solutions.</p></div>
-    <div class="products-grid">
-      <div class="product-card" onclick="openProductDetail('forte')">
-        <div class="product-img"><img src="FORTE-BİO.jpg" onerror="this.onerror=null; this.src='forte.jpg';"></div>
-        <div class="product-body"><div class="badges"><span class="badge">110° Rotation</span><span class="badge">Bioclimatic</span></div><h3>Eva Climatic Forte</h3><p>Flat 0° roof silhouette with motorized rotating louvers.</p></div>
-      </div>
-      <div class="product-card" onclick="openProductDetail('lamella')">
-        <div class="product-img"><img src="lamella.jpg"></div>
-        <div class="product-body"><div class="badges"><span class="badge">Fully Retractable</span><span class="badge">Scissor Drive</span></div><h3>Eva Lamella Roof</h3><p>Solid aluminum louvers that rotate and stack backwards.</p></div>
-      </div>
-      <div class="product-card" onclick="openProductDetail('velura')">
-        <div class="product-img"><img src="velura3.jpg"></div>
-        <div class="product-body"><div class="badges"><span class="badge">Glass Roof</span><span class="badge">4-Season</span></div><h3>Velura Winter Garden</h3><p>Glazed structural roof system with thermal break rafters.</p></div>
-      </div>
-      <div class="product-card" onclick="openProductDetail('carport')">
-        <div class="product-img"><img src="Carport-Antrasit-600x600.jpg" onerror="this.onerror=null; this.src='carport.jpg';"></div>
-        <div class="product-body"><div class="badges"><span class="badge">Vehicle Protection</span><span class="badge">Heavy Duty</span></div><h3>Eva Carport System</h3><p>Durable solid roof structures for your vehicles.</p></div>
-      </div>
-      <div class="product-card" onclick="openProductDetail('zip')">
-        <div class="product-img"><img src="zip1.jpg"></div>
-        <div class="product-body"><div class="badges"><span class="badge">Wind Lock</span><span class="badge">Somfy Powered</span></div><h3>Zip Flex Screens</h3><p>Side-channel zippered textile screen for high wind resistance.</p></div>
-      </div>
-    </div>
-  </section>
+<div class="split">
+<div class="split-content">
+<h3>Precision <br><span>Manufacturing</span></h3>
+<p>Our 6063-T5 aluminum profiles are processed in 5-axis CNC machining centers ensuring sub-millimeter precision for perfect joints and hidden water drainage.</p>
+<a onclick="showPage('manufacturing')" style="color:#fff;font-weight:700;cursor:pointer;text-transform:uppercase;">Discover Manufacturing &rarr;</a>
+</div>
+<div class="split-img"><img src="cnc.JPG" alt="CNC"></div>
+</div>
+<div class="split rev">
+<div class="split-content">
+<h3>Advanced Thermal <br><span>Engineering</span></h3>
+<p>Engineered to achieve low U-values in variable climates. Fitted with continuous polyamide thermal barrier struts to prevent condensation.</p>
+<a onclick="showPage('profiles')" style="color:#fff;font-weight:700;cursor:pointer;text-transform:uppercase;">View Profile Systems &rarr;</a>
+</div>
+<div class="split-img"><img src="Thermal.JPG" alt="Thermal"></div>
+</div>
+</section>
 
-  <!-- PROFILE SYSTEMS SECTION -->
-  <section id="profiles-section" class="page-section">
-    <div class="section-header"><h2>Architectural Profile Systems</h2><p>Premium aluminum extrusions categorized by thermal performance.</p></div>
-    
-    <div style="max-width: 1400px; margin: 0 auto 30px auto; padding: 0 5%;"><h3 style="color:#ef4444; font-size:2rem; font-weight:800;">Thermally Insulated Systems</h3></div>
-    <div class="products-grid" style="margin-bottom: 80px;">
-      <div class="product-card" onclick="openProductDetail('rwt64')">
-        <div class="product-img"><img src="Thermal.JPG" alt="Thermal"></div>
-        <div class="product-body"><div class="badges"><span class="badge thermal">Polyamide Strut</span><span class="badge thermal">High Thermal</span></div><h3>RWT55 / RWT64 Thermal</h3><p>Advanced polyamide thermal break casement windows and doors.</p></div>
-      </div>
-      <div class="product-card" onclick="openProductDetail('rts116')">
-        <div class="product-img"><img src="https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=800&q=80" alt="Slide"></div>
-        <div class="product-body"><div class="badges"><span class="badge thermal">Lift & Slide</span><span class="badge thermal">Thermal Break</span></div><h3>RTS116 Thermal Sliding</h3><p>Heavy-duty lift-and-slide system for oversized panoramic panels.</p></div>
-      </div>
-      <div class="product-card" onclick="openProductDetail('cw50')">
-        <div class="product-img"><img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=80" alt="Curtain Wall"></div>
-        <div class="product-body"><div class="badges"><span class="badge thermal">Mullion-Transom</span></div><h3>CW50 Curtain Wall</h3><p>Continuous glass facade system with 50mm visible width.</p></div>
-      </div>
-      <div class="product-card" onclick="openProductDetail('fd60')">
-        <div class="product-img"><img src="https://images.unsplash.com/photo-1605276374104-162f154bf501?auto=format&fit=crop&w=800&q=80" alt="Folding"></div>
-        <div class="product-body"><div class="badges"><span class="badge thermal">Bi-Fold</span></div><h3>FD60 Folding Doors</h3><p>Accordion-style thermal glass doors that completely fold aside.</p></div>
-      </div>
-    </div>
+<section id="products-section" class="page-section">
+<div class="section-header"><h2>Outdoor Architectural Systems</h2><p>Engineered outdoor pergola, veranda, carport and winter garden solutions.</p></div>
+<div class="products-grid" id="out-grid"></div>
+</section>
 
-    <div style="max-width: 1400px; margin: 0 auto 30px auto; padding: 0 5%; border-top: 1px solid #1e293b; padding-top: 50px;"><h3 style="color:#38bdf8; font-size:2rem; font-weight:800;">Non-Insulated Systems</h3></div>
-    <div class="products-grid">
-      <div class="product-card" onclick="openProductDetail('c60')">
-        <div class="product-img"><img src="https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=800&q=80" alt="C60"></div>
-        <div class="product-body"><div class="badges"><span class="badge">Non-Insulated</span><span class="badge">60mm Depth</span></div><h3>C60 Architectural Series</h3><p>Durable profile system for interior partitions and portals.</p></div>
-      </div>
-      <div class="product-card" onclick="openProductDetail('glass_balcony')">
-        <div class="product-img"><img src="cam2.jpg" alt="Balcony"></div>
-        <div class="product-body"><div class="badges"><span class="badge">Frameless</span></div><h3>Folding Glass Balcony</h3><p>Elegant and fully foldable glass balcony systems.</p></div>
-      </div>
-      <div class="product-card" onclick="openProductDetail('guillotine')">
-        <div class="product-img"><img src="giyotin1.jpg" alt="Guillotine"></div>
-        <div class="product-body"><div class="badges"><span class="badge">Motorized</span><span class="badge">Vertical Slide</span></div><h3>Guillotine Glass</h3><p>Vertically retracting motorized glass panels.</p></div>
-      </div>
-      <div class="product-card" onclick="openProductDetail('sliding')">
-        <div class="product-img"><img src="sliding.jpg" alt="Sliding"></div>
-        <div class="product-body"><div class="badges"><span class="badge">Panorama</span><span class="badge">Multi-Track</span></div><h3>Standard Sliding Glass</h3><p>Multi-track horizontal sliding systems providing wide openings.</p></div>
-      </div>
-    </div>
-  </section>
+<section id="profiles-section" class="page-section">
+<div class="section-header"><h2>Architectural Profile Systems</h2><p>Premium aluminum extrusions categorized by thermal performance.</p></div>
+<div class="products-grid" id="prof-grid"></div>
+</section>
 
-  <!-- MANUFACTURING SECTION -->
-  <section id="manufacturing-section" class="page-section">
-    <div class="section-header"><h2>Precision Manufacturing</h2><p>Engineered with international ISO and Qualicoat certifications.</p></div>
-    <div class="split"><div class="split-content"><h3>Advanced <br><span>CNC Machining</span></h3><p>Processed in 5-axis CNC machining centers ensuring sub-millimeter precision.</p></div><div class="split-img"><img src="cnc.JPG" alt="CNC"></div></div>
-    <div class="split rev"><div class="split-content"><h3>Qualicoat <br><span>Powder Coating</span></h3><p>Automated lines apply Class 2 architectural powders that withstand saline environments without peeling.</p></div><div class="split-img"><img src="https://images.unsplash.com/photo-1580983546870-df10357f80dd?auto=format&fit=crop&w=1200&q=80" alt="Powder"></div></div>
-    <div class="split"><div class="split-content"><h3>Premium <br><span>Export Packaging</span></h3><p>To ensure your custom-built system arrives in pristine condition anywhere in the world.</p></div><div class="split-img"><img src="paketleme.JPG" alt="Packaging"></div></div>
-  </section>
+<section id="manufacturing-section" class="page-section">
+<div class="section-header"><h2>Precision Manufacturing</h2><p>Engineered with international ISO and Qualicoat certifications.</p></div>
+<div class="split"><div class="split-content"><h3>Advanced <br><span>CNC Machining</span></h3><p>Processed in 5-axis CNC machining centers ensuring sub-millimeter precision.</p></div><div class="split-img"><img src="cnc.JPG" alt="CNC"></div></div>
+<div class="split rev"><div class="split-content"><h3>Qualicoat <br><span>Powder Coating</span></h3><p>Automated lines apply Class 2 architectural powders that withstand saline environments without peeling.</p></div><div class="split-img"><img src="https://images.unsplash.com/photo-1580983546870-df10357f80dd?auto=format&fit=crop&w=1200&q=80" alt="Powder"></div></div>
+<div class="split"><div class="split-content"><h3>Premium <br><span>Export Packaging</span></h3><p>To ensure your custom-built system arrives in pristine condition anywhere in the world.</p></div><div class="split-img"><img src="paketleme.JPG" alt="Packaging"></div></div>
+</section>
 
-  <!-- CONTACT SECTION -->
-  <section id="contact-section" class="page-section">
-      <div class="section-header">
-          <h2>Contact Eva Global</h2>
-          <p>Reach out to us for project inquiries, technical support, or global partnership opportunities.</p>
-      </div>
-      <div class="contact-grid">
-          <div class="contact-card">
-              <h3>Headquarters</h3>
-              <div class="c-item">
-                  <div class="c-icon">📍</div>
-                  <div class="c-text"><h4>Location</h4><p>Istanbul, Türkiye</p></div>
-              </div>
-              <div class="c-item">
-                  <div class="c-icon">📞</div>
-                  <div class="c-text"><h4>WhatsApp / Direct Line</h4><p>+90 537 550 44 77</p></div>
-              </div>
-              <div class="c-item">
-                  <div class="c-icon">✉️</div>
-                  <div class="c-text"><h4>Email</h4><p>info@evaglobal.com.tr</p></div>
-              </div>
-          </div>
-          <div class="partnership-card">
-              <h3>Become a Global Partner</h3>
-              <p>Join our growing network of international dealers and architects. As an Eva Global partner, you gain access to exclusive B2B pricing, comprehensive technical training, and priority manufacturing lines.</p>
-              <button class="partner-btn" onclick="waPartner()">Apply for Partnership &rarr;</button>
-          </div>
-      </div>
-  </section>
+<section id="contact-section" class="page-section">
+<div class="section-header"><h2>Contact Eva Global</h2><p>Reach out to us for project inquiries, technical support, or global partnership opportunities.</p></div>
+<div class="contact-grid">
+<div class="contact-card">
+<h3>Headquarters</h3>
+<div class="c-item"><div class="c-icon">📍</div><div class="c-text"><h4>Location</h4><p>Istanbul, Türkiye</p></div></div>
+<div class="c-item"><div class="c-icon">📞</div><div class="c-text"><h4>WhatsApp / Direct Line</h4><p>+90 537 550 44 77</p></div></div>
+<div class="c-item"><div class="c-icon">✉️</div><div class="c-text"><h4>Email</h4><p>info@evaglobal.com.tr</p></div></div>
+</div>
+<div class="partnership-card">
+<h3>Become a Global Partner</h3>
+<p>Join our growing network of international dealers and architects. As an Eva Global partner, you gain access to exclusive B2B pricing, comprehensive technical training, and priority manufacturing lines.</p>
+<button class="partner-btn" onclick="waPartner()">Apply for Partnership &rarr;</button>
+</div>
+</div>
+</section>
 
-  <!-- PRODUCT DETAIL -->
-  <section id="product-detail-section" class="page-section">
-      <a onclick="showPage('home')" style="color:#38bdf8; cursor:pointer; font-weight:700; text-transform:uppercase;">&larr; Back</a>
-      <div class="detail-layout">
-          <div>
-              <h1 id="det-title"></h1>
-              <p id="det-desc"></p>
-              <table class="detail-table" id="det-specs"></table>
-              <button class="hero-btn" onclick="goToConfigurator()">⚙️ Design in 3D Simulator</button>
-          </div>
-          <div><img id="det-img" src=""></div>
-      </div>
-  </section>
+<section id="product-detail-section" class="page-section">
+<a onclick="showPage('products')" style="color:#38bdf8;cursor:pointer;font-weight:700;text-transform:uppercase;">&larr; Back to Systems</a>
+<div class="detail-layout">
+<div>
+<h1 id="det-title"></h1>
+<p id="det-desc"></p>
+<table class="detail-table" id="det-specs"></table>
+<button class="hero-btn" onclick="goToConfigurator()">⚙️ Design in 3D Simulator</button>
+</div>
+<div><img id="det-img" src="" alt="Detail"></div>
+</div>
+</section>
 
-  <!-- 3D CONFIGURATOR (Anti-Crash Flex System Aktif) -->
-  <section id="configurator-section" class="page-section">
-    <div id="sidebar">
-      <h2 style="font-size: 1.6rem; color: #fff; font-weight: 800; margin-bottom: 5px;">3D CAD Simulator</h2>
-      <div class="grid-2">
-        <div class="form-group"><label>Width (m):</label><input type="number" id="width" value="5.0" step="0.2"></div>
-        <div class="form-group"><label>Depth (m):</label><input type="number" id="depth" value="3.5" step="0.2"></div>
-        <div class="form-group"><label>Height (m):</label><input type="number" id="frontHeight" value="2.5" step="0.1"></div>
-        <div class="form-group"><label>Profile Color:</label><select id="profileColor"><option value="#1c1917">Anthracite</option><option value="#09090b">Black</option><option value="#f8fafc">White</option></select></div>
-      </div>
+<section id="configurator-section" class="page-section">
+<div id="sidebar">
+<h2 style="font-size: 1.6rem; color: #fff; font-weight: 800; margin-bottom: 5px;">3D CAD Simulator</h2>
+<div class="grid-2">
+<div class="form-group"><label>Width (m):</label><input type="number" id="width" value="5.0" step="0.2"></div>
+<div class="form-group"><label>Depth (m):</label><input type="number" id="depth" value="3.5" step="0.2"></div>
+<div class="form-group"><label>Height (m):</label><input type="number" id="frontHeight" value="2.5" step="0.1"></div>
+<div class="form-group"><label>Profile Color:</label><select id="profileColor"><option value="#1c1917">Anthracite</option><option value="#09090b">Black</option><option value="#f8fafc">White</option></select></div>
+</div>
 
-      <div class="form-group">
-        <label>ROOF SYSTEM</label>
-        <div class="roof-selector">
-          <button class="roof-btn active" id="btn-bioclimatic" onclick="setRoofType('bioclimatic', this)">Forte Bioclimatic</button>
-          <button class="roof-btn" id="btn-rolling_roof" onclick="setRoofType('rolling_roof', this)">Lamella Roof</button>
-          <button class="roof-btn" id="btn-pergola" onclick="setRoofType('pergola', this)">Pergola Awning</button>
-          <button class="roof-btn" id="btn-veranda" onclick="setRoofType('veranda', this)">Winter Garden</button>
-          <button class="roof-btn" id="btn-carport" onclick="setRoofType('carport', this)" style="grid-column: span 2;">Eva Carport (Solid)</button>
-        </div>
-      </div>
+<div class="form-group">
+<label>ROOF SYSTEM</label>
+<div class="roof-selector">
+<button class="roof-btn active" id="btn-bioclimatic" onclick="setRoofType('bioclimatic', this)">Forte Bioclimatic</button>
+<button class="roof-btn" id="btn-rolling_roof" onclick="setRoofType('rolling_roof', this)">Lamella Roof</button>
+<button class="roof-btn" id="btn-pergola" onclick="setRoofType('pergola', this)">Pergola Awning</button>
+<button class="roof-btn" id="btn-veranda" onclick="setRoofType('veranda', this)">Winter Garden</button>
+<button class="roof-btn" id="btn-carport" onclick="setRoofType('carport', this)" style="grid-column: span 2;">Eva Carport (Solid)</button>
+</div>
+</div>
 
-      <div class="module-box">
-        <div class="module-title">ARCHITECTURAL FACADES</div>
-        <div class="facade-grid">
-          <div class="form-group"><label>Front</label><div style="display:flex; gap:5px;"><select id="gFront" class="sys" style="flex:2;"><option value="none">Open</option><option value="guillotine">Guillotine</option><option value="sliding">Sliding</option><option value="glass_balcony">Glass Balcony</option><option value="wall">Wall</option></select><select id="doorFront" class="sys door" style="flex:1;"><option value="none">No Door</option><option value="left">Left</option><option value="right">Right</option></select></div></div>
-          <div class="form-group"><label>Back</label><div style="display:flex; gap:5px;"><select id="gBack" class="sys" style="flex:2;"><option value="none">Open</option><option value="guillotine">Guillotine</option><option value="sliding">Sliding</option><option value="glass_balcony">Glass Balcony</option><option value="wall">Wall</option></select><select id="doorBack" class="sys door" style="flex:1;"><option value="none">No Door</option><option value="left">Left</option><option value="right">Right</option></select></div></div>
-          <div class="form-group"><label>Left</label><div style="display:flex; gap:5px;"><select id="gLeft" class="sys" style="flex:2;"><option value="none">Open</option><option value="guillotine">Guillotine</option><option value="sliding">Sliding</option><option value="glass_balcony">Glass Balcony</option><option value="wall">Wall</option></select><select id="doorLeft" class="sys door" style="flex:1;"><option value="none">No Door</option><option value="left">Left</option><option value="right">Right</option></select></div></div>
-          <div class="form-group"><label>Right</label><div style="display:flex; gap:5px;"><select id="gRight" class="sys" style="flex:2;"><option value="none">Open</option><option value="guillotine">Guillotine</option><option value="sliding">Sliding</option><option value="glass_balcony">Glass Balcony</option><option value="wall">Wall</option></select><select id="doorRight" class="sys door" style="flex:1;"><option value="none">No Door</option><option value="left">Left</option><option value="right">Right</option></select></div></div>
-        </div>
-      </div>
+<div class="module-box">
+<div class="module-title">ARCHITECTURAL FACADES</div>
+<div class="facade-grid">
+<div class="form-group"><label>Front</label><div style="display:flex; gap:5px;"><select id="gFront" class="sys" style="flex:2;"><option value="none">Open</option><option value="guillotine">Guillotine</option><option value="sliding">Sliding</option><option value="rts116">Thermal Sliding</option><option value="fd60">Thermal Bi-Fold</option><option value="glass_balcony">Frameless Balcony</option><option value="wall">Fixed Wall</option></select><select id="doorFront" class="sys door" style="flex:1;"><option value="none">No Door</option><option value="left">Left Door</option><option value="right">Right Door</option></select></div></div>
+<div class="form-group"><label>Back</label><div style="display:flex; gap:5px;"><select id="gBack" class="sys" style="flex:2;"><option value="none">Open</option><option value="guillotine">Guillotine</option><option value="sliding">Sliding</option><option value="rts116">Thermal Sliding</option><option value="fd60">Thermal Bi-Fold</option><option value="glass_balcony">Frameless Balcony</option><option value="wall">Fixed Wall</option></select><select id="doorBack" class="sys door" style="flex:1;"><option value="none">No Door</option><option value="left">Left Door</option><option value="right">Right Door</option></select></div></div>
+<div class="form-group"><label>Left</label><div style="display:flex; gap:5px;"><select id="gLeft" class="sys" style="flex:2;"><option value="none">Open</option><option value="guillotine">Guillotine</option><option value="sliding">Sliding</option><option value="rts116">Thermal Sliding</option><option value="fd60">Thermal Bi-Fold</option><option value="glass_balcony">Frameless Balcony</option><option value="wall">Fixed Wall</option></select><select id="doorLeft" class="sys door" style="flex:1;"><option value="none">No Door</option><option value="left">Left Door</option><option value="right">Right Door</option></select></div></div>
+<div class="form-group"><label>Right</label><div style="display:flex; gap:5px;"><select id="gRight" class="sys" style="flex:2;"><option value="none">Open</option><option value="guillotine">Guillotine</option><option value="sliding">Sliding</option><option value="rts116">Thermal Sliding</option><option value="fd60">Thermal Bi-Fold</option><option value="glass_balcony">Frameless Balcony</option><option value="wall">Fixed Wall</option></select><select id="doorRight" class="sys door" style="flex:1;"><option value="none">No Door</option><option value="left">Left Door</option><option value="right">Right Door</option></select></div></div>
+</div>
+</div>
 
-      <div class="module-box">
-        <div class="module-title">ACCESSORIES</div>
-        <div class="checkbox-grid">
-          <label class="checkbox-label"><input type="checkbox" id="zipFront" class="sys"> Front Zip</label>
-          <label class="checkbox-label"><input type="checkbox" id="zipBack" class="sys"> Back Zip</label>
-          <label class="checkbox-label"><input type="checkbox" id="zipLeft" class="sys"> Left Zip</label>
-          <label class="checkbox-label"><input type="checkbox" id="zipRight" class="sys"> Right Zip</label>
-        </div>
-        <div style="margin-top: 15px; border-top: 1px dashed #1e293b; padding-top: 15px;">
-           <label class="checkbox-label" style="color: #10b981; margin-bottom: 10px;"><input type="checkbox" id="toggleAutoPlay" checked> 🔄 Auto-Play Animations</label>
-           <label class="checkbox-label" id="roofZipWrapperBox" style="color: #38bdf8; display: none;"><input type="checkbox" id="toggleRoofZip" class="sys"> Velura Roof Zip Screen</label>
-        </div>
-      </div>
+<div class="module-box">
+<div class="module-title">ACCESSORIES</div>
+<div class="checkbox-grid">
+<label class="checkbox-label"><input type="checkbox" id="zipFront" class="sys"> Front Zip</label>
+<label class="checkbox-label"><input type="checkbox" id="zipBack" class="sys"> Back Zip</label>
+<label class="checkbox-label"><input type="checkbox" id="zipLeft" class="sys"> Left Zip</label>
+<label class="checkbox-label"><input type="checkbox" id="zipRight" class="sys"> Right Zip</label>
+</div>
+<div style="margin-top: 15px; border-top: 1px dashed #1e293b; padding-top: 15px;">
+<label class="checkbox-label" style="color: #10b981; margin-bottom: 10px;"><input type="checkbox" id="toggleAutoPlay" checked> 🔄 Auto-Play Animations</label>
+<label class="checkbox-label" id="roofZipWrapperBox" style="color: #38bdf8; display: none;"><input type="checkbox" id="toggleRoofZip" class="sys"> Velura Roof Zip Screen</label>
+</div>
+</div>
 
-      <div class="slider-container" id="glassControls">
-        <div class="slider-header"><span>Glass Systems:</span></div>
-        <input type="range" id="glassOpenness" min="0" max="100" value="0">
-      </div>
-      <div class="slider-container" id="roofControls">
-        <div class="slider-header"><span>Roof Angles:</span></div>
-        <input type="range" id="roofActionVal" min="0" max="100" value="0">
-      </div>
-      <div class="slider-container" id="zipControls">
-        <div class="slider-header"><span>Zip Flex Screens:</span></div>
-        <input type="range" id="zipOpenness" min="0" max="100" value="100">
-      </div>
-      <div class="slider-container" id="roofZipControls" style="display: none;">
-        <div class="slider-header"><span>Roof Zip Retraction:</span></div>
-        <input type="range" id="roofZipOpenness" min="0" max="100" value="0">
-      </div>
+<div class="slider-container" id="glassControls">
+<div class="slider-header"><span>Glass Systems & Doors:</span></div>
+<input type="range" id="glassOpenness" min="0" max="100" value="0">
+</div>
+<div class="slider-container" id="roofControls">
+<div class="slider-header"><span>Roof Angles:</span></div>
+<input type="range" id="roofActionVal" min="0" max="100" value="0">
+</div>
+<div class="slider-container" id="zipControls">
+<div class="slider-header"><span>Zip Flex Screens:</span></div>
+<input type="range" id="zipOpenness" min="0" max="100" value="100">
+</div>
+<div class="slider-container" id="roofZipControls" style="display: none;">
+<div class="slider-header"><span>Roof Zip Retraction:</span></div>
+<input type="range" id="roofZipOpenness" min="0" max="100" value="0">
+</div>
 
-      <button class="action-btn" onclick="waQuote()">💬 Request Project Quote</button>
-    </div>
+<button class="action-btn" onclick="waQuote()">💬 Request Project Quote</button>
+</div>
 
-    <div id="canvas-container">
-      <div class="hud">
-        <h5>Live Telemetry</h5>
-        <div class="hud-label"><span>Wind Resistance</span><span class="val" id="hud-wind-val">120 km/h</span></div>
-        <div class="bar-bg"><div class="bar" style="width: 90%;"></div></div>
-        <div class="hud-label"><span>Snow Load</span><span class="val" id="hud-snow-val">200 kg/m²</span></div>
-        <div class="bar-bg"><div class="bar" style="width: 85%;"></div></div>
-      </div>
-      <div class="night-mode-tag">
-        <label><input type="checkbox" id="toggleLED" style="accent-color:#38bdf8; width:18px; height:18px;"> Night Mode</label>
-      </div>
-    </div>
-  </section>
+<div id="canvas-container">
+<div class="hud">
+<h5>Live Telemetry</h5>
+<div class="hud-label"><span>Wind Resistance</span><span class="val" id="hud-wind-val">120 km/h</span></div>
+<div class="bar-bg"><div class="bar" id="hw" style="width: 90%;"></div></div>
+<div class="hud-label"><span>Snow Load</span><span class="val" id="hud-snow-val">200 kg/m²</span></div>
+<div class="bar-bg"><div class="bar" id="hs" style="width: 85%;"></div></div>
+</div>
+<div class="night-mode-tag">
+<label><input type="checkbox" id="toggleLED" style="accent-color:#38bdf8; width:18px; height:18px;"> Night Mode</label>
+</div>
+</div>
+</section>
 
-  <footer>
-    <img src="logo.png" onerror="this.onerror=null; this.src='logo.jpg';" alt="Eva Global Logo">
-    <p>&copy; 2026 EVA GLOBAL. Premium Aluminum Architectural Systems.</p>
-  </footer>
+<footer>
+<img src="logo.png" onerror="this.onerror=null;this.src='logo.jpg';" alt="Eva Global Logo" style="height:35px; opacity:0.5; margin-bottom:10px;">
+<p>&copy; 2026 EVA GLOBAL. Premium Aluminum Architectural Systems.</p>
+</footer>
 
-  <script>
-    const allProducts = {
-      forte: {t: "Eva Climatic Forte", d: "Eva Climatic Forte features adjustable, remotely controlled mobile blades that naturally regulate light, airflow, and temperature.", i: "FORTE-BİO.jpg", fall: "forte.jpg", s: {"Alloy": "6063-T5", "Motor": "Somfy", "Drainage": "Hidden Gutter"}, tg: "bioclimatic"},
-      lamella: {t: "Eva Lamella Roof", d: "Designed to adapt seamlessly to nature, the Eva Lamella features retractable aluminum louvers.", i: "lamella.jpg", fall: "", s: {"Movement": "Full Retraction", "Motor": "Somfy"}, tg: "rolling_roof"},
-      velura: {t: "Velura Winter Garden", d: "Constructed using heavy-duty load-bearing rafters, integrated perimeter gutters with leaf guards, and laminated/tempered double glazing.", i: "velura3.jpg", fall: "", s: {"Structure": "Glass Rafters", "Glazing": "Laminated"}, tg: "veranda"},
-      carport: {t: "Eva Carport System", d: "Eva Carport systems offer a modern and robust shelter for your vehicles. Built with high-strength aluminum extrusions and integrated hidden drainage.", i: "Carport-Antrasit-600x600.jpg", fall: "carport.jpg", s: {"Roof": "Solid Aluminum", "Drainage": "Hidden Gutter"}, tg: "carport"},
-      zip: {t: "Zip Flex Screens", d: "The Zip Flex system resists harsh winds without derailing thanks to its special zipper design.", i: "zip1.jpg", fall: "", s: {"Fabric": "Micro-Perforated", "Motor": "Somfy Blind"}, tg: "bioclimatic"},
-      rwt64: {t: "RWT55 / RWT64 Thermal", d: "Engineered to achieve low U-values in variable climates.", i: "Thermal.JPG", fall: "", s: {"Thermal": "Polyamide PA66 GF25", "Water": "Class E900"}, tg: "veranda"},
-      rts116: {t: "RTS116 Lift & Slide", d: "Designed for large panoramic openings where maximum thermal and acoustic insulation is required.", i: "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1600&q=80", fall: "", s: {"Barrier": "Polyamide", "Max Weight": "400kg"}, tg: "veranda"},
-      cw50: {t: "CW50 Curtain Wall", d: "Designed for multi-story glazed facades and floor-to-ceiling glass envelopes.", i: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1600&q=80", fall: "", s: {"Visible Width": "50mm", "Depth": "Up to 200mm"}, tg: "veranda"},
-      fd60: {t: "FD60 Folding Doors", d: "Its accordion-style folding mechanism allows panels to stack neatly to the side.", i: "https://images.unsplash.com/photo-1605276374104-162f154bf501?auto=format&fit=crop&w=1600&q=80", fall: "", s: {"Depth": "60mm", "Max Width": "1200mm"}, tg: "veranda"},
-      c60: {t: "C60 Architectural Profile", d: "The C60 series offers a clean, architectural solution for interior glass partitions.", i: "https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=1600&q=80", fall: "", s: {"Function": "Non-Insulated", "Depth": "60mm"}, tg: "veranda"},
-      glass_balcony: {t: "Folding Glass Balcony", d: "Unlike traditional folding doors, these panels are virtually frameless and completely fold to one side.", i: "cam2.jpg", fall: "", s: {"Type": "Frameless Folding", "Function": "Retractable"}, tg: "veranda"},
-      guillotine: {t: "Motorized Guillotine", d: "Operated via Somfy motors, guillotine glass systems offer a modern approach to architectural glazing.", i: "giyotin1.jpg", fall: "", s: {"Type": "Vertical Sliding", "Motor": "Somfy RTS"}, tg: "veranda"},
-      sliding: {t: "Standard Sliding Glass", d: "Transform your exterior facade into a transparent wall in seconds.", i: "sliding.jpg", fall: "", s: {"Glazing": "Single/Double", "Hardware": "Stainless"}, tg: "veranda"}
-    };
+<script>
+const outData = {
+  forte: {t: "Eva Climatic Forte", d: "Adjustable mobile blades with a 0-degree flat roof.", i: "FORTE-BİO.jpg", f: "forte.jpg", s: {"Alloy": "6063-T5", "Motor": "Somfy", "Drainage": "Hidden"}, tg: "bioclimatic", b: ["110° Rotation", "Bioclimatic"]},
+  lamella: {t: "Eva Lamella Roof", d: "Retractable aluminum louvers.", i: "lamella.jpg", f: "", s: {"Movement": "Full Retraction", "Motor": "Somfy"}, tg: "rolling_roof", b: ["Fully Retractable", "Scissor Drive"]},
+  velura: {t: "Velura Winter Garden", d: "Architectural glass-roof living spaces.", i: "velura3.jpg", f: "", s: {"Structure": "Glass Rafters", "Glazing": "Laminated"}, tg: "veranda", b: ["Glass Roof", "4-Season"]},
+  carport: {t: "Eva Carport System", d: "Solid roof vehicle protection.", i: "Carport-Antrasit-600x600.jpg", f: "carport.jpg", s: {"Roof": "Solid Aluminum", "Drainage": "Hidden"}, tg: "carport", b: ["Vehicle Protection", "Heavy Duty"]},
+  zip: {t: "Zip Flex Screens", d: "Wind-resistant motorized fabric.", i: "zip1.jpg", f: "", s: {"Fabric": "Micro-Perforated", "Motor": "Somfy"}, tg: "bioclimatic", b: ["Wind Lock", "Somfy Powered"]}
+};
 
-    let currentConfigTarget = 'bioclimatic';
-    
-    function showPage(id) {
-      document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
-      document.querySelectorAll('.header-nav a').forEach(a => a.classList.remove('active'));
-      const t = document.getElementById(id + '-section'); if(t) t.classList.add('active');
-      const n = document.getElementById('nav-' + id); if(n) n.classList.add('active');
-      
-      if(id === 'configurator') {
-          setTimeout(() => {
-             const cnt = document.getElementById('canvas-container');
-             if(cnt && cnt.clientWidth > 0) {
-                 camera.aspect = cnt.clientWidth / cnt.clientHeight;
-                 camera.updateProjectionMatrix();
-                 renderer.setSize(cnt.clientWidth, cnt.clientHeight);
-             }
-          }, 50);
-      } else { window.scrollTo(0,0); }
+const profData = {
+  rwt64: {t: "RWT55 / RWT64 Thermal", d: "Thermal break casements.", i: "Thermal.JPG", f: "", s: {"Thermal": "Polyamide PA66", "Water": "Class E900"}, tg: "veranda", b: ["Polyamide Strut", "High Thermal"], c: "ins"},
+  rts116: {t: "RTS116 Thermal Sliding", d: "Heavy-duty thermal sliding system.", i: "rts116.jpg", f: "rts116.jgp", s: {"Barrier": "Polyamide", "Max Weight": "400kg"}, tg: "veranda", b: ["Lift & Slide", "Thermal Break"], c: "ins"},
+  cw50: {t: "CW50 Curtain Wall", d: "Mullion-transom structural facade.", i: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1600&q=80", f: "", s: {"Visible Width": "50mm", "Depth": "Up to 200mm"}, tg: "veranda", b: ["Mullion-Transom", "Facade"], c: "ins"},
+  fd60: {t: "FD60 Thermal Bi-Fold", d: "Insulated accordion folding doors.", i: "https://images.unsplash.com/photo-1605276374104-162f154bf501?auto=format&fit=crop&w=1600&q=80", f: "", s: {"Depth": "60mm", "Max Width": "1200mm"}, tg: "veranda", b: ["Bi-Fold", "Insulated"], c: "ins"},
+  c60: {t: "C60 Architectural Profile", d: "Non-insulated aluminum series.", i: "c60.jpg", f: "c60.jgp", s: {"Function": "Non-Insulated", "Depth": "60mm"}, tg: "veranda", b: ["Non-Insulated", "60mm Depth"], c: "non"},
+  glass_balcony: {t: "Frameless Glass Balcony", d: "Frameless glass balcony systems.", i: "cam2.jpg", f: "", s: {"Type": "Frameless Folding", "Function": "Retractable"}, tg: "veranda", b: ["Frameless", "Fold & Stack"], c: "non"},
+  guillotine: {t: "Motorized Guillotine", d: "Vertically retracting motorized glass panels.", i: "giyotin1.jpg", f: "", s: {"Type": "Vertical Sliding", "Motor": "Somfy RTS"}, tg: "veranda", b: ["Motorized", "Vertical Slide"], c: "non"},
+  sliding: {t: "Standard Sliding Glass", d: "Multi-track horizontal sliding systems.", i: "sliding.jpg", f: "", s: {"Glazing": "Single/Double", "Hardware": "Stainless"}, tg: "veranda", b: ["Panorama", "Multi-Track"], c: "non"}
+};
+
+function renderGrids() {
+  let ol = document.getElementById('out-grid');
+  let pl = document.getElementById('prof-grid');
+  ol.innerHTML = ''; 
+  Object.keys(outData).forEach(k => {
+    ol.innerHTML += `<div class="product-card" onclick="oDe('${k}','o')"><div class="product-img"><img src="${outData[k].i}" onerror="this.onerror=null;if('${outData[k].f}')this.src='${outData[k].f}';"></div><div class="product-body"><div class="badges"><span class="badge">${outData[k].b[0]}</span><span class="badge">${outData[k].b[1]}</span></div><h3>${outData[k].t}</h3><p>${outData[k].d}</p></div></div>`;
+  });
+  
+  let iH = `<div style="grid-column:1/-1;margin-bottom:10px;"><h3 style="color:#ef4444;font-size:2.2rem;font-weight:800;border-bottom:1px solid #1e293b;padding-bottom:15px;">Thermally Insulated Systems</h3></div>`;
+  let nH = `<div style="grid-column:1/-1;margin-top:40px;margin-bottom:10px;"><h3 style="color:#38bdf8;font-size:2.2rem;font-weight:800;border-bottom:1px solid #1e293b;padding-bottom:15px;">Non-Insulated Systems</h3></div>`;
+  
+  Object.keys(profData).forEach(k => {
+    let isT = profData[k].b[1].includes('Thermal') || profData[k].b[1].includes('Insulated');
+    let crd = `<div class="product-card" onclick="oDe('${k}','p')"><div class="product-img"><img src="${profData[k].i}" onerror="this.onerror=null;if('${profData[k].f}')this.src='${profData[k].f}';"></div><div class="product-body"><div class="badges"><span class="badge ${isT?'thermal':''}">${profData[k].b[0]}</span><span class="badge ${isT?'thermal':''}">${profData[k].b[1]}</span></div><h3>${profData[k].t}</h3><p>${profData[k].d}</p></div></div>`;
+    if(profData[k].c === 'ins') iH += crd; else nH += crd;
+  });
+  pl.innerHTML = iH + nH;
+}
+
+let cT = 'bioclimatic';
+function showPage(id) {
+  document.querySelectorAll('.page-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.header-nav a').forEach(a => a.classList.remove('active'));
+  let t = document.getElementById(id + '-section'); if(t) t.classList.add('active');
+  let n = document.getElementById('nav-' + id); if(n) n.classList.add('active');
+  
+  if(id === 'configurator'){
+      setTimeout(() => {
+         let c = document.getElementById('canvas-container');
+         if(c && c.clientWidth > 0){
+             cam.aspect = c.clientWidth / c.clientHeight;
+             cam.updateProjectionMatrix();
+             ren.setSize(c.clientWidth, c.clientHeight);
+         }
+      }, 50);
+  } else { window.scrollTo(0,0); }
+}
+
+function oDe(k, ty) {
+    let d = ty === 'o' ? outData[k] : profData[k]; if(!d) return;
+    let i = document.getElementById('det-img');
+    i.src = d.i;
+    i.onerror = function() { this.onerror=null; if(d.f) this.src = d.f; };
+    document.getElementById('det-title').innerText = d.t;
+    document.getElementById('det-desc').innerText = d.d + " Manufactured with Eva Global's premium standards.";
+    let tb = document.getElementById('det-specs'); tb.innerHTML = '';
+    for(let [kx, v] of Object.entries(d.s)) { tb.innerHTML += `<tr><th>${kx}</th><td>${v}</td></tr>`; }
+    cT = d.tg; showPage('product-detail');
+}
+
+function goToConfigurator() { showPage('configurator'); setRoofType(cT, document.getElementById('btn-'+cT) || document.getElementById('btn-bioclimatic')); }
+function waQuote() { window.open(`https://wa.me/905375504477?text=Eva Global Inquiry: ${cRoof} - ${document.getElementById('width').value}x${document.getElementById('depth').value}m`, '_blank'); }
+function waPartner() { window.open(`https://wa.me/905375504477?text=Hello, I am interested in becoming a partner/dealer for Eva Global.`, '_blank'); }
+
+// --- 3D ENGINE CORE ---
+let cRoof = 'bioclimatic', rEs = [], gPs = [], zPs = [], rZEs = [], aV = 0, aD = 1, lT = 0;
+const ct = document.getElementById('canvas-container');
+const scn = new THREE.Scene(); scn.background = new THREE.Color(0x1e293b);
+const cam = new THREE.PerspectiveCamera(40, 1, 0.1, 100); cam.position.set(10, 5, 13);
+const ren = new THREE.WebGLRenderer({antialias: true, alpha: true}); 
+ren.shadowMap.enabled = true; ren.shadowMap.type = THREE.PCFSoftShadowMap; ren.toneMapping = THREE.ACESFilmicToneMapping; ren.outputEncoding = THREE.sRGBEncoding;
+if(ct) ct.appendChild(ren.domElement);
+
+if(ct){
+    new ResizeObserver(()=>{
+        if(ct.clientWidth > 0 && ct.clientHeight > 0){
+            cam.aspect = ct.clientWidth / ct.clientHeight;
+            cam.updateProjectionMatrix();
+            ren.setSize(ct.clientWidth, ct.clientHeight);
+        }
+    }).observe(ct);
+}
+
+const crl = new THREE.OrbitControls(cam, ren.domElement); crl.enableDamping = true; crl.maxPolarAngle = 1.5; crl.target.set(0, 1.2, 0);
+const hL = new THREE.HemisphereLight(0xffffff, 0x1e293b, 0.5); scn.add(hL);
+const sn = new THREE.DirectionalLight(0xffffff, 1.2); sn.position.set(15, 25, 15); sn.castShadow = true; scn.add(sn);
+const lL = new THREE.PointLight(0xffa114, 0, 15); lL.position.set(0, 2, 0); scn.add(lL);
+const sG = new THREE.Group(); scn.add(sG);
+
+const gM = new THREE.MeshStandardMaterial({color: 0x3b5323, roughness: 1.0});
+const gF = new THREE.Mesh(new THREE.PlaneGeometry(300, 300), gM);
+gF.rotation.x = -Math.PI / 2; gF.position.y = -0.15; gF.receiveShadow = true; scn.add(gF);
+
+const fM = new THREE.MeshStandardMaterial({color: 0x1c1917, roughness: 0.5});
+const lMt = new THREE.MeshStandardMaterial({color: 0x1c1917, roughness: 0.4});
+const glM = new THREE.MeshPhysicalMaterial({color: 0x60a5fa, transparent: true, opacity: 0.4, side: THREE.DoubleSide});
+const wM = new THREE.MeshStandardMaterial({color: 0xd1d5db, roughness: 0.9});
+const zM = new THREE.MeshStandardMaterial({color: 0x475569, transparent: true, opacity: 0.85, side: THREE.DoubleSide});
+
+function createGlass(pw, ph, isG) {
+    let gp = new THREE.Group();
+    let fT = isG ? 0.015 : 0.04; let fD = 0.03;
+    gp.add(new THREE.Mesh(new THREE.BoxGeometry(pw, ph, 0.01), glM));
+    let tf = new THREE.Mesh(new THREE.BoxGeometry(pw, (isG?0.04:fT), fD), fM); tf.position.y = ph/2 - (isG?0.02:fT/2); tf.castShadow = true; gp.add(tf);
+    let bf = new THREE.Mesh(new THREE.BoxGeometry(pw, (isG?0.04:fT), fD), fM); bf.position.y = -ph/2 + (isG?0.02:fT/2); bf.castShadow = true; gp.add(bf);
+    let lf = new THREE.Mesh(new THREE.BoxGeometry(fT, ph - (isG?0.08:fT*2), fD), fM); lf.position.x = -pw/2 + fT/2; lf.castShadow = true; gp.add(lf);
+    let rf = new THREE.Mesh(new THREE.BoxGeometry(fT, ph - (isG?0.08:fT*2), fD), fM); rf.position.x = pw/2 - fT/2; rf.castShadow = true; gp.add(rf);
+    return gp;
+}
+
+function buildSystem() {
+    if(!document.getElementById('width')) return;
+    while(sG.children.length > 0) { let o = sG.children[0]; o.traverse(c => { if(c.isMesh) c.geometry.dispose(); }); sG.remove(o); }
+    rEs = []; gPs = []; zPs = []; rZEs = [];
+
+    const W = parseFloat(document.getElementById('width').value) || 5.0;
+    const D = parseFloat(document.getElementById('depth').value) || 3.5;
+    const FH = parseFloat(document.getElementById('frontHeight').value) || 2.5;
+    const BH = (cRoof === 'bioclimatic' || cRoof === 'rolling_roof' || cRoof === 'carport') ? FH : FH + 0.35; 
+
+    const hasLED = document.getElementById('toggleLED')?.checked;
+    const ledM = new THREE.MeshStandardMaterial({color: 0xffedd5, emissive: 0xffa114, emissiveIntensity: 2.5});
+
+    if(hasLED) { scn.background.setHex(0x020617); hL.intensity = 0.1; sn.intensity = 0.2; lL.intensity = 2.0; lL.position.set(0, (FH+BH)/2 - 0.5, 0); gM.color.setHex(0x1a2e19); } 
+    else { scn.background.setHex(0x1e293b); hL.intensity = 0.6; sn.intensity = 1.2; lL.intensity = 0; gM.color.setHex(0x3b5323); }
+
+    let dk = new THREE.Group(); let pW = W + 2, pD = D + 2, plW = 0.142, stW = plW + 0.008, pC = Math.floor(pW / stW), aW = pC * stW, sX = -aW / 2 + plW / 2;
+    let dMx = new THREE.MeshStandardMaterial({color: hasLED ? 0x3d2817 : 0x734a29, roughness: 0.8});
+    let bMx = new THREE.Mesh(new THREE.BoxGeometry(aW, 0.04, pD), new THREE.MeshStandardMaterial({color: 0x0a0a0a})); bMx.position.set(0, -0.04, 0); dk.add(bMx);
+    for(let i=0; i<pC; i++) { let p = new THREE.Mesh(new THREE.BoxGeometry(plW, 0.02, pD), dMx); p.position.set(sX + i * stW, -0.01, 0); p.receiveShadow = p.castShadow = true; dk.add(p); }
+    let faM = new THREE.MeshStandardMaterial({color: 0x18181b});
+    let fF = new THREE.Mesh(new THREE.BoxGeometry(aW + 0.04, 0.06, 0.02), faM); fF.position.set(0, -0.03, pD/2 + 0.01); dk.add(fF);
+    let fB = new THREE.Mesh(new THREE.BoxGeometry(aW + 0.04, 0.06, 0.02), faM); fB.position.set(0, -0.03, -pD/2 - 0.01); dk.add(fB);
+    let fL = new THREE.Mesh(new THREE.BoxGeometry(0.02, 0.06, pD), faM); fL.position.set(-aW/2 - 0.01, -0.03, 0); dk.add(fL);
+    let fR = new THREE.Mesh(new THREE.BoxGeometry(0.02, 0.06, pD), faM); fR.position.set(aW/2 + 0.01, -0.03, 0); dk.add(fR);
+    sG.add(dk);
+
+    function cB(w, h, d, x, y, z, rx=0, m=fM) { let me = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), m); me.position.set(x, y, z); me.rotation.x = rx; me.castShadow = me.receiveShadow = true; sG.add(me); }
+
+    const PS = 0.12, BHt = 0.16, BW = 0.09;
+    cB(PS, FH, PS, -W/2 + PS/2, FH/2, D/2 - PS/2); cB(PS, FH, PS, W/2 - PS/2, FH/2, D/2 - PS/2);
+    cB(PS, BH, PS, -W/2 + PS/2, BH/2, -D/2 + PS/2); cB(PS, BH, PS, W/2 - PS/2, BH/2, -D/2 + PS/2);
+    cB(W, BHt, BW, 0, FH - BHt/2, D/2 - BW/2); cB(W, BHt, BW, 0, BH - BHt/2, -D/2 + BW/2);
+
+    if(hasLED && cRoof !== 'carport') { cB(W - 0.24, 0.02, 0.02, 0, FH - 0.10, D/2 - 0.08, 0, ledM); cB(W - 0.24, 0.02, 0.02, 0, BH - 0.10, -D/2 + 0.08, 0, ledM); }
+
+    let sL = Math.sqrt(D*D + Math.pow(BH - FH, 2)), pA = Math.atan2(BH-FH, D), cY = (FH + BH)/2 - BHt/2;
+    cB(BW, BHt, sL, -W/2 + BW/2, cY, 0, pA); cB(BW, BHt, sL, W/2 - BW/2, cY, 0, pA);
+
+    if (cRoof === 'carport') {
+        let cRo = new THREE.Mesh(new THREE.BoxGeometry(W - 0.18, 0.05, D - 0.18), new THREE.MeshStandardMaterial({color: 0x334155})); cRo.position.set(0, FH - 0.05, 0); cRo.castShadow = true; sG.add(cRo);
+        document.getElementById('hud-wind-val').innerText = '140 km/h'; document.getElementById('hw').style.width = '95%'; document.getElementById('hud-snow-val').innerText = '250 kg/m²'; document.getElementById('hs').style.width = '100%';
+    } else if (cRoof === 'bioclimatic' || cRoof === 'rolling_roof') {
+        document.getElementById('hud-wind-val').innerText = '120 km/h'; document.getElementById('hw').style.width = '85%'; document.getElementById('hud-snow-val').innerText = '200 kg/m²'; document.getElementById('hs').style.width = '80%';
+        let c = Math.ceil(D / 0.22), st = D / c; 
+        for (let i = 0; i < c; i++) { let l = new THREE.Mesh(new THREE.BoxGeometry(W - 0.18, 0.03, st + 0.005), lMt); l.position.set(0, cY - 0.015, -D/2 + st * (i + 0.5)); l.userData = { bz: l.position.z }; l.castShadow = true; sG.add(l); rEs.push(l); }
+    } else if (cRoof === 'pergola') {
+        document.getElementById('hud-wind-val').innerText = '80 km/h'; document.getElementById('hw').style.width = '60%'; document.getElementById('hud-snow-val').innerText = 'N/A'; document.getElementById('hs').style.width = '5%';
+        let st = D / 12;
+        for(let i = 0; i < 12; i++) { let f = new THREE.Mesh(new THREE.BoxGeometry(W - 0.15, 0.02, st * 0.95), new THREE.MeshStandardMaterial({color: 0xf1f5f9})); let bz = -D/2 + st * (i + 0.5); f.position.set(0, BH - (BH - FH) * ((bz + D/2) / D) - 0.06, bz); f.rotation.x = pA; f.userData = { bz: bz, by: f.position.y }; sG.add(f); rEs.push(f); }
+    } else if (cRoof === 'veranda') {
+        document.getElementById('hud-wind-val').innerText = '130 km/h'; document.getElementById('hw').style.width = '90%'; document.getElementById('hud-snow-val').innerText = '250 kg/m²'; document.getElementById('hs').style.width = '100%';
+        let rG = new THREE.Mesh(new THREE.BoxGeometry(W - 0.05, 0.02, sL), glM); rG.position.set(0, cY + 0.1, 0); rG.rotation.x = pA; sG.add(rG);
+        let rC = Math.ceil(W / 0.85), rS = W / rC;
+        for(let i=1; i<rC; i++) { cB(0.06, 0.12, sL + 0.1, -W/2 + (i * rS), cY - 0.04, 0, pA); }
+        if(document.getElementById('toggleRoofZip')?.checked) { let rZGeo = new THREE.BoxGeometry(W - 0.2, 0.01, sL); rZGeo.translate(0, 0, sL / 2); let rZ = new THREE.Mesh(rZGeo, zM); rZ.position.set(0, BH + 0.04, -D/2 + 0.045); rZ.rotation.x = pA; rZ.castShadow = true; sG.add(rZ); rZEs.push(rZ); }
     }
 
-    function openProductDetail(k) {
-        const d = allProducts[k]; if(!d) return;
-        const imgEl = document.getElementById('det-img');
-        imgEl.src = d.i;
-        imgEl.onerror = function() { this.onerror=null; if(d.fall) this.src = d.fall; };
+    const sides = [
+        { n: 'Front', w: W - 0.24, h: FH - 0.16, px: 0, pz: D/2 - 0.06, ry: 0 },
+        { n: 'Back', w: W - 0.24, h: BH - 0.16, px: 0, pz: -D/2 + 0.06, ry: Math.PI },
+        { n: 'Left', w: D - 0.24, h: (FH+BH)/2 - 0.16, px: -W/2 + 0.06, pz: 0, ry: -Math.PI/2 },
+        { n: 'Right', w: D - 0.24, h: (FH+BH)/2 - 0.16, px: W/2 - 0.06, pz: 0, ry: Math.PI/2 }
+    ];
+
+    sides.forEach(s => {
+        let sdGrp = new THREE.Group();
+        sdGrp.position.set(s.px, 0, s.pz);
+        sdGrp.rotation.y = s.ry;
+        sG.add(sdGrp);
+
+        let t = document.getElementById('g' + s.n)?.value || 'none';
+        let dT = document.getElementById('door' + s.n)?.value || 'none';
         
-        document.getElementById('det-title').innerText = d.t; 
-        document.getElementById('det-desc').innerText = d.d + " Manufactured with Eva Global's premium 6063-T5 aluminum standards.";
+        let dW = 0, sysO = 0; 
+        if (dT === 'left') { dW = 1.0; sysO = dW/2; } 
+        else if (dT === 'right') { dW = 1.0; sysO = -dW/2; }
         
-        const tb = document.getElementById('det-specs'); tb.innerHTML='';
-        for(const [key, val] of Object.entries(d.s)) { tb.innerHTML += `<tr><th>${key}</th><td>${val}</td></tr>`; }
-        currentConfigTarget = d.tg; showPage('product-detail');
-    }
+        let sW = s.w - dW; 
 
-    function goToConfigurator() { showPage('configurator'); setRoofType(currentConfigTarget, document.getElementById('btn-'+currentConfigTarget) || document.getElementById('btn-bioclimatic')); }
-    function waQuote() { window.open(`https://wa.me/905375504477?text=Eva Global Inquiry: ${currentRoof} - ${document.getElementById('width').value}x${document.getElementById('depth').value}m`, '_blank'); }
-    function waPartner() { window.open(`https://wa.me/905375504477?text=Hello, I am interested in becoming a partner/dealer for Eva Global architectural systems. I would like to get more information.`, '_blank'); }
+        if (dT !== 'none') {
+            let dFr = new THREE.Group();
+            let fT = 0.05, fD = 0.08;
+            let lJ = new THREE.Mesh(new THREE.BoxGeometry(fT, s.h, fD), fM); lJ.position.set(-dW/2 + fT/2, s.h/2, 0); dFr.add(lJ);
+            let rJ = new THREE.Mesh(new THREE.BoxGeometry(fT, s.h, fD), fM); rJ.position.set(dW/2 - fT/2, s.h/2, 0); dFr.add(rJ);
+            let tJ = new THREE.Mesh(new THREE.BoxGeometry(dW - fT*2, fT, fD), fM); tJ.position.set(0, s.h - fT/2, 0); dFr.add(tJ);
+            
+            let dLx = (dT === 'left') ? -s.w/2 + dW/2 : s.w/2 - dW/2;
+            dFr.position.set(dLx, 0, 0);
+            sdGrp.add(dFr);
 
-    let currentRoof = 'bioclimatic', rEls = [], gPanels = [], zPanels = [], rZipEls = [], animVal = 0, animDir = 1, lastTime = 0;
-    const cont = document.getElementById('canvas-container');
-    const scene = new THREE.Scene(); scene.background = new THREE.Color(0x1e293b);
-    const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 100); camera.position.set(10, 5, 13);
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap; renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.outputEncoding = THREE.sRGBEncoding;
-    if(cont) cont.appendChild(renderer.domElement);
+            let dGp = new THREE.Group();
+            let shW = dW - fT*2, shH = s.h - fT;
+            let dP = createGlass(shW, shH, false);
+            
+            let hnd = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.015, 0.4), new THREE.MeshStandardMaterial({color: 0xe2e8f0, metalness: 0.9}));
+            hnd.position.set((dT === 'left') ? shW/2 - 0.08 : -shW/2 + 0.08, 0, 0.04);
+            dP.add(hnd); dGp.add(dP);
 
-    if(cont) {
-        new ResizeObserver(() => {
-            if(cont.clientWidth > 0 && cont.clientHeight > 0) {
-                camera.aspect = cont.clientWidth / cont.clientHeight; camera.updateProjectionMatrix(); renderer.setSize(cont.clientWidth, cont.clientHeight);
-            }
-        }).observe(cont);
-    }
-    
-    const controls = new THREE.OrbitControls(camera, renderer.domElement); controls.enableDamping = true; controls.maxPolarAngle = 1.5; controls.target.set(0, 1.2, 0);
-
-    const hemiLight = new THREE.HemisphereLight(0xffffff, 0x1e293b, 0.5); scene.add(hemiLight);
-    const sun = new THREE.DirectionalLight(0xffffff, 1.2); sun.position.set(15, 25, 15); sun.castShadow = true; scene.add(sun);
-    const ledGlowLight = new THREE.PointLight(0xffa114, 0, 15); ledGlowLight.position.set(0, 2, 0); scene.add(ledGlowLight);
-    const sysGrp = new THREE.Group(); scene.add(sysGrp);
-
-    const grassMat = new THREE.MeshStandardMaterial({ color: 0x3b5323, roughness: 1.0 });
-    const grassFloor = new THREE.Mesh(new THREE.PlaneGeometry(300, 300), grassMat); grassFloor.rotation.x = -Math.PI / 2; grassFloor.position.y = -0.15; grassFloor.receiveShadow = true; scene.add(grassFloor);
-
-    const POST_SIZE = 0.12; const BEAM_HEIGHT = 0.16; const BEAM_WIDTH = 0.09;
-    const fMat = new THREE.MeshStandardMaterial({ color: 0x1c1917, roughness: 0.5 });
-    const lMat = new THREE.MeshStandardMaterial({ color: 0x1c1917, roughness: 0.4 });
-    const glMat = new THREE.MeshPhysicalMaterial({ color: 0x60a5fa, transparent: true, opacity: 0.4, side: THREE.DoubleSide });
-    const wMat = new THREE.MeshStandardMaterial({ color: 0xd1d5db, roughness: 0.9 });
-    const zMat = new THREE.MeshStandardMaterial({ color: 0x475569, transparent: true, opacity: 0.85, side: THREE.DoubleSide });
-
-    function cGlass(pw, ph, isG = false) {
-        const grp = new THREE.Group(); const fT = isG ? 0.015 : 0.04; const fD = 0.03;
-        grp.add(new THREE.Mesh(new THREE.BoxGeometry(pw, ph, 0.01), glMat));
-        const tf = new THREE.Mesh(new THREE.BoxGeometry(pw, (isG?0.04:fT), fD), fMat); tf.position.y = ph/2 - (isG?0.02:fT/2); tf.castShadow = true; grp.add(tf);
-        const bf = new THREE.Mesh(new THREE.BoxGeometry(pw, (isG?0.04:fT), fD), fMat); bf.position.y = -ph/2 + (isG?0.02:fT/2); bf.castShadow = true; grp.add(bf);
-        const lf = new THREE.Mesh(new THREE.BoxGeometry(fT, ph - (isG?0.08:fT*2), fD), fMat); lf.position.x = -pw/2 + fT/2; lf.castShadow = true; grp.add(lf);
-        const rf = new THREE.Mesh(new THREE.BoxGeometry(fT, ph - (isG?0.08:fT*2), fD), fMat); rf.position.x = pw/2 - fT/2; rf.castShadow = true; grp.add(rf);
-        return grp;
-    }
-
-    function buildSystem() {
-      if(!document.getElementById('width')) return; 
-      while(sysGrp.children.length > 0) { const obj = sysGrp.children[0]; obj.traverse((c) => { if (c.isMesh) c.geometry.dispose(); }); sysGrp.remove(obj); }
-      rEls = []; gPanels = []; zPanels = []; rZipEls = [];
-
-      const W = parseFloat(document.getElementById('width').value) || 5.0;
-      const D = parseFloat(document.getElementById('depth').value) || 3.5;
-      const FH = parseFloat(document.getElementById('frontHeight').value) || 2.5;
-      const BH = (currentRoof === 'bioclimatic' || currentRoof === 'rolling_roof' || currentRoof === 'carport') ? FH : FH + 0.35; 
-      
-      const hasLED = document.getElementById('toggleLED')?.checked;
-      const ledM = new THREE.MeshStandardMaterial({ color: 0xffedd5, emissive: 0xffa114, emissiveIntensity: 2.5 });
-
-      if(hasLED) { scene.background.setHex(0x020617); hemiLight.intensity = 0.1; sun.intensity = 0.2; ledGlowLight.intensity = 2.0; ledGlowLight.position.set(0, (FH+BH)/2 - 0.5, 0); grassMat.color.setHex(0x1a2e19); } 
-      else { scene.background.setHex(0x1e293b); hemiLight.intensity = 0.6; sun.intensity = 1.2; ledGlowLight.intensity = 0; grassMat.color.setHex(0x3b5323); }
-
-      const dk = new THREE.Group(); const pW = W + 2; const pD = D + 2; const plW = 0.142; const stW = plW + 0.008; const pC = Math.floor(pW / stW); const aW = pC * stW; const sX = -aW / 2 + plW / 2;
-      const dM = new THREE.MeshStandardMaterial({ color: hasLED ? 0x3d2817 : 0x734a29, roughness: 0.8 }); 
-      const bM = new THREE.Mesh(new THREE.BoxGeometry(aW, 0.04, pD), new THREE.MeshStandardMaterial({ color: 0x0a0a0a })); bM.position.set(0, -0.04, 0); dk.add(bM);
-      for (let i = 0; i < pC; i++) { const p = new THREE.Mesh(new THREE.BoxGeometry(plW, 0.02, pD), dM); p.position.set(sX + i * stW, -0.01, 0); p.receiveShadow = p.castShadow = true; dk.add(p); }
-      const faM = new THREE.MeshStandardMaterial({ color: 0x18181b });
-      const fF = new THREE.Mesh(new THREE.BoxGeometry(aW + 0.04, 0.06, 0.02), faM); fF.position.set(0, -0.03, pD/2 + 0.01); dk.add(fF);
-      const fB = new THREE.Mesh(new THREE.BoxGeometry(aW + 0.04, 0.06, 0.02), faM); fB.position.set(0, -0.03, -pD/2 - 0.01); dk.add(fB);
-      const fL = new THREE.Mesh(new THREE.BoxGeometry(0.02, 0.06, pD), faM); fL.position.set(-aW/2 - 0.01, -0.03, 0); dk.add(fL);
-      const fR = new THREE.Mesh(new THREE.BoxGeometry(0.02, 0.06, pD), faM); fR.position.set(aW/2 + 0.01, -0.03, 0); dk.add(fR);
-      sysGrp.add(dk);
-
-      function cB(w, h, d, x, y, z, rx=0, m=fMat) { const me = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), m); me.position.set(x, y, z); me.rotation.x = rx; me.castShadow = me.receiveShadow = true; sysGrp.add(me); }
-
-      cB(POST_SIZE, FH, POST_SIZE, -W/2 + POST_SIZE/2, FH/2, D/2 - POST_SIZE/2); cB(POST_SIZE, FH, POST_SIZE, W/2 - POST_SIZE/2, FH/2, D/2 - POST_SIZE/2);
-      cB(POST_SIZE, BH, POST_SIZE, -W/2 + POST_SIZE/2, BH/2, -D/2 + POST_SIZE/2); cB(POST_SIZE, BH, POST_SIZE, W/2 - POST_SIZE/2, BH/2, -D/2 + POST_SIZE/2);
-      cB(W, BEAM_HEIGHT, BEAM_WIDTH, 0, FH - BEAM_HEIGHT/2, D/2 - BEAM_WIDTH/2); cB(W, BEAM_HEIGHT, BEAM_WIDTH, 0, BH - BEAM_HEIGHT/2, -D/2 + BEAM_WIDTH/2);
-
-      if(hasLED && currentRoof !== 'carport') { cB(W - 0.24, 0.02, 0.02, 0, FH - 0.10, D/2 - 0.08, 0, ledM); cB(W - 0.24, 0.02, 0.02, 0, BH - 0.10, -D/2 + 0.08, 0, ledM); }
-
-      const sL = Math.sqrt(D*D + Math.pow(BH - FH, 2)); const pA = Math.atan2(BH-FH, D); const cY = (FH + BH)/2 - BEAM_HEIGHT/2;
-      cB(BEAM_WIDTH, BEAM_HEIGHT, sL, -W/2 + BEAM_WIDTH/2, cY, 0, pA); cB(BEAM_WIDTH, BEAM_HEIGHT, sL, W/2 - BEAM_WIDTH/2, cY, 0, pA);
-
-      if (currentRoof === 'carport') {
-          const cR = new THREE.Mesh(new THREE.BoxGeometry(W - 0.18, 0.05, D - 0.18), new THREE.MeshStandardMaterial({color: 0x334155})); cR.position.set(0, FH - 0.05, 0); cR.castShadow = true; sysGrp.add(cR);
-          document.getElementById('hud-wind-val').innerText = '140 km/h'; document.getElementById('hud-snow-val').innerText = '250 kg/m²';
-      } else if (currentRoof === 'bioclimatic' || currentRoof === 'rolling_roof') {
-          document.getElementById('hud-wind-val').innerText = '120 km/h'; document.getElementById('hud-snow-val').innerText = '200 kg/m²';
-          const c = Math.ceil(D / 0.22); const st = D / c; 
-          for (let i = 0; i < c; i++) { const l = new THREE.Mesh(new THREE.BoxGeometry(W - 0.18, 0.03, st + 0.005), lMat); l.position.set(0, cY - 0.015, -D/2 + st * (i + 0.5)); l.userData = { bz: l.position.z }; l.castShadow = true; sysGrp.add(l); rEls.push(l); }
-      } else if (currentRoof === 'pergola') {
-          document.getElementById('hud-wind-val').innerText = '80 km/h'; document.getElementById('hud-snow-val').innerText = 'N/A';
-          const st = D / 12;
-          for(let i = 0; i < 12; i++) { const f = new THREE.Mesh(new THREE.BoxGeometry(W - 0.15, 0.02, st * 0.95), new THREE.MeshStandardMaterial({ color: 0xf1f5f9 })); const bz = -D/2 + st * (i + 0.5); f.position.set(0, BH - (BH - FH) * ((bz + D/2) / D) - 0.06, bz); f.rotation.x = pA; f.userData = { bz: bz, by: f.position.y }; sysGrp.add(f); rEls.push(f); }
-      } else if (currentRoof === 'veranda') {
-          document.getElementById('hud-wind-val').innerText = '130 km/h'; document.getElementById('hud-snow-val').innerText = '250 kg/m²';
-          const rG = new THREE.Mesh(new THREE.BoxGeometry(W-0.05, 0.02, sL), glMat); rG.position.set(0, cY + 0.1, 0); rG.rotation.x = pA; sysGrp.add(rG);
-          const rC = Math.ceil(W / 0.85); const rS = W / rC;
-          for(let i=1; i<rC; i++) { cB(0.06, 0.12, sL + 0.1, -W/2 + (i * rS), cY - 0.04, 0, pA); }
-          if(document.getElementById('toggleRoofZip')?.checked) { const rZGeo = new THREE.BoxGeometry(W - 0.2, 0.01, sL); rZGeo.translate(0, 0, sL / 2); const rZ = new THREE.Mesh(rZGeo, zMat); rZ.position.set(0, BH + 0.04, -D/2 + 0.045); rZ.rotation.x = pA; rZ.castShadow = true; sysGrp.add(rZ); rZipEls.push(rZ); }
-      }
-
-      const sides = [{ i: 'Front', w: W - 0.24, h: FH - 0.16, px: 0, pz: D/2 - 0.06, ry: 0, xd: 0, zd: 1 }, { i: 'Back', w: W - 0.24, h: BH - 0.16, px: 0, pz: -D/2 + 0.06, ry: 0, xd: 0, zd: -1 }, { i: 'Left', w: D - 0.24, h: (FH+BH)/2 - 0.16, px: -W/2 + 0.06, pz: 0, ry: Math.PI/2, xd: -1, zd: 0 }, { i: 'Right', w: D - 0.24, h: (FH+BH)/2 - 0.16, px: W/2 - 0.06, pz: 0, ry: Math.PI/2, xd: 1, zd: 0 }];
-
-      sides.forEach(s => {
-          const t = document.getElementById('g' + s.i)?.value || 'none';
-          if(t === 'wall' && s.w > 0) { const w = new THREE.Mesh(new THREE.BoxGeometry(s.w, s.h, 0.08), wMat); w.position.set(s.px, s.h/2, s.pz); w.rotation.y = s.ry; sysGrp.add(w); } 
-          else if (t !== 'none' && s.w > 0) {
-              let pC = (t === 'glass_balcony') ? 6 : 3; const isG = (t === 'glass_balcony'); const pW = s.w / pC;
-              for(let i=0; i<pC; i++) {
-                  const pG = new THREE.Group(); pG.add(cGlass(t === 'guillotine' ? s.w : pW, t === 'guillotine' ? s.h/3 : s.h, isG));
-                  let cX=0, cZ=0, oX=0, oZ=0, cR=s.ry, oR=s.ry;
-                  if (t === 'glass_balcony') { cX = -s.w/2 + pW/2 + (i * pW); oX = -s.w/2 + 0.05 + (i * 0.04); oZ = -pW/2; oR = s.ry - Math.PI/2; } 
-                  else if (t === 'guillotine') { cZ = (1 - i) * 0.03; } 
-                  else { cX = -s.w/2 + pW/2 + i * pW; oX = -s.w/2 + pW/2 + (i * 0.05); }
-                  
-                  let clX = s.px + (s.ry === 0 ? cX : cZ * s.xd); let clZ = s.pz + (s.ry === 0 ? cZ * s.zd : cX);
-                  let opX = s.px + (s.ry === 0 ? oX : oZ * s.xd); let opZ = s.pz + (s.ry === 0 ? oZ * s.zd : oX);
-
-                  pG.userData = { t: t, i: i, tc: pC, cx: clX, cz: clZ, ox: opX, oz: opZ, cr: cR, or: oR };
-                  if(t === 'guillotine') { pG.userData.cy = s.h/6 + i * (s.h/3); pG.userData.oy = s.h/6 + (i * 0.03); pG.position.set(clX, pG.userData.cy, clZ); } 
-                  else { pG.position.set(clX, s.h/2, clZ); }
-                  pG.rotation.y = cR; sysGrp.add(pG); gPanels.push(pG);
-              }
-          }
-          if (document.getElementById('zip' + s.i)?.checked) {
-              const cX = s.px + (s.xd * 0.09); const cZ = s.pz + (s.zd * 0.09);
-              cB(s.w + 0.06, 0.1, 0.1, cX, s.h + 0.05, cZ, 0, fMat).rotation.y = s.ry;
-              const f = new THREE.Mesh(new THREE.BoxGeometry(s.w, s.h, 0.005), zMat); f.rotation.y = s.ry; f.userData = { fh: s.h, ty: s.h }; f.position.set(cX, s.h / 2, cZ); sysGrp.add(f); zPanels.push(f);
-          }
-      });
-
-      const rZBox = document.getElementById('roofZipWrapperBox'); if(rZBox) rZBox.style.display = (currentRoof === 'veranda') ? 'block' : 'none';
-    }
-
-    function setRoofType(t, btn) { currentRoof = t; document.querySelectorAll('.roof-btn').forEach(b => b.classList.remove('active')); if(btn) btn.classList.add('active'); animVal = 0; buildSystem(); }
-
-    function renderLoop(time) {
-        if (!time) time = performance.now(); requestAnimationFrame(renderLoop);
-        let dt = time - lastTime; lastTime = time; if(dt > 100) dt = 16; 
-        
-        let aPlay = document.getElementById('toggleAutoPlay')?.checked;
-        if(aPlay) {
-            animVal += animDir * (dt * 0.025);
-            if(animVal > 150) { animVal = 150; animDir = -1; } else if (animVal < -40) { animVal = -40; animDir = 1; }
-            let dV = Math.max(0, Math.min(100, animVal));
-            if(document.getElementById('glassOpenness')) document.getElementById('glassOpenness').value = dV;
-            if(document.getElementById('roofActionVal')) document.getElementById('roofActionVal').value = dV;
-            if(document.getElementById('zipOpenness')) document.getElementById('zipOpenness').value = 100 - dV;
-            if(document.getElementById('roofZipOpenness')) document.getElementById('roofZipOpenness').value = dV;
+            let pivX = dLx + ((dT === 'left') ? -dW/2 + fT : dW/2 - fT);
+            dGp.position.set(pivX, 0, 0);
+            dP.position.set((dT === 'left') ? shW/2 : -shW/2, shH/2 + 0.01, 0);
+            
+            dGp.userData = { t: 'swing_door', cr: 0, or: (dT === 'left' ? -Math.PI/2 : Math.PI/2) };
+            sdGrp.add(dGp); gPs.push(dGp);
         }
 
-        let rRatio = (document.getElementById('roofActionVal')?.value || 0) / 100;
-        let gRatio = (document.getElementById('glassOpenness')?.value || 0) / 100;
-        let zRatio = (100 - (document.getElementById('zipOpenness')?.value || 100)) / 100;
-        let rZRatio = (document.getElementById('roofZipOpenness')?.value || 0) / 100;
+        if (['sliding', 'rts116', 'glass_balcony', 'fd60'].includes(t) && sW > 0) {
+            let trD = (t === 'sliding' || t === 'rts116') ? 0.12 : 0.08;
+            let bTr = new THREE.Mesh(new THREE.BoxGeometry(sW, 0.05, trD), fM);
+            bTr.position.set(sysO, 0.025, 0); sdGrp.add(bTr);
+            
+            let mTr = new THREE.Mesh(new THREE.BoxGeometry(sW, 0.01, trD - 0.02), new THREE.MeshStandardMaterial({color: 0x94a3b8, metalness: 0.8, roughness: 0.2}));
+            mTr.position.set(sysO, 0.055, 0); sdGrp.add(mTr);
+        }
 
-        if (currentRoof === 'bioclimatic') { rEls.forEach(l => l.rotation.x = rRatio * 1.1 * Math.PI); } 
-        else if (currentRoof === 'rolling_roof') { const D = parseFloat(document.getElementById('depth').value) || 3.5; rEls.forEach((l, i) => { l.rotation.x = rRatio * (Math.PI / 3); l.position.z = l.userData.bz + ((-D/2 + 0.06 + i * 0.06) - l.userData.bz) * rRatio; }); }
-        else if (currentRoof === 'pergola') { const D = parseFloat(document.getElementById('depth').value) || 3.5; const FH = parseFloat(document.getElementById('frontHeight').value) || 2.5; const BH = FH + 0.35; rEls.forEach((s, i) => { const sz = -D/2 + 0.06 + i * 0.05; const sy = BH - (BH - FH) * ((sz + D/2) / D) - 0.06; s.position.z = s.userData.bz + (sz - s.userData.bz) * rRatio; s.position.y = s.userData.by + (sy - s.userData.by) * rRatio; s.scale.z = Math.max(0.2, 1.0 - (rRatio * 0.8)); }); }
-        
-        rZipEls.forEach(f => { f.scale.z = Math.max(0.01, rZRatio); });
-        zPanels.forEach(f => { const cS = Math.max(0.01, zRatio); f.scale.y = cS; f.position.y = f.userData.ty - (f.userData.fh * cS) / 2; });
+        if (t === 'wall' && sW > 0) {
+            let wMesh = new THREE.Mesh(new THREE.BoxGeometry(sW, s.h, 0.08), wM);
+            wMesh.position.set(sysO, s.h/2, 0); sdGrp.add(wMesh);
+        } else if (t !== 'none' && sW > 0) {
+            let pC = (t === 'glass_balcony') ? 6 : (t === 'fd60' ? 4 : 3);
+            let pW = sW / pC;
+            
+            for (let i = 0; i < pC; i++) {
+                let pG = new THREE.Group();
+                pG.add(createGlass(t === 'guillotine' ? sW : pW, t === 'guillotine' ? s.h/3 : s.h, (t === 'glass_balcony')));
+                
+                let cx=0, cz=0, ox=0, oz=0, cr=0, or=0, cy=s.h/2 + 0.025, oy=cy;
 
-        gPanels.forEach(p => { 
-            if (p.userData.t === 'glass_balcony') {
-                let pR = Math.max(0, Math.min(1, (gRatio - (p.userData.i / p.userData.tc)) / (1 / p.userData.tc)));
-                let sR = Math.min(1, pR / 0.7); let fR = Math.max(0, (pR - 0.7) / 0.3); let iS = Math.abs(p.userData.cr) > 0.1; 
-                if (!iS) { p.position.x = p.userData.cx + (p.userData.ox - p.userData.cx) * sR; p.position.z = p.userData.cz + (p.userData.oz - p.userData.cz) * fR; } else { p.position.z = p.userData.cz + (p.userData.oz - p.userData.cz) * sR; p.position.x = p.userData.cx + (p.userData.ox - p.userData.cx) * fR; }
-                p.rotation.y = p.userData.cr + (p.userData.or - p.userData.cr) * fR;
-            } else if (p.userData.t === 'guillotine' && p.userData.i !== 0) { p.position.y = p.userData.cy + (p.userData.oy - p.userData.cy) * gRatio; 
-            } else if (p.userData.i !== 0) { p.position.x = p.userData.cx + (p.userData.ox - p.userData.cx) * gRatio; p.position.z = p.userData.cz + (p.userData.oz - p.userData.cz) * gRatio; }
-        });
+                if (t === 'glass_balcony') {
+                    cx = -sW/2 + pW/2 + (i * pW) + sysO;
+                    ox = -sW/2 + 0.05 + (i * 0.04) + sysO;
+                    oz = -pW/2;
+                    or = -Math.PI/2;
+                } else if (t === 'fd60') {
+                    cx = -sW/2 + pW/2 + (i * pW) + sysO;
+                    ox = -sW/2 + (pW * 0.05) + (i * pW * 0.1) + sysO;
+                    oz = (i%2 === 0) ? 0.25 : -0.25;
+                    or = (i%2 === 0) ? 1.2 : -1.2;
+                } else if (t === 'guillotine') {
+                    cx = sysO;
+                    cz = (1 - i) * 0.03;
+                    cy = s.h/6 + i * (s.h/3);
+                    oy = s.h/6 + (i * 0.03);
+                } else { 
+                    cx = -sW/2 + pW/2 + (i * pW) + sysO;
+                    cz = (1 - i) * 0.03;
+                    ox = -sW/2 + pW/2 + (i * 0.05) + sysO;
+                    oz = cz;
+                }
 
-        controls.update(); renderer.render(scene, camera); 
+                pG.userData = { t, i, tc: pC, cx, cz, ox, oz, cr, or, cy, oy };
+                pG.position.set(cx, cy, cz);
+                sdGrp.add(pG); gPs.push(pG);
+            }
+        }
+
+        if (document.getElementById('zip' + s.n)?.checked) {
+            let cz = 0.09;
+            let cas = new THREE.Mesh(new THREE.BoxGeometry(s.w + 0.06, 0.1, 0.1), fM);
+            cas.position.set(0, s.h + 0.05, cz); sdGrp.add(cas);
+
+            let zMesh = new THREE.Mesh(new THREE.BoxGeometry(s.w, s.h, 0.005), zM);
+            zMesh.position.set(0, s.h/2, cz);
+            zMesh.userData = { ty: s.h, fh: s.h };
+            sdGrp.add(zMesh); zPs.push(zMesh);
+        }
+    });
+
+    let rZB = document.getElementById('roofZipWrapperBox'); if(rZB) rZB.style.display = (cRoof === 'veranda') ? 'block' : 'none';
+}
+
+function setRoofType(t, btn) { cRoof = t; document.querySelectorAll('.roof-btn').forEach(b => b.classList.remove('active')); if(btn) btn.classList.add('active'); aV = 0; buildSystem(); }
+
+function renderLoop(time) {
+    if(!time) time = performance.now(); requestAnimationFrame(renderLoop);
+    let dt = time - lT; lT = time; if(dt > 100) dt = 16;
+    
+    if(document.getElementById('toggleAutoPlay')?.checked) {
+        aV += aD * (dt * 0.025);
+        if(aV > 150) { aV = 150; aD = -1; } else if(aV < -40) { aV = -40; aD = 1; }
+        let dV = Math.max(0, Math.min(100, aV));
+        if(document.getElementById('glassOpenness')) document.getElementById('glassOpenness').value = dV;
+        if(document.getElementById('roofActionVal')) document.getElementById('roofActionVal').value = dV;
+        if(document.getElementById('zipOpenness')) document.getElementById('zipOpenness').value = 100 - dV;
+        if(document.getElementById('roofZipOpenness')) document.getElementById('roofZipOpenness').value = dV;
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
-        showPage('home'); 
-        ['width', 'depth', 'frontHeight'].forEach(id => { let el = document.getElementById(id); if(el) el.addEventListener('change', buildSystem); });
-        document.querySelectorAll('.sys').forEach(el => { el.addEventListener('change', () => { animVal = 0; animDir = 1; buildSystem(); }); });
-        
-        let tLed = document.getElementById('toggleLED'); if(tLed) tLed.addEventListener('change', buildSystem);
-        let tRz = document.getElementById('toggleRoofZip'); if(tRz) tRz.addEventListener('change', buildSystem);
-        
-        ['roofActionVal', 'roofZipOpenness', 'glassOpenness', 'zipOpenness'].forEach(id => {
-            let el = document.getElementById(id); if(el) el.addEventListener('input', () => { document.getElementById('toggleAutoPlay').checked = false; });
-        });
+    let rR = (document.getElementById('roofActionVal')?.value || 0) / 100;
+    let gR = (document.getElementById('glassOpenness')?.value || 0) / 100;
+    let zR = (100 - (document.getElementById('zipOpenness')?.value || 100)) / 100;
+    let rZR = (document.getElementById('roofZipOpenness')?.value || 0) / 100;
 
-        let pColor = document.getElementById('profileColor');
-        if(pColor) { pColor.addEventListener('input', (e) => { const hex = parseInt(e.target.value.replace('#', '0x')); fMat.color.setHex(hex); lMat.color.setHex(hex); const bc = new THREE.Color(e.target.value); bc.lerp(new THREE.Color(0xffffff), 0.3); zMat.color.copy(bc); }); const initialHex = parseInt(pColor.value.replace('#', '0x')); fMat.color.setHex(initialHex); lMat.color.setHex(initialHex); const bc = new THREE.Color(pColor.value); bc.lerp(new THREE.Color(0xffffff), 0.3); zMat.color.copy(bc); }
-        
-        buildSystem(); requestAnimationFrame(renderLoop); 
+    if(cRoof === 'bioclimatic') { rEs.forEach(l => l.rotation.x = rR * 1.1 * Math.PI); }
+    else if(cRoof === 'rolling_roof') { let D = +document.getElementById('depth').value || 3.5; rEs.forEach((l, i) => { l.rotation.x = rR * (Math.PI / 3); l.position.z = l.userData.bz + ((-D/2 + 0.06 + i * 0.06) - l.userData.bz) * rR; }); }
+    else if(cRoof === 'pergola') { let D = +document.getElementById('depth').value || 3.5, FH = +document.getElementById('frontHeight').value || 2.5, BH = FH + 0.35; rEs.forEach((s, i) => { let sz = -D/2 + 0.06 + i * 0.05, sy = BH - (BH - FH) * ((sz + D/2) / D) - 0.06; s.position.z = s.userData.bz + (sz - s.userData.bz) * rR; s.position.y = s.userData.by + (sy - s.userData.by) * rR; s.scale.z = Math.max(0.2, 1.0 - (rR * 0.8)); }); }
+    
+    rZEs.forEach(f => { f.scale.z = Math.max(0.01, rZR); });
+    zPs.forEach(z => { let sY = Math.max(0.01, zR); z.scale.y = sY; z.position.y = z.userData.ty - (z.userData.fh * sY) / 2; });
+
+    gPs.forEach(p => {
+        let u = p.userData;
+        if (u.t === 'swing_door') { p.rotation.y = u.cr + (u.or - u.cr) * gR; }
+        else if (u.t === 'glass_balcony' || u.t === 'fd60') {
+            let pR = Math.max(0, Math.min(1, (gR - (u.i / u.tc)) * u.tc));
+            let sR = Math.min(1, pR / 0.7), fR = Math.max(0, (pR - 0.7) / 0.3);
+            p.position.x = u.cx + (u.ox - u.cx) * sR;
+            p.position.z = u.cz + (u.oz - u.cz) * fR;
+            p.rotation.y = u.cr + (u.or - u.cr) * fR;
+        }
+        else if (u.t === 'guillotine' && u.i !== 0) { p.position.y = u.cy + (u.oy - u.cy) * gR; }
+        else if (u.t !== 'guillotine' && u.i !== 0) { p.position.x = u.cx + (u.ox - u.cx) * gR; p.position.z = u.cz + (u.oz - u.cz) * gR; }
     });
-  </script>
+
+    crl.update(); ren.render(scn, cam);
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    renderGrids(); showPage('home');
+    document.querySelectorAll('.sys, .door, input[type=number]').forEach(e => e.addEventListener('change', () => { aV = 0; buildSystem(); }));
+    let tL = document.getElementById('toggleLED'); if(tL) tL.addEventListener('change', buildSystem);
+    let tZ = document.getElementById('toggleRoofZip'); if(tZ) tZ.addEventListener('change', buildSystem);
+    
+    ['roofActionVal', 'roofZipOpenness', 'glassOpenness', 'zipOpenness'].forEach(id => {
+        let el = document.getElementById(id);
+        if(el) el.addEventListener('input', () => { document.getElementById('toggleAutoPlay').checked = false; });
+    });
+    
+    let pC = document.getElementById('profileColor');
+    if(pC) {
+        pC.addEventListener('input', (e) => {
+            let hx = parseInt(e.target.value.replace('#', '0x'));
+            fM.color.setHex(hx); lMt.color.setHex(hx);
+            let bc = new THREE.Color(e.target.value); bc.lerp(new THREE.Color(0xffffff), 0.3); zM.color.copy(bc);
+        });
+        let iH = parseInt(pC.value.replace('#', '0x')); fM.color.setHex(iH); lMt.color.setHex(iH);
+        let bc = new THREE.Color(pC.value); bc.lerp(new THREE.Color(0xffffff), 0.3); zM.color.copy(bc);
+    }
+    
+    buildSystem(); requestAnimationFrame(renderLoop);
+});
+</script>
 </body>
 </html>
