@@ -1,189 +1,1016 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Eva Global | Premium Architectural Systems</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');*{box-sizing:border-box;margin:0;padding:0;font-family:'Inter',sans-serif}body{background:#0b0f19;color:#f1f5f9;overflow-x:hidden;scroll-behavior:smooth}header{background:rgba(11,15,25,0.85);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.05);height:85px;display:flex;justify-content:space-between;align-items:center;padding:0 5%;position:fixed;top:0;left:0;right:0;z-index:100;transition:.3s}.header-logo{display:flex;align-items:center}.header-logo img{height:55px;object-fit:contain;border-radius:8px;filter:drop-shadow(0 0 5px rgba(255,255,255,0.2))}.header-nav{display:flex;gap:30px}.header-nav a{color:#cbd5e1;text-decoration:none;font-weight:600;font-size:.9rem;cursor:pointer;transition:.3s;letter-spacing:1px;text-transform:uppercase}.header-nav a:hover,.header-nav a.active{color:#38bdf8;text-shadow:0 0 15px rgba(56,189,248,0.4)}.header-contact{background:#38bdf8;color:#0b0f19;padding:12px 28px;border-radius:30px;font-weight:800;text-decoration:none;transition:.3s;text-transform:uppercase;letter-spacing:1px;cursor:pointer}.header-contact:hover{background:#0ea5e9;box-shadow:0 4px 15px rgba(14,165,233,0.3)}.page-section{display:none;min-height:100vh;padding-top:85px;animation:fadeIn .5s ease}.page-section.active{display:block}#configurator-section.active{display:flex !important}@keyframes fadeIn{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}#home-section{padding-top:0}.hero-container{position:relative;height:100vh;display:flex;align-items:center;justify-content:flex-start;padding-left:10%;overflow:hidden;border-bottom:1px solid #1e293b}video.hero-bg{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:-2;opacity:.6;pointer-events:none}.hero-overlay{position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(to right,rgba(11,15,25,1) 20%,rgba(11,15,25,0.2));z-index:-1}.hero-content{max-width:800px;z-index:2}.hero-content h1{font-size:5rem;font-weight:800;line-height:1.05;margin-bottom:20px;color:#fff;letter-spacing:-2px}.hero-content h1 span{color:#38bdf8}.hero-content p{font-size:1.3rem;color:#cbd5e1;margin-bottom:40px;line-height:1.6;max-width:600px;font-weight:300}.hero-btn{background:#38bdf8;color:#0b0f19;padding:18px 45px;border-radius:30px;font-size:1.1rem;font-weight:800;cursor:pointer;transition:.3s;display:inline-flex;align-items:center;border:none}.hero-btn:hover{background:#0284c7;color:#fff;transform:translateY(-3px);box-shadow:0 10px 25px rgba(2,132,199,0.4)}.tech-stats-bar{position:absolute;bottom:0;left:0;right:0;background:rgba(11,15,25,0.9);backdrop-filter:blur(10px);border-top:1px solid rgba(255,255,255,0.05);display:flex;justify-content:space-around;padding:25px 5%;z-index:10}.stat-item{display:flex;align-items:center;gap:15px;color:#f8fafc}.stat-item .icon{font-size:2.2rem;color:#38bdf8}.stat-item div h4{font-size:1.2rem;font-weight:800;margin-bottom:2px}.stat-item div p{font-size:.85rem;color:#94a3b8;text-transform:uppercase;letter-spacing:1px}.banner-container{padding:120px 5%;background:#0b0f19;text-align:center}.banner-container h2{font-size:3rem;color:#fff;font-weight:800;margin-bottom:20px}.banner-container p{color:#94a3b8;font-size:1.2rem;max-width:800px;margin:0 auto 50px;line-height:1.6}.banner-wrapper{max-width:1200px;margin:0 auto;background:#fff;border-radius:20px;padding:20px;box-shadow:0 30px 60px rgba(0,0,0,0.4);border:1px solid #334155}.banner-wrapper img{width:100%;border-radius:12px;display:block;object-fit:contain}.split{display:grid;grid-template-columns:1fr 1fr;background:#0b0f19;border-bottom:1px solid #1e293b;align-items:center}.split.rev{direction:rtl} .split.rev .split-content{direction:ltr}.split-content{padding:80px 10%;display:flex;flex-direction:column;justify-content:center}.split-content h3{font-size:3rem;color:#fff;font-weight:800;margin-bottom:20px;line-height:1.1;letter-spacing:-1px}.split-content h3 span{color:#38bdf8}.split-content p{color:#94a3b8;font-size:1.15rem;line-height:1.8;margin-bottom:30px}.split img{width:100%;height:500px;object-fit:cover}.section-header{text-align:center;margin-bottom:70px;padding-top:40px}.section-header h2{font-size:3.2rem;color:#fff;font-weight:800;margin-bottom:15px;letter-spacing:-1px}.section-header p{color:#94a3b8;font-size:1.2rem;max-width:700px;margin:0 auto}.products-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(350px,1fr));gap:40px;max-width:1400px;margin:0 auto 100px;padding:0 5%}.product-card{background:#111827;border-radius:20px;overflow:hidden;transition:.4s;border:1px solid #1e293b;cursor:pointer;position:relative}.product-card:hover{transform:translateY(-10px);border-color:#38bdf8;box-shadow:0 20px 40px rgba(0,0,0,0.5)}.product-img{height:300px;width:100%;position:relative;overflow:hidden}.product-img img{width:100%;height:100%;object-fit:cover;transition:transform .7s ease}.product-card:hover .product-img img{transform:scale(1.08)}.product-img::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,#111827 5%,transparent)}.product-body{padding:35px;position:relative;z-index:2;margin-top:-40px}.product-body h3{font-size:1.8rem;margin-bottom:10px;color:#f8fafc;font-weight:800}.product-body p{color:#94a3b8;font-size:1rem;line-height:1.6;margin-bottom:25px}.badges{display:flex;gap:10px;margin-bottom:25px;flex-wrap:wrap}.badge{background:rgba(56,189,248,0.1);color:#38bdf8;padding:6px 12px;border-radius:6px;font-size:.8rem;font-weight:700;border:1px solid rgba(56,189,248,0.2)}.badge.thermal{background:rgba(239,68,68,0.1);color:#ef4444;border-color:rgba(239,68,68,0.2)}.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;max-width:1200px;margin:0 auto;padding:0 5% 100px}.contact-card{background:#111827;border:1px solid #1e293b;border-radius:20px;padding:50px;transition:.4s}.contact-card:hover{border-color:#38bdf8;box-shadow:0 20px 40px rgba(0,0,0,0.4)}.contact-card h3{font-size:2.2rem;color:#fff;margin-bottom:30px;font-weight:800}.c-item{display:flex;align-items:center;gap:20px;margin-bottom:25px}.c-icon{background:rgba(56,189,248,0.1);color:#38bdf8;width:50px;height:50px;border-radius:50%;display:flex;justify-content:center;align-items:center;font-size:1.5rem;border:1px solid rgba(56,189,248,0.2)}.c-text h4{color:#cbd5e1;font-size:.85rem;text-transform:uppercase;letter-spacing:1px;margin-bottom:5px;font-weight:700}.c-text p{color:#fff;font-size:1.1rem;font-weight:500}.partnership-card{background:linear-gradient(145deg,#0ea5e9,#0284c7);border-radius:20px;padding:50px;color:#fff;display:flex;flex-direction:column;justify-content:center;position:relative;overflow:hidden}.partnership-card::after{content:'';position:absolute;top:-50%;right:-20%;width:300px;height:300px;background:rgba(255,255,255,0.1);border-radius:50%;pointer-events:none}.partnership-card h3{font-size:2.5rem;font-weight:800;margin-bottom:20px;line-height:1.1;letter-spacing:-1px;position:relative;z-index:2}.partnership-card p{font-size:1.15rem;line-height:1.7;margin-bottom:35px;opacity:.95;position:relative;z-index:2}.partner-btn{background:#0b0f19;color:#fff;padding:18px 35px;border-radius:30px;font-weight:800;text-transform:uppercase;letter-spacing:1px;border:none;cursor:pointer;transition:.3s;width:fit-content;position:relative;z-index:2}.partner-btn:hover{background:#fff;color:#0284c7;transform:translateY(-3px);box-shadow:0 10px 20px rgba(0,0,0,0.2)}#product-detail-section{padding:50px 5% 100px;max-width:1200px;margin:0 auto;color:#fff}.detail-layout{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:center;margin-top:30px}#product-detail-section img{width:100%;border-radius:20px;height:500px;object-fit:cover;box-shadow:0 20px 40px rgba(0,0,0,0.5);border:1px solid #1e293b}#product-detail-section h1{font-size:3.5rem;margin-bottom:15px;color:#fff;font-weight:800;letter-spacing:-1px}#product-detail-section p{font-size:1.15rem;color:#94a3b8;line-height:1.8;margin-bottom:30px}.detail-table{width:100%;border-collapse:collapse;background:#111827;border-radius:12px;overflow:hidden;border:1px solid #1e293b;margin-bottom:30px}.detail-table th,.detail-table td{padding:15px 20px;text-align:left;border-bottom:1px solid #1e293b}.detail-table th{background:rgba(56,189,248,0.05);color:#38bdf8;font-weight:700;width:35%;text-transform:uppercase;font-size:.85rem}#configurator-section{display:none;height:100vh;padding-top:85px;overflow:hidden}#sidebar{width:480px;background:#111827;padding:30px;overflow-y:auto;border-right:1px solid #1e293b;display:flex;flex-direction:column;gap:20px;box-shadow:10px 0 30px rgba(0,0,0,0.5);z-index:10}#sidebar::-webkit-scrollbar{width:6px}#sidebar::-webkit-scrollbar-thumb{background:#334155;border-radius:4px}h2.sidebar-title{font-size:1.6rem;color:#fff;font-weight:800;margin-bottom:5px}.form-group{display:flex;flex-direction:column;gap:8px}label{font-size:.75rem;font-weight:800;color:#94a3b8;text-transform:uppercase;letter-spacing:1px}input[type=number],select{width:100%;background:#0b0f19;color:#fff;border:1px solid #334155;padding:12px;border-radius:8px;font-size:.95rem;font-weight:500;outline:none;transition:.2s}input:focus,select:focus{border-color:#38bdf8}.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:15px}.roof-selector{display:grid;grid-template-columns:1fr 1fr;gap:12px}.roof-btn{background:#0b0f19;border:1px solid #334155;color:#94a3b8;padding:14px;border-radius:8px;cursor:pointer;font-weight:700;transition:.2s}.roof-btn.active{background:#38bdf8;color:#0b0f19;border-color:#38bdf8;box-shadow:0 4px 15px rgba(56,189,248,0.3)}.module-box{background:#0f172a;padding:20px;border-radius:12px;border:1px solid #1e293b;display:flex;flex-direction:column;gap:15px}.module-title{font-size:.85rem;color:#38bdf8;font-weight:800;border-bottom:1px solid #1e293b;padding-bottom:10px}.facade-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}.checkbox-grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}.checkbox-label{display:flex;align-items:center;gap:12px;font-size:.95rem;color:#cbd5e1;cursor:pointer;font-weight:600}input[type=checkbox]{width:20px;height:20px;accent-color:#38bdf8}.slider-container{background:#0f172a;padding:18px;border-radius:12px;border:1px solid #1e293b;margin-top:5px}.slider-header{display:flex;justify-content:space-between;font-size:.9rem;margin-bottom:12px;color:#cbd5e1;font-weight:700}input[type=range]{width:100%;accent-color:#38bdf8;height:6px;cursor:pointer;margin-top:8px}.action-btn{background:#10b981;color:#fff;border:none;padding:18px;border-radius:12px;font-weight:800;cursor:pointer;margin-top:auto;font-size:1.05rem;text-transform:uppercase;letter-spacing:1px;transition:.3s}.action-btn:hover{background:#059669}#canvas-container{flex:1;position:relative;background:#e2e8f0;width:100%;height:100vh}#canvas-container canvas{width:100% !important;height:100% !important;outline:none}.hud{position:absolute;top:30px;left:30px;background:rgba(11,15,25,0.85);backdrop-filter:blur(12px);padding:25px;border-radius:16px;border:1px solid rgba(56,189,248,0.2);color:#fff;width:320px;pointer-events:none;z-index:5}.hud h5{font-size:1rem;text-transform:uppercase;margin-bottom:20px;border-bottom:1px solid #1e293b;padding-bottom:10px;font-weight:800}.hud-label{display:flex;justify-content:space-between;font-size:.75rem;color:#94a3b8;text-transform:uppercase;font-weight:700;margin-bottom:6px}.hud-label span.val{color:#fff}.bar-bg{width:100%;height:6px;background:#1e293b;margin-bottom:15px;border-radius:3px;overflow:hidden}.bar{height:100%;background:#38bdf8;border-radius:3px}.night-mode-tag{position:absolute;bottom:30px;left:30px;background:#1e293b;border:1px solid #334155;padding:15px 25px;border-radius:30px;box-shadow:0 10px 20px rgba(0,0,0,0.3);z-index:5}.night-mode-tag label{color:#38bdf8;cursor:pointer;display:flex;align-items:center;gap:10px;font-size:.9rem;font-weight:800;text-transform:uppercase}footer{background:#0b0f19;border-top:1px solid #1e293b;text-align:center;padding:40px 0;color:#94a3b8}footer img{height:40px;margin-bottom:15px;opacity:.8;filter:drop-shadow(0 0 5px rgba(255,255,255,0.2))}@media (max-width:900px){header{flex-direction:column;height:auto;padding:15px 5%;gap:15px}.header-logo img{height:45px}.header-nav{width:100%;overflow-x:auto;white-space:nowrap;justify-content:flex-start;padding-bottom:5px}.header-contact{display:none}.page-section{padding-top:130px}#configurator-section{padding-top:130px}#configurator-section.active{flex-direction:column-reverse !important}#canvas-container{height:45vh !important;width:100%;flex:none}#sidebar{width:100%;height:calc(100vh - 45vh - 130px);padding:15px;border-right:none;border-top:1px solid #1e293b}.hud{top:10px;left:10px;width:200px;padding:15px;transform:scale(0.85);transform-origin:top left}.night-mode-tag{bottom:10px;left:10px;padding:10px 15px;transform:scale(0.85);transform-origin:bottom left}.grid-2,.facade-grid,.contact-grid,.detail-layout,.split{grid-template-columns:1fr}.roof-selector{grid-template-columns:1fr 1fr}.hero-content h1{font-size:2.8rem}.hero-content p{font-size:1rem}.stats{flex-direction:column;gap:15px;align-items:flex-start}.split{text-align:center}.split.rev{direction:ltr}.split-content{padding:40px 5%}.split img{height:250px}#product-detail-section img{height:300px}}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Eva Global | Premium Aluminum Extrusion & Outdoor Products</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+    
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+    body { background: #0b0f19; color: #f1f5f9; overflow-x: hidden; scroll-behavior: smooth; }
+
+    /* --- HEADER --- */
+    header { background: rgba(11, 15, 25, 0.85); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(255,255,255,0.05); height: 85px; display: flex; justify-content: space-between; align-items: center; padding: 0 5%; position: fixed; top: 0; left: 0; right: 0; z-index: 100; transition: 0.3s; }
+    .header-logo { background: #fff; padding: 8px 16px; border-radius: 8px; }
+    .header-logo img { height: 40px; display: block; mix-blend-mode: multiply; }
+    .header-nav { display: flex; gap: 35px; }
+    .header-nav a { color: #cbd5e1; text-decoration: none; font-weight: 500; font-size: 0.95rem; cursor: pointer; transition: 0.3s; letter-spacing: 0.5px; text-transform: uppercase;}
+    .header-nav a:hover, .header-nav a.active { color: #38bdf8; text-shadow: 0 0 15px rgba(56, 189, 248, 0.4); }
+    .header-contact { background: #38bdf8; color: #0b0f19; padding: 12px 28px; border-radius: 30px; font-weight: 700; text-decoration: none; transition: 0.3s; text-transform: uppercase; letter-spacing: 1px;}
+    .header-contact:hover { background: #0ea5e9; box-shadow: 0 4px 15px rgba(14, 165, 233, 0.3); }
+
+    /* --- PAGE STRUCTURE --- */
+    .page-section { display: none; min-height: 100vh; padding-top: 85px; animation: fadeIn 0.5s ease; }
+    .page-section.active { display: block; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* --- HOME (VIDEO BACKGROUND) --- */
+    #home-section { position: relative; height: 100vh; display: flex; align-items: center; justify-content: flex-start; padding-left: 10%; overflow: hidden; }
+    .hero-video { position: absolute; top: 50%; left: 50%; min-width: 100%; min-height: 100%; width: auto; height: auto; z-index: -2; transform: translateX(-50%) translateY(-50%); object-fit: cover; opacity: 0.6; }
+    .hero-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to right, rgba(11, 15, 25, 1) 20%, rgba(11, 15, 25, 0.3)); z-index: -1; }
+    
+    .hero-content { max-width: 800px; z-index: 2; }
+    .hero-content h1 { font-size: 5rem; font-weight: 800; line-height: 1.05; margin-bottom: 25px; color: #ffffff; letter-spacing: -1px; }
+    .hero-content h1 span { color: #38bdf8; }
+    .hero-content p { font-size: 1.3rem; color: #cbd5e1; margin-bottom: 40px; line-height: 1.6; max-width: 600px; font-weight: 300;}
+    .hero-btn { background: #38bdf8; color: #0b0f19; padding: 18px 40px; border-radius: 30px; font-size: 1.1rem; font-weight: 700; cursor: pointer; transition: 0.3s; display: inline-flex; align-items: center; gap: 10px;}
+    .hero-btn:hover { background: #0284c7; color: white; transform: translateX(5px); box-shadow: 0 10px 25px rgba(2, 132, 199, 0.4); }
+    
+    .tech-stats-bar { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(15, 23, 42, 0.85); backdrop-filter: blur(10px); border-top: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-around; padding: 25px 5%; z-index: 10; }
+    .stat-item { display: flex; align-items: center; gap: 15px; color: #f8fafc; }
+    .stat-item .icon { font-size: 2rem; color: #38bdf8; }
+    .stat-item div h4 { font-size: 1.1rem; font-weight: 700; margin-bottom: 4px; }
+    .stat-item div p { font-size: 0.85rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px;}
+
+    /* --- PRODUCTS LIST --- */
+    #products-section { padding: 80px 5%; background: #0b0f19; }
+    .section-header { text-align: center; margin-bottom: 80px; }
+    .section-header h2 { font-size: 3rem; color: #fff; font-weight: 800; margin-bottom: 15px; }
+    .section-header p { color: #94a3b8; font-size: 1.1rem; max-width: 600px; margin: 0 auto; }
+    
+    .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 40px; max-width: 1400px; margin: 0 auto; }
+    .product-card { background: #111827; border-radius: 20px; overflow: hidden; transition: 0.4s; border: 1px solid #1e293b; cursor: pointer; position: relative; }
+    .product-card:hover { transform: translateY(-10px); border-color: #38bdf8; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+    .product-img { height: 280px; width: 100%; position: relative; overflow: hidden; }
+    .product-img img, .product-img video { width: 100%; height: 100%; object-fit: cover; transition: transform 0.7s ease; }
+    .product-card:hover .product-img img, .product-card:hover .product-img video { transform: scale(1.08); }
+    .product-img::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, #111827 5%, transparent); }
+    .product-info { padding: 30px; position: relative; z-index: 2; margin-top: -30px; }
+    .product-info h3 { font-size: 1.6rem; margin-bottom: 10px; color: #f8fafc; font-weight: 700; }
+    .product-info p { color: #94a3b8; font-size: 0.95rem; line-height: 1.6; margin-bottom: 25px; }
+    .tech-badges { display: flex; gap: 10px; margin-bottom: 25px; flex-wrap: wrap; }
+    .tech-badge { background: rgba(56, 189, 248, 0.1); color: #38bdf8; padding: 6px 12px; border-radius: 6px; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.5px; border: 1px solid rgba(56, 189, 248, 0.2); }
+    .product-link { display: inline-flex; align-items: center; gap: 8px; color: #fff; font-weight: 600; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; transition: 0.2s;}
+    .product-card:hover .product-link { color: #38bdf8; }
+
+    /* --- PRODUCT DETAIL PAGE --- */
+    #product-detail-section { background: #0b0f19; padding-top: 85px;}
+    .detail-hero { width: 100%; height: 65vh; position: relative; display: flex; align-items: center; padding: 0 10%; overflow: hidden;}
+    .detail-hero video, .detail-hero img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 1; opacity: 0.7;}
+    .detail-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to right, rgba(11,15,25,1) 30%, rgba(11,15,25,0.2)); z-index: 2; }
+    .detail-hero-content { position: relative; z-index: 3; max-width: 800px; }
+    .back-btn { display: inline-flex; align-items: center; gap: 8px; color: #94a3b8; text-decoration: none; font-weight: 600; font-size: 0.9rem; margin-bottom: 30px; transition: 0.2s; text-transform: uppercase; letter-spacing: 1px;}
+    .back-btn:hover { color: #38bdf8; }
+    .detail-hero-content h1 { font-size: 4rem; color: #ffffff; font-weight: 800; margin-bottom: 20px; line-height: 1.1;}
+    .detail-hero-content p { font-size: 1.25rem; color: #cbd5e1; max-width: 600px; line-height: 1.6; font-weight: 300;}
+
+    .detail-body { max-width: 1400px; margin: 0 auto; padding: 80px 5%; display: grid; grid-template-columns: 2.5fr 1fr; gap: 60px; }
+    
+    .tech-overview h2 { font-size: 2.2rem; color: #f8fafc; margin-bottom: 25px; font-weight: 800; }
+    .tech-overview p { color: #94a3b8; line-height: 1.8; margin-bottom: 40px; font-size: 1.1rem; }
+    
+    .tech-visual-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-bottom: 60px; }
+    .tech-visual-card { background: #111827; border-radius: 16px; overflow: hidden; border: 1px solid #1e293b; }
+    .tech-visual-card video, .tech-visual-card img { width: 100%; height: 250px; object-fit: cover; border-bottom: 1px solid #1e293b; }
+    .tech-visual-card div { padding: 25px; }
+    .tech-visual-card h4 { color: #38bdf8; font-size: 1.2rem; margin-bottom: 10px; }
+    .tech-visual-card p { color: #94a3b8; font-size: 0.9rem; line-height: 1.6; }
+
+    .tech-table-container { margin-bottom: 60px; }
+    .tech-table-container h3 { font-size: 1.5rem; color: #fff; margin-bottom: 20px; }
+    .tech-table { width: 100%; border-collapse: collapse; background: #111827; border-radius: 12px; overflow: hidden; border: 1px solid #1e293b; }
+    .tech-table th, .tech-table td { padding: 18px 25px; text-align: left; border-bottom: 1px solid #1e293b; }
+    .tech-table th { background: rgba(56, 189, 248, 0.05); color: #38bdf8; font-weight: 600; width: 40%; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px;}
+    .tech-table td { color: #cbd5e1; font-size: 0.95rem; font-weight: 500;}
+    .tech-table tr:last-child th, .tech-table tr:last-child td { border-bottom: none; }
+
+    .action-panel { position: sticky; top: 110px; }
+    .offer-card { background: linear-gradient(145deg, #111827, #0b0f19); border: 1px solid #334155; border-radius: 20px; padding: 40px; box-shadow: 0 20px 40px rgba(0,0,0,0.3); }
+    .offer-card h3 { color: #ffffff; font-size: 1.5rem; margin-bottom: 30px; font-weight: 800; }
+    
+    .perf-bar-group { margin-bottom: 20px; }
+    .perf-label { display: flex; justify-content: space-between; color: #94a3b8; font-size: 0.85rem; font-weight: 600; margin-bottom: 8px; text-transform: uppercase;}
+    .perf-label span.val { color: #f8fafc; }
+    .perf-track { width: 100%; height: 6px; background: #1e293b; border-radius: 3px; overflow: hidden; }
+    .perf-fill { height: 100%; background: #38bdf8; border-radius: 3px; }
+    
+    .offer-list { list-style: none; margin: 40px 0; }
+    .offer-list li { display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px dashed #334155; color: #cbd5e1; font-size: 0.95rem; }
+    .offer-list li:last-child { border-bottom: none; }
+    .offer-list li span { font-weight: 700; color: #fff; }
+    .detail-action-btn { background: #38bdf8; color: #0b0f19; border: none; padding: 20px; width: 100%; border-radius: 12px; font-size: 1.1rem; font-weight: 800; cursor: pointer; transition: 0.3s; display: flex; justify-content: center; align-items: center; gap: 10px; text-transform: uppercase; letter-spacing: 1px;}
+    .detail-action-btn:hover { background: #0284c7; color: white; transform: translateY(-3px); box-shadow: 0 10px 20px rgba(2, 132, 199, 0.3); }
+
+    /* --- 3D CONFIGURATOR --- */
+    #configurator-section { display: flex; height: 100vh; padding-top: 85px; overflow: hidden; }
+    #sidebar { width: 480px; background: #111827; border-right: 1px solid #1e293b; padding: 30px; overflow-y: auto; display: flex; flex-direction: column; gap: 20px; z-index: 10; box-shadow: 10px 0 30px rgba(0,0,0,0.5); }
+    #sidebar::-webkit-scrollbar { width: 6px; } #sidebar::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+    
+    h2.sidebar-title { font-size: 1.4rem; color: #fff; font-weight: 800; margin-bottom: 5px; }
+    .form-group { display: flex; flex-direction: column; gap: 8px; }
+    label { font-size: 0.72rem; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px;}
+    
+    input[type=number], select { background: #0b0f19; border: 1px solid #334155; color: #f8fafc; padding: 12px 15px; border-radius: 8px; font-size: 0.95rem; transition: 0.2s; font-weight: 500;}
+    input:focus, select:focus { outline: none; border-color: #38bdf8; box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.1); }
+    
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+    .roof-selector { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    .roof-btn { background: #0b0f19; border: 1px solid #334155; color: #94a3b8; padding: 12px; border-radius: 8px; font-weight: 600; font-size: 0.85rem; cursor: pointer; transition: 0.2s; }
+    .roof-btn.active { background: #38bdf8; color: #0b0f19; border-color: #38bdf8; box-shadow: 0 4px 15px rgba(56, 189, 248, 0.3); }
+
+    .module-box { background: #0f172a; padding: 20px; border-radius: 12px; border: 1px solid #1e293b; display: flex; flex-direction: column; gap: 15px; }
+    .module-title { font-size: 0.8rem; color: #38bdf8; font-weight: 800; border-bottom: 1px solid #1e293b; padding-bottom: 10px; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px;}
+    .facade-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+    .checkbox-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .checkbox-label { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; color: #cbd5e1; cursor: pointer; font-weight: 500;}
+    .checkbox-label input[type="checkbox"] { width: 18px; height: 18px; accent-color: #38bdf8; cursor: pointer; }
+
+    .slider-container { background: #0f172a; padding: 16px; border-radius: 12px; border: 1px solid #1e293b; }
+    .slider-header { display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 10px; color: #cbd5e1; font-weight: 600;}
+    input[type=range] { width: 100%; accent-color: #38bdf8; cursor: pointer; height: 6px; }
+
+    .summary-card { background: linear-gradient(135deg, #0ea5e9, #0284c7); border-radius: 12px; padding: 20px; text-align: center; margin-top: auto; color: white; box-shadow: 0 10px 20px rgba(2, 132, 199, 0.3);}
+    .summary-card .area-val { font-size: 1.8rem; font-weight: 800; margin: 5px 0; }
+    .summary-card .area-label { font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;}
+    .btn-action { background: #10b981; color: white; border: none; padding: 16px; border-radius: 12px; font-size: 1.05rem; font-weight: 800; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 10px 20px rgba(16, 185, 129, 0.3);}
+
+    /* --- ADVANCED 3D HUD (TELEMETRY) PANEL --- */
+    #canvas-container { flex: 1; position: relative; background: #e2e8f0; }
+    
+    .tech-hud { position: absolute; top: 25px; left: 25px; background: rgba(11, 15, 25, 0.85); backdrop-filter: blur(12px); border: 1px solid rgba(56, 189, 248, 0.2); padding: 25px; border-radius: 16px; width: 320px; box-shadow: 0 20px 40px rgba(0,0,0,0.2); pointer-events: none; z-index: 5; }
+    .tech-hud h4 { color: #fff; font-size: 0.95rem; text-transform: uppercase; margin-bottom: 20px; border-bottom: 1px solid #1e293b; padding-bottom: 12px; letter-spacing: 1px; display: flex; align-items: center; gap: 8px;}
+    .tech-hud h4::before { content: ''; display: inline-block; width: 8px; height: 8px; background: #10b981; border-radius: 50%; box-shadow: 0 0 10px #10b981; animation: pulse 2s infinite; }
+    
+    .hud-stat { margin-bottom: 15px; }
+    .hud-label { display: flex; justify-content: space-between; font-size: 0.75rem; color: #94a3b8; text-transform: uppercase; font-weight: 700; margin-bottom: 6px; letter-spacing: 0.5px;}
+    .hud-label span.val { color: #f8fafc; }
+    .hud-bar-bg { width: 100%; height: 4px; background: #1e293b; border-radius: 2px; overflow: hidden; }
+    .hud-bar-fill { height: 100%; background: #38bdf8; border-radius: 2px; transition: 0.5s ease; }
+    
+    .hud-text-list { list-style: none; margin-top: 20px; border-top: 1px solid #1e293b; padding-top: 15px;}
+    .hud-text-list li { display: flex; justify-content: space-between; font-size: 0.85rem; color: #cbd5e1; margin-bottom: 8px; }
+    .hud-text-list li span { color: #38bdf8; font-weight: 600; }
+
+    @keyframes pulse { 0% { transform: scale(0.95); opacity: 0.5; } 50% { transform: scale(1.2); opacity: 1; } 100% { transform: scale(0.95); opacity: 0.5; } }
+
+    .overlay-tag { position: absolute; bottom: 25px; right: 25px; background: rgba(255, 255, 255, 0.95); border: 1px solid #cbd5e1; color: #0f172a; padding: 12px 20px; border-radius: 30px; font-size: 0.85rem; pointer-events: none; box-shadow: 0 10px 20px rgba(0,0,0,0.1); font-weight: 600; display: flex; align-items: center; gap: 8px;}
+  </style>
 </head>
 <body>
-<header>
-<div class="header-logo"><img src="logo.png" onerror="this.onerror=null;this.src='logo.jpg';" alt="Eva Global Logo"></div>
-<nav class="header-nav">
-<a onclick="showPage('home')" class="nav-link active" id="nav-home">Home</a>
-<a onclick="showPage('products')" class="nav-link" id="nav-products">Outdoor Systems</a>
-<a onclick="showPage('profiles')" class="nav-link" id="nav-profiles">Profile Systems</a>
-<a onclick="showPage('manufacturing')" class="nav-link" id="nav-manufacturing">Manufacturing</a>
-<a onclick="showPage('configurator')" class="nav-link" id="nav-configurator">3D Configurator</a>
-</nav>
-<a onclick="showPage('contact')" class="header-contact">Contact Us</a>
-</header>
-<section id="home-section" class="page-section active">
-<div class="hero-container">
-<!-- İSTENİLEN VİDEO BURAYA EKLENDİ -->
-<video class="hero-bg" autoplay loop muted playsinline>
-<source src="Timeline1.mov" type="video/quicktime">
-<source src="Timeline1.mp4" type="video/mp4">
-<source src="anasayfa.mp4" type="video/mp4">
-</video>
-<div class="hero-overlay"></div>
-<div class="hero-content">
-<h1>Architectural <br><span>Perfection.</span></h1>
-<p>Official solutions powered by Eva Global aluminum engineering. Forte Bioclimatic pergolas, Velura Winter Gardens, and insulated facade profiles.</p>
-<button onclick="showPage('configurator')" class="hero-btn">Launch 3D Simulator &rarr;</button>
-</div>
-<div class="tech-stats-bar">
-<div class="stat-item"><div class="icon">🛡️</div><div><h4>6063-T5</h4><p>Certified Alloy</p></div></div>
-<div class="stat-item"><div class="icon">⚙️</div><div><h4>Somfy</h4><p>Automation</p></div></div>
-<div class="stat-item"><div class="icon">❄️</div><div><h4>200 kg/m²</h4><p>Snow Load</p></div></div>
-<div class="stat-item"><div class="icon">💨</div><div><h4>120 km/h</h4><p>Wind Tested</p></div></div>
-</div>
-</div>
-<div class="banner-container">
-<h2>Complete Architectural Ecosystem</h2><p>From bioclimatic pergolas to insulated sliding systems, Eva Global provides a fully integrated ecosystem for all your living spaces.</p>
-<div class="banner-wrapper"><img src="emre_offer_banner.jpg" alt="Ecosystem"></div>
-</div>
-<div class="split">
-<div class="split-content"><h3>Precision <br><span>Manufacturing</span></h3><p>Our 6063-T5 aluminum profiles are processed in 5-axis CNC machining centers ensuring sub-millimeter precision for perfect joints and hidden water drainage.</p><a onclick="showPage('manufacturing')" style="color:#fff;font-weight:700;cursor:pointer;text-transform:uppercase;">Discover Manufacturing &rarr;</a></div>
-<div class="split-img"><img src="cnc.JPG" alt="CNC"></div>
-</div>
-<div class="split rev">
-<div class="split-content"><h3>Advanced Thermal <br><span>Engineering</span></h3><p>Engineered to achieve low U-values in variable climates. Fitted with continuous polyamide thermal barrier struts to prevent condensation.</p><a onclick="showPage('profiles')" style="color:#fff;font-weight:700;cursor:pointer;text-transform:uppercase;">View Profile Systems &rarr;</a></div>
-<div class="split-img"><img src="Thermal.JPG" alt="Thermal"></div>
-</div>
-</section>
-<section id="products-section" class="page-section">
-<div class="section-header"><h2>Outdoor Architectural Systems</h2><p>Engineered outdoor pergola, veranda, carport and winter garden solutions.</p></div>
-<div class="products-grid" id="out-grid"></div>
-</section>
-<section id="profiles-section" class="page-section">
-<div class="section-header"><h2>Architectural Profile Systems</h2><p>Premium aluminum extrusions categorized by thermal performance.</p></div>
-<div class="products-grid" id="prof-grid"></div>
-</section>
-<section id="manufacturing-section" class="page-section">
-<div class="section-header"><h2>Precision Manufacturing</h2><p>Engineered with international ISO and Qualicoat certifications.</p></div>
-<div class="split"><div class="split-content"><h3>Advanced <br><span>CNC Machining</span></h3><p>Processed in 5-axis CNC machining centers ensuring sub-millimeter precision.</p></div><div class="split-img"><img src="cnc.JPG" alt="CNC"></div></div>
-<div class="split rev"><div class="split-content"><h3>Qualicoat <br><span>Powder Coating</span></h3><p>Automated lines apply Class 2 architectural powders that withstand saline environments without peeling.</p></div><div class="split-img"><img src="https://images.unsplash.com/photo-1580983546870-df10357f80dd?auto=format&fit=crop&w=1200&q=80" alt="Powder"></div></div>
-<div class="split"><div class="split-content"><h3>Premium <br><span>Export Packaging</span></h3><p>To ensure your custom-built system arrives in pristine condition anywhere in the world.</p></div><div class="split-img"><img src="paketleme.JPG" alt="Packaging"></div></div>
-</section>
-<section id="contact-section" class="page-section">
-<div class="section-header"><h2>Contact Eva Global</h2><p>Reach out to us for project inquiries, technical support, or global partnership opportunities.</p></div>
-<div class="contact-grid">
-<div class="contact-card"><h3>Headquarters</h3><div class="c-item"><div class="c-icon">📍</div><div class="c-text"><h4>Location</h4><p>Istanbul, Türkiye</p></div></div><div class="c-item"><div class="c-icon">📞</div><div class="c-text"><h4>WhatsApp / Direct Line</h4><p>+90 537 550 44 77</p></div></div><div class="c-item"><div class="c-icon">✉️</div><div class="c-text"><h4>Email</h4><p>info@evaglobal.com.tr</p></div></div></div>
-<div class="partnership-card"><h3>Become a Global Partner</h3><p>Join our growing network of international dealers and architects. As an Eva Global partner, you gain access to exclusive B2B pricing.</p><button class="partner-btn" onclick="waPartner()">Apply for Partnership &rarr;</button></div>
-</div>
-</section>
-<section id="product-detail-section" class="page-section">
-<a onclick="showPage('products')" style="color:#38bdf8;cursor:pointer;font-weight:700;text-transform:uppercase;">&larr; Back</a>
-<div class="detail-layout">
-<div><h1 id="det-title"></h1><p id="det-desc"></p><table class="detail-table" id="det-specs"></table><button class="hero-btn" onclick="goToConfigurator()">⚙ Design in 3D Simulator</button></div>
-<div><img id="det-img" src=""></div>
-</div>
-</section>
-<section id="configurator-section" class="page-section">
-<div id="sidebar">
-<h2 style="font-size:1.6rem;color:#fff;font-weight:800;margin-bottom:5px;">3D CAD Simulator</h2>
-<div class="grid-2">
-<div class="form-group"><label>Width (m):</label><input type="number" id="width" value="5.0" step="0.2"></div>
-<div class="form-group"><label>Depth (m):</label><input type="number" id="depth" value="3.5" step="0.2"></div>
-<div class="form-group"><label>Height (m):</label><input type="number" id="frontHeight" value="2.5" step="0.1"></div>
-<div class="form-group"><label>Profile Color:</label><select id="profileColor"><option value="#1c1917">Anthracite</option><option value="#09090b">Black</option><option value="#f8fafc">White</option></select></div>
-</div>
-<div class="form-group"><label>ROOF SYSTEM</label><div class="roof-selector">
-<button class="roof-btn active" id="btn-bioclimatic" onclick="setRoofType('bioclimatic', this)">Forte Bioclimatic</button>
-<button class="roof-btn" id="btn-rolling_roof" onclick="setRoofType('rolling_roof', this)">Lamella Roof</button>
-<button class="roof-btn" id="btn-pergola" onclick="setRoofType('pergola', this)">Pergola Awning</button>
-<button class="roof-btn" id="btn-veranda" onclick="setRoofType('veranda', this)">Winter Garden</button>
-<button class="roof-btn" id="btn-carport" onclick="setRoofType('carport', this)" style="grid-column:span 2;">Eva Carport (Solid)</button>
-</div></div>
-<div class="module-box"><div class="module-title">ARCHITECTURAL FACADES</div><div class="facade-grid">
-<div class="form-group"><label>Front</label><div style="display:flex;gap:5px;"><select id="gFront" class="sys" name="Front" style="flex:2;"><option value="none">Open</option><option value="guillotine">Guillotine</option><option value="sliding">Sliding</option><option value="rts116">Thermal Sliding</option><option value="fd60">Thermal Bi-Fold</option><option value="glass_balcony">Frameless Balcony</option><option value="wall">Fixed Wall</option></select><select id="doorFront" class="sys door" name="Front" style="flex:1;"><option value="none">No Door</option><option value="left">Left Door</option><option value="right">Right Door</option></select></div></div>
-<div class="form-group"><label>Back</label><div style="display:flex;gap:5px;"><select id="gBack" class="sys" name="Back" style="flex:2;"><option value="none">Open</option><option value="guillotine">Guillotine</option><option value="sliding">Sliding</option><option value="rts116">Thermal Sliding</option><option value="fd60">Thermal Bi-Fold</option><option value="glass_balcony">Frameless Balcony</option><option value="wall">Fixed Wall</option></select><select id="doorBack" class="sys door" name="Back" style="flex:1;"><option value="none">No Door</option><option value="left">Left Door</option><option value="right">Right Door</option></select></div></div>
-<div class="form-group"><label>Left</label><div style="display:flex;gap:5px;"><select id="gLeft" class="sys" name="Left" style="flex:2;"><option value="none">Open</option><option value="guillotine">Guillotine</option><option value="sliding">Sliding</option><option value="rts116">Thermal Sliding</option><option value="fd60">Thermal Bi-Fold</option><option value="glass_balcony">Frameless Balcony</option><option value="wall">Fixed Wall</option></select><select id="doorLeft" class="sys door" name="Left" style="flex:1;"><option value="none">No Door</option><option value="left">Left Door</option><option value="right">Right Door</option></select></div></div>
-<div class="form-group"><label>Right</label><div style="display:flex;gap:5px;"><select id="gRight" class="sys" name="Right" style="flex:2;"><option value="none">Open</option><option value="guillotine">Guillotine</option><option value="sliding">Sliding</option><option value="rts116">Thermal Sliding</option><option value="fd60">Thermal Bi-Fold</option><option value="glass_balcony">Frameless Balcony</option><option value="wall">Fixed Wall</option></select><select id="doorRight" class="sys door" name="Right" style="flex:1;"><option value="none">No Door</option><option value="left">Left Door</option><option value="right">Right Door</option></select></div></div>
-</div></div>
-<div class="module-box"><div class="module-title">ACCESSORIES</div><div class="checkbox-grid">
-<label class="checkbox-label"><input type="checkbox" id="zipFront" class="sys"> Front Zip</label>
-<label class="checkbox-label"><input type="checkbox" id="zipBack" class="sys"> Back Zip</label>
-<label class="checkbox-label"><input type="checkbox" id="zipLeft" class="sys"> Left Zip</label>
-<label class="checkbox-label"><input type="checkbox" id="zipRight" class="sys"> Right Zip</label>
-</div><div style="margin-top:15px;border-top:1px dashed #1e293b;padding-top:15px;">
-<label class="checkbox-label" style="color:#10b981;margin-bottom:10px;"><input type="checkbox" id="toggleAutoPlay" checked> 🔄 Auto-Play Animations</label>
-<label class="checkbox-label" id="roofZipWrapperBox" style="color:#38bdf8;display:none;"><input type="checkbox" id="toggleRoofZip" class="sys"> Velura Roof Zip Screen</label>
-</div></div>
-<div class="slider-container" id="gC"><div class="slider-header"><span>Glass Systems & Doors:</span></div><input type="range" id="glassOpenness" min="0" max="100" value="0"></div>
-<div class="slider-container" id="rC"><div class="slider-header"><span>Roof Angles:</span></div><input type="range" id="roofActionVal" min="0" max="100" value="0"></div>
-<div class="slider-container" id="zC"><div class="slider-header"><span>Zip Flex Screens:</span></div><input type="range" id="zipOpenness" min="0" max="100" value="100"></div>
-<div class="slider-container" id="rzC" style="display:none;"><div class="slider-header"><span>Roof Zip Retraction:</span></div><input type="range" id="roofZipOpenness" min="0" max="100" value="0"></div>
-<button class="action-btn" onclick="waQuote()">💬 Request Project Quote</button>
-</div>
-<div id="canvas-container">
-<div class="hud">
-<h5>Live Telemetry</h5>
-<div class="hud-label"><span>Wind Resistance</span><span class="val" id="hud-wind-val">120 km/h</span></div>
-<div class="bar-bg"><div class="bar" id="hw" style="width:90%;"></div></div>
-<div class="hud-label"><span>Snow Load</span><span class="val" id="hud-snow-val">200 kg/m²</span></div>
-<div class="bar-bg"><div class="bar" id="hs" style="width:85%;"></div></div>
-</div>
-<div class="night-mode-tag"><label><input type="checkbox" id="toggleLED" style="accent-color:#38bdf8;width:18px;height:18px;"> Night Mode</label></div>
-</div>
-</section>
-<footer>
-<img src="logo.png" onerror="this.onerror=null;this.src='logo.jpg';" alt="Eva Global Logo" style="height:35px;opacity:.5;margin-bottom:10px;">
-<p>&copy; 2026 EVA GLOBAL. Premium Aluminum Architectural Systems.</p>
-</footer>
-<script>
-const outData={forte:{t:"Eva Climatic Forte",d:"Adjustable mobile blades with a 0-degree flat roof.",i:"FORTE-BİO.jpg",f:"forte.jpg",s:{"Alloy":"6063-T5","Motor":"Somfy","Drainage":"Hidden"},tg:"bioclimatic",b:["110° Rotation","Bioclimatic"]},lamella:{t:"Eva Lamella Roof",d:"Retractable aluminum louvers.",i:"lamella.jpg",f:"",s:{"Movement":"Full Retraction","Motor":"Somfy"},tg:"rolling_roof",b:["Fully Retractable","Scissor Drive"]},velura:{t:"Velura Winter Garden",d:"Architectural glass-roof living spaces.",i:"velura3.jpg",f:"",s:{"Structure":"Glass Rafters","Glazing":"Laminated"},tg:"veranda",b:["Glass Roof","4-Season"]},carport:{t:"Eva Carport System",d:"Solid roof vehicle protection.",i:"Carport-Antrasit-600x600.jpg",f:"carport.jpg",s:{"Roof":"Solid Aluminum","Drainage":"Hidden"},tg:"carport",b:["Vehicle Protection","Heavy Duty"]},zip:{t:"Zip Flex Screens",d:"Wind-resistant motorized fabric.",i:"zip1.jpg",f:"",s:{"Fabric":"Micro-Perforated","Motor":"Somfy"},tg:"bioclimatic",b:["Wind Lock","Somfy Powered"]}};
-const profData={rwt64:{t:"RWT55 / RWT64 Thermal",d:"Thermal break casements.",i:"Thermal.JPG",f:"",s:{"Thermal":"Polyamide PA66","Water":"Class E900"},tg:"veranda",b:["Polyamide Strut","High Thermal"],c:"ins"},rts116:{t:"RTS116 Thermal Sliding",d:"Heavy-duty thermal sliding system.",i:"rts116.jpg",f:"rts116.jgp",s:{"Barrier":"Polyamide","Max Weight":"400kg"},tg:"veranda",b:["Lift & Slide","Thermal Break"],c:"ins"},cw50:{t:"CW50 Curtain Wall",d:"Mullion-transom structural facade.",i:"https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1600&q=80",f:"",s:{"Visible Width":"50mm","Depth":"Up to 200mm"},tg:"veranda",b:["Mullion-Transom","Facade"],c:"ins"},fd60:{t:"FD60 Thermal Bi-Fold",d:"Insulated accordion folding doors.",i:"https://images.unsplash.com/photo-1605276374104-162f154bf501?auto=format&fit=crop&w=1600&q=80",f:"",s:{"Depth":"60mm","Max Width":"1200mm"},tg:"veranda",b:["Bi-Fold","Insulated"],c:"ins"},c60:{t:"C60 Architectural Profile",d:"Non-insulated aluminum series.",i:"c60.jpg",f:"c60.jgp",s:{"Function":"Non-Insulated","Depth":"60mm"},tg:"veranda",b:["Non-Insulated","60mm Depth"],c:"non"},glass_balcony:{t:"Frameless Glass Balcony",d:"Frameless glass balcony systems.",i:"cam2.jpg",f:"",s:{"Type":"Frameless Folding","Function":"Retractable"},tg:"veranda",b:["Frameless","Fold & Stack"],c:"non"},guillotine:{t:"Motorized Guillotine",d:"Vertically retracting motorized glass panels.",i:"giyotin1.jpg",f:"",s:{"Type":"Vertical Sliding","Motor":"Somfy RTS"},tg:"veranda",b:["Motorized","Vertical Slide"],c:"non"},sliding:{t:"Standard Sliding Glass",d:"Multi-track horizontal sliding systems.",i:"sliding.jpg",f:"",s:{"Glazing":"Single/Double","Hardware":"Stainless"},tg:"veranda",b:["Panorama","Multi-Track"],c:"non"}};
-function rG(){let ol=document.getElementById('out-grid'),pl=document.getElementById('prof-grid');ol.innerHTML='';Object.keys(outData).forEach(k=>{ol.innerHTML+=`<div class="product-card" onclick="oDe('${k}','o')"><div class="product-img"><img src="${outData[k].i}" onerror="this.onerror=null;if('${outData[k].f}')this.src='${outData[k].f}';"></div><div class="product-body"><div class="badges"><span class="badge">${outData[k].b[0]}</span><span class="badge">${outData[k].b[1]}</span></div><h3>${outData[k].t}</h3><p>${outData[k].d}</p></div></div>`});let iH=`<div style="grid-column:1/-1;margin-bottom:10px;"><h3 style="color:#ef4444;font-size:2.2rem;font-weight:800;border-bottom:1px solid #1e293b;padding-bottom:15px;">Thermally Insulated Systems</h3></div>`;let nH=`<div style="grid-column:1/-1;margin-top:40px;margin-bottom:10px;"><h3 style="color:#38bdf8;font-size:2.2rem;font-weight:800;border-bottom:1px solid #1e293b;padding-bottom:15px;">Non-Insulated Systems</h3></div>`;Object.keys(profData).forEach(k=>{let isT=profData[k].b[1].includes('Thermal')||profData[k].b[1].includes('Insulated');let crd=`<div class="product-card" onclick="oDe('${k}','p')"><div class="product-img"><img src="${profData[k].i}" onerror="this.onerror=null;if('${profData[k].f}')this.src='${profData[k].f}';"></div><div class="product-body"><div class="badges"><span class="badge ${isT?'thermal':''}">${profData[k].b[0]}</span><span class="badge ${isT?'thermal':''}">${profData[k].b[1]}</span></div><h3>${profData[k].t}</h3><p>${profData[k].d}</p></div></div>`;if(profData[k].c==='ins')iH+=crd;else nH+=crd});pl.innerHTML=iH+nH}
-let cT='bioclimatic';
-function showPage(id){document.querySelectorAll('.page-section').forEach(s=>s.classList.remove('active'));document.querySelectorAll('.header-nav a').forEach(a=>a.classList.remove('active'));let t=document.getElementById(id+'-section');if(t)t.classList.add('active');let n=document.getElementById('nav-'+id);if(n)n.classList.add('active');if(id==='configurator'){setTimeout(()=>{let c=document.getElementById('canvas-container');if(c&&c.clientWidth>0){cam.aspect=c.clientWidth/c.clientHeight;cam.updateProjectionMatrix();ren.setSize(c.clientWidth,c.clientHeight)}},50)}else{window.scrollTo(0,0)}}
-function oDe(k,ty){let d=ty==='o'?outData[k]:profData[k];if(!d)return;let i=document.getElementById('det-img');i.src=d.i;i.onerror=function(){this.onerror=null;if(d.f)this.src=d.f};document.getElementById('det-title').innerText=d.t;document.getElementById('det-desc').innerText=d.d;let tb=document.getElementById('det-specs');tb.innerHTML='';for(let[kx,v]of Object.entries(d.s)){tb.innerHTML+=`<tr><th>${kx}</th><td>${v}</td></tr>`}cT=d.tg;showPage('product-detail')}
-function goToConfigurator(){showPage('configurator');setRoofType(cT,document.getElementById('btn-'+cT)||document.getElementById('btn-bioclimatic'))}
-function waQuote(){let W=document.getElementById('width').value,D=document.getElementById('depth').value,H=document.getElementById('frontHeight').value;let C=document.getElementById('profileColor').options[document.getElementById('profileColor').selectedIndex].text;let msg=`Eva Global Project Inquiry\n\nSystem: ${cRoof.toUpperCase()} (${W}m x ${D}m, H:${H}m)\nColor: ${C}\n\n`;let hasFacade=false;['Front','Back','Left','Right'].forEach(s=>{let sy=document.getElementById('g'+s),dr=document.getElementById('door'+s),zp=document.getElementById('zip'+s);if(sy.value!=='none'||dr.value!=='none'||zp.checked){hasFacade=true;msg+=`${s} Facade: ${sy.options[sy.selectedIndex].text}`;if(dr.value!=='none')msg+=` + ${dr.options[dr.selectedIndex].text}`;if(zp.checked)msg+=` + Zip Screen`;msg+=`\n`}});let led=document.getElementById('toggleLED')?.checked;let rZip=cRoof==='veranda'&&document.getElementById('toggleRoofZip')?.checked;if(led||rZip){msg+=`\nExtras:\n`;if(led)msg+=`- LED Night Mode\n`;if(rZip)msg+=`- Velura Roof Zip Screen\n`}window.open(`https://wa.me/905375504477?text=${encodeURIComponent(msg)}`,'_blank')}
-function waPartner(){window.open(`https://wa.me/905375504477?text=Hello, I am interested in becoming a partner/dealer for Eva Global.`,'_blank')}
-let cRoof='bioclimatic',rEs=[],gPs=[],zPs=[],rZEs=[],aV=0,aD=1,lT=0;
-const ct=document.getElementById('canvas-container');
-const scn=new THREE.Scene();scn.background=new THREE.Color(0x1e293b);
-const cam=new THREE.PerspectiveCamera(40,1,0.1,100);cam.position.set(10,5,13);
-const ren=new THREE.WebGLRenderer({antialias:true,alpha:true});ren.shadowMap.enabled=true;ren.shadowMap.type=THREE.PCFSoftShadowMap;ren.toneMapping=THREE.ACESFilmicToneMapping;ren.outputEncoding=THREE.sRGBEncoding;if(ct)ct.appendChild(ren.domElement);
-if(ct){new ResizeObserver(()=>{if(ct.clientWidth>0&&ct.clientHeight>0){cam.aspect=ct.clientWidth/ct.clientHeight;cam.updateProjectionMatrix();ren.setSize(ct.clientWidth,ct.clientHeight)}}).observe(ct)}
-const crl=new THREE.OrbitControls(cam,ren.domElement);crl.enableDamping=true;crl.maxPolarAngle=1.5;crl.target.set(0,1.2,0);
-const hL=new THREE.HemisphereLight(0xffffff,0x1e293b,0.5);scn.add(hL);const sn=new THREE.DirectionalLight(0xffffff,1.2);sn.position.set(15,25,15);sn.castShadow=true;scn.add(sn);const lL=new THREE.PointLight(0xffa114,0,15);lL.position.set(0,2,0);scn.add(lL);const sG=new THREE.Group();scn.add(sG);
-const gridFloorMat=new THREE.MeshStandardMaterial({color:0xffffff,roughness:0.9});const gridFloor=new THREE.Mesh(new THREE.PlaneGeometry(300,300),gridFloorMat);gridFloor.rotation.x=-Math.PI/2;gridFloor.position.y=-0.15;gridFloor.receiveShadow=true;scn.add(gridFloor);
-const gridHelper=new THREE.GridHelper(100,100,0xcbd5e1,0xe2e8f0);gridHelper.position.y=-0.14;scn.add(gridHelper);scn.fog=new THREE.Fog(0x1e293b,15,40);
-const fM=new THREE.MeshStandardMaterial({color:0x1c1917,roughness:0.5});const lMt=new THREE.MeshStandardMaterial({color:0x1c1917,roughness:0.4});const glM=new THREE.MeshPhysicalMaterial({color:0x60a5fa,transparent:true,opacity:0.4,side:THREE.DoubleSide});const wM=new THREE.MeshStandardMaterial({color:0xd1d5db,roughness:0.9});const zM=new THREE.MeshStandardMaterial({color:0x475569,transparent:true,opacity:0.85,side:THREE.DoubleSide});
-function createGlass(pw,ph,isG){let gp=new THREE.Group();let fT=isG?0.015:0.04;let fD=0.03;gp.add(new THREE.Mesh(new THREE.BoxGeometry(pw,ph,0.01),glM));let tf=new THREE.Mesh(new THREE.BoxGeometry(pw,(isG?0.04:fT),fD),fM);tf.position.y=ph/2-(isG?0.02:fT/2);tf.castShadow=true;gp.add(tf);let bf=new THREE.Mesh(new THREE.BoxGeometry(pw,(isG?0.04:fT),fD),fM);bf.position.y=-ph/2+(isG?0.02:fT/2);bf.castShadow=true;gp.add(bf);let lf=new THREE.Mesh(new THREE.BoxGeometry(fT,ph-(isG?0.08:fT*2),fD),fM);lf.position.x=-pw/2+fT/2;lf.castShadow=true;gp.add(lf);let rf=new THREE.Mesh(new THREE.BoxGeometry(fT,ph-(isG?0.08:fT*2),fD),fM);rf.position.x=pw/2-fT/2;rf.castShadow=true;gp.add(rf);return gp}
-function buildSystem(){if(!document.getElementById('width'))return;while(sG.children.length>0){let o=sG.children[0];o.traverse(c=>{if(c.isMesh)c.geometry.dispose()});sG.remove(o)}rEs=[];gPs=[];zPs=[];rZEs=[];
-const W=parseFloat(document.getElementById('width').value)||5.0;const D=parseFloat(document.getElementById('depth').value)||3.5;const FH=parseFloat(document.getElementById('frontHeight').value)||2.5;const BH=(cRoof==='bioclimatic'||cRoof==='rolling_roof'||cRoof==='carport')?FH:FH+0.35;
-const hasLED=document.getElementById('toggleLED')?.checked;const ledM=new THREE.MeshStandardMaterial({color:0xffedd5,emissive:0xffa114,emissiveIntensity:2.5});
-if(hasLED){scn.background.setHex(0x020617);scn.fog.color.setHex(0x020617);hL.intensity=0.1;sn.intensity=0.2;lL.intensity=2.0;lL.position.set(0,(FH+BH)/2-0.5,0);gridFloorMat.color.setHex(0x1e293b);gridHelper.material.color.setHex(0x334155)}else{scn.background.setHex(0x1e293b);scn.fog.color.setHex(0x1e293b);hL.intensity=0.6;sn.intensity=1.2;lL.intensity=0;gridFloorMat.color.setHex(0xffffff);gridHelper.material.color.setHex(0x94a3b8)}
-let dk=new THREE.Group();let pW=W+2,pD=D+2,plW=0.142,stW=plW+0.008,pC=Math.floor(pW/stW),aW=pC*stW,sX=-aW/2+plW/2;let dMx=new THREE.MeshStandardMaterial({color:hasLED?0x3d2817:0x734a29,roughness:0.8});let bMx=new THREE.Mesh(new THREE.BoxGeometry(aW,0.04,pD),new THREE.MeshStandardMaterial({color:0x0a0a0a}));bMx.position.set(0,-0.04,0);dk.add(bMx);
-for(let i=0;i<pC;i++){let p=new THREE.Mesh(new THREE.BoxGeometry(plW,0.02,pD),dMx);p.position.set(sX+i*stW,-0.01,0);p.receiveShadow=p.castShadow=true;dk.add(p)}let faM=new THREE.MeshStandardMaterial({color:0x18181b});let fF=new THREE.Mesh(new THREE.BoxGeometry(aW+0.04,0.06,0.02),faM);fF.position.set(0,-0.03,pD/2+0.01);dk.add(fF);let fB=new THREE.Mesh(new THREE.BoxGeometry(aW+0.04,0.06,0.02),faM);fB.position.set(0,-0.03,-pD/2-0.01);dk.add(fB);let fL=new THREE.Mesh(new THREE.BoxGeometry(0.02,0.06,pD),faM);fL.position.set(-aW/2-0.01,-0.03,0);dk.add(fL);let fR=new THREE.Mesh(new THREE.BoxGeometry(0.02,0.06,pD),faM);fR.position.set(aW/2+0.01,-0.03,0);dk.add(fR);sG.add(dk);
-function cB(w,h,d,x,y,z,rx=0,m=fM){let me=new THREE.Mesh(new THREE.BoxGeometry(w,h,d),m);me.position.set(x,y,z);me.rotation.x=rx;me.castShadow=me.receiveShadow=true;sG.add(me)}
-const PS=0.12,BHt=0.16,BW=0.09;cB(PS,FH,PS,-W/2+PS/2,FH/2,D/2-PS/2);cB(PS,FH,PS,W/2-PS/2,FH/2,D/2-PS/2);cB(PS,BH,PS,-W/2+PS/2,BH/2,-D/2+PS/2);cB(PS,BH,PS,W/2-PS/2,BH/2,-D/2+PS/2);cB(W,BHt,BW,0,FH-BHt/2,D/2-BW/2);cB(W,BHt,BW,0,BH-BHt/2,-D/2+BW/2);if(hasLED&&cRoof!=='carport'){cB(W-0.24,0.02,0.02,0,FH-0.10,D/2-0.08,0,ledM);cB(W-0.24,0.02,0.02,0,BH-0.10,-D/2+0.08,0,ledM)}
-let sL=Math.sqrt(D*D+Math.pow(BH-FH,2)),pA=Math.atan2(BH-FH,D),cY=(FH+BH)/2-BHt/2;cB(BW,BHt,sL,-W/2+BW/2,cY,0,pA);cB(BW,BHt,sL,W/2-BW/2,cY,0,pA);
-if(cRoof==='carport'){let cRo=new THREE.Mesh(new THREE.BoxGeometry(W-0.18,0.05,D-0.18),new THREE.MeshStandardMaterial({color:0x334155}));cRo.position.set(0,FH-0.05,0);cRo.castShadow=true;sG.add(cRo);document.getElementById('hud-wind-val').innerText='140 km/h';document.getElementById('hw').style.width='95%';document.getElementById('hud-snow-val').innerText='250 kg/m²';document.getElementById('hs').style.width='100%'}
-else if(cRoof==='bioclimatic'||cRoof==='rolling_roof'){document.getElementById('hud-wind-val').innerText='120 km/h';document.getElementById('hw').style.width='85%';document.getElementById('hud-snow-val').innerText='200 kg/m²';document.getElementById('hs').style.width='80%';let c=Math.ceil(D/0.22),st=D/c;for(let i=0;i<c;i++){let l=new THREE.Mesh(new THREE.BoxGeometry(W-0.18,0.03,st+0.005),lMt);l.position.set(0,cY-0.015,-D/2+st*(i+0.5));l.userData={bz:l.position.z};l.castShadow=true;sG.add(l);rEs.push(l)}}
-else if(cRoof==='pergola'){document.getElementById('hud-wind-val').innerText='80 km/h';document.getElementById('hw').style.width='60%';document.getElementById('hud-snow-val').innerText='N/A';document.getElementById('hs').style.width='5%';let st=D/12;for(let i=0;i<12;i++){let f=new THREE.Mesh(new THREE.BoxGeometry(W-0.15,0.02,st*0.95),new THREE.MeshStandardMaterial({color:0xf1f5f9}));let bz=-D/2+st*(i+0.5);f.position.set(0,BH-(BH-FH)*((bz+D/2)/D)-0.06,bz);f.rotation.x=pA;f.userData={bz:bz,by:f.position.y};sG.add(f);rEs.push(f)}}
-else if(cRoof==='veranda'){document.getElementById('hud-wind-val').innerText='130 km/h';document.getElementById('hw').style.width='90%';document.getElementById('hud-snow-val').innerText='250 kg/m²';document.getElementById('hs').style.width='100%';let rG=new THREE.Mesh(new THREE.BoxGeometry(W-0.05,0.02,sL),glM);rG.position.set(0,cY+0.1,0);rG.rotation.x=pA;sG.add(rG);let rC=Math.ceil(W/0.85),rS=W/rC;for(let i=1;i<rC;i++){cB(0.06,0.12,sL+0.1,-W/2+(i*rS),cY-0.04,0,pA)}if(document.getElementById('toggleRoofZip')?.checked){let rZGeo=new THREE.BoxGeometry(W-0.2,0.01,sL);rZGeo.translate(0,0,sL/2);let rZ=new THREE.Mesh(rZGeo,zM);rZ.position.set(0,BH+0.04,-D/2+0.045);rZ.rotation.x=pA;rZ.castShadow=true;sG.add(rZ);rZEs.push(rZ)}}
-const sides=[{n:'Front',w:W-0.24,h:FH-0.16,px:0,pz:D/2-0.06,ry:0},{n:'Back',w:W-0.24,h:BH-0.16,px:0,pz:-D/2+0.06,ry:Math.PI},{n:'Left',w:D-0.24,h:(FH+BH)/2-0.16,px:-W/2+0.06,pz:0,ry:-Math.PI/2},{n:'Right',w:D-0.24,h:(FH+BH)/2-0.16,px:W/2-0.06,pz:0,ry:Math.PI/2}];let hGl=false,hZp=false;
-sides.forEach(s=>{let sdGrp=new THREE.Group();sdGrp.position.set(s.px,0,s.pz);sdGrp.rotation.y=s.ry;sG.add(sdGrp);let t=document.getElementById('g'+s.n)?.value||'none';let dT=document.getElementById('door'+s.n)?.value||'none';let dW=0,sysO=0;if(dT==='left'){dW=1.0;sysO=dW/2}else if(dT==='right'){dW=1.0;sysO=-dW/2}let sW=s.w-dW;
-if(['sliding','rts116','glass_balcony','fd60'].includes(t)&&sW>0){let trD=(t==='sliding'||t==='rts116')?0.12:0.08;let bTr=new THREE.Mesh(new THREE.BoxGeometry(sW,0.05,trD),fM);bTr.position.set(sysO,0.025,0);sdGrp.add(bTr);let mTr=new THREE.Mesh(new THREE.BoxGeometry(sW,0.01,trD-0.02),new THREE.MeshStandardMaterial({color:0x94a3b8,metalness:0.8,roughness:0.2}));mTr.position.set(sysO,0.055,0);sdGrp.add(mTr)}
-if(dT!=='none'){hGl=true;let dFr=new THREE.Group();let fT=0.05,fD=0.08;let lJ=new THREE.Mesh(new THREE.BoxGeometry(fT,s.h,fD),fM);lJ.position.set(-dW/2+fT/2,s.h/2,0);dFr.add(lJ);let rJ=new THREE.Mesh(new THREE.BoxGeometry(fT,s.h,fD),fM);rJ.position.set(dW/2-fT/2,s.h/2,0);dFr.add(rJ);let tJ=new THREE.Mesh(new THREE.BoxGeometry(dW-fT*2,fT,fD),fM);tJ.position.set(0,s.h-fT/2,0);dFr.add(tJ);let dLx=(dT==='left')?-s.w/2+dW/2:s.w/2-dW/2;dFr.position.set(dLx,0,0);sdGrp.add(dFr);let dGp=new THREE.Group();let shW=dW-fT*2,shH=s.h-fT;let dP=createGlass(shW,shH,false);let hnd=new THREE.Mesh(new THREE.CylinderGeometry(0.015,0.015,0.4),new THREE.MeshStandardMaterial({color:0xe2e8f0,metalness:0.9}));hnd.position.set((dT==='left')?shW/2-0.08:-shW/2+0.08,0,0.04);dP.add(hnd);dGp.add(dP);let pivX=dLx+((dT==='left')?-dW/2+fT:dW/2-fT);dGp.position.set(pivX,0,0);dP.position.set((dT==='left')?shW/2:-shW/2,shH/2+0.01,0);dGp.userData={t:'swing_door',cr:0,or:(dT==='left'?-Math.PI/2:Math.PI/2)};sdGrp.add(dGp);gPs.push(dGp)}
-if(t==='wall'&&sW>0){let wMesh=new THREE.Mesh(new THREE.BoxGeometry(sW,s.h,0.08),wM);wMesh.position.set(sysO,s.h/2,0);sdGrp.add(wMesh)}else if(t!=='none'&&sW>0){hGl=true;let pC=(t==='glass_balcony')?6:(t==='fd60'?4:3);let pW=sW/pC;for(let i=0;i<pC;i++){let pG=new THREE.Group();pG.add(createGlass(t==='guillotine'?sW:pW,t==='guillotine'?s.h/3:s.h,(t==='glass_balcony')));let cx=0,cz=0,ox=0,oz=0,cr=0,or=0,cy=s.h/2+0.025,oy=cy;if(t==='glass_balcony'){cx=-sW/2+pW/2+(i*pW)+sysO;ox=-sW/2+0.05+(i*0.04)+sysO;oz=-pW/2;or=-Math.PI/2}else if(t==='fd60'){cx=-sW/2+pW/2+(i*pW)+sysO;ox=-sW/2+(pW*0.05)+(i*pW*0.1)+sysO;oz=(i%2===0)?0.25:-0.25;or=(i%2===0)?1.2:-1.2}else if(t==='guillotine'){cx=sysO;cz=(1-i)*0.03;cy=s.h/6+i*(s.h/3);oy=s.h/6+(i*0.03)}else{cx=-sW/2+pW/2+(i*pW)+sysO;cz=(1-i)*0.03;ox=-sW/2+pW/2+(i*0.05)+sysO;oz=cz}pG.userData={t,i,tc:pC,cx,cz,ox,oz,cr,or,cy,oy};pG.position.set(cx,cy,cz);sdGrp.add(pG);gPs.push(pG)}}
-if(document.getElementById('zip'+s.n)?.checked){hZp=true;let cz=0.09;let cas=new THREE.Mesh(new THREE.BoxGeometry(s.w+0.06,0.1,0.1),fM);cas.position.set(0,s.h+0.05,cz);sdGrp.add(cas);let zMesh=new THREE.Mesh(new THREE.BoxGeometry(s.w,s.h,0.005),zM);zMesh.position.set(0,s.h/2,cz);zMesh.userData={ty:s.h,fh:s.h};sdGrp.add(zMesh);zPs.push(zMesh)}});
-let rZB=document.getElementById('roofZipWrapperBox');if(rZB)rZB.style.display=(cRoof==='veranda')?'block':'none';let gC=document.getElementById('gC');if(gC)gC.style.display=hGl?'block':'none';let zC=document.getElementById('zC');if(zC)zC.style.display=hZp?'block':'none';let rzC=document.getElementById('rzC');if(rzC)rzC.style.display=(cRoof==='veranda'&&document.getElementById('toggleRoofZip')?.checked)?'block':'none'}
-function setRoofType(t,btn){cRoof=t;document.querySelectorAll('.roof-btn').forEach(b=>b.classList.remove('active'));if(btn)btn.classList.add('active');aV=0;buildSystem()}
-function renderLoop(time){if(!time)time=performance.now();requestAnimationFrame(renderLoop);let dt=time-lT;lT=time;if(dt>100)dt=16;if(document.getElementById('toggleAutoPlay')?.checked){aV+=aD*(dt*0.025);if(aV>150){aV=150;aD=-1}else if(aV<-40){aV=-40;aD=1}let dV=Math.max(0,Math.min(100,aV));if(document.getElementById('glassOpenness'))document.getElementById('glassOpenness').value=dV;if(document.getElementById('roofActionVal'))document.getElementById('roofActionVal').value=dV;if(document.getElementById('zipOpenness'))document.getElementById('zipOpenness').value=100-dV;if(document.getElementById('roofZipOpenness'))document.getElementById('roofZipOpenness').value=dV}
-let rR=(document.getElementById('roofActionVal')?.value||0)/100;let gR=(document.getElementById('glassOpenness')?.value||0)/100;let zR=(100-(document.getElementById('zipOpenness')?.value||100))/100;let rZR=(document.getElementById('roofZipOpenness')?.value||0)/100;
-if(cRoof==='bioclimatic'){rEs.forEach(l=>l.rotation.x=rR*1.1*Math.PI)}else if(cRoof==='rolling_roof'){let D=+document.getElementById('depth').value||3.5;rEs.forEach((l,i)=>{l.rotation.x=rR*(Math.PI/3);l.position.z=l.userData.bz+((-D/2+0.06+i*0.06)-l.userData.bz)*rR})}else if(cRoof==='pergola'){let D=+document.getElementById('depth').value||3.5,FH=+document.getElementById('frontHeight').value||2.5,BH=FH+0.35;rEs.forEach((s,i)=>{let sz=-D/2+0.06+i*0.05,sy=BH-(BH-FH)*((sz+D/2)/D)-0.06;s.position.z=s.userData.bz+(sz-s.userData.bz)*rR;s.position.y=s.userData.by+(sy-s.userData.by)*rR;s.scale.z=Math.max(0.2,1.0-(rR*0.8))})}rZEs.forEach(f=>{f.scale.z=Math.max(0.01,rZR)});zPs.forEach(z=>{let sY=Math.max(0.01,zR);z.scale.y=sY;z.position.y=z.userData.ty-(z.userData.fh*sY)/2});
-gPs.forEach(p=>{let u=p.userData;if(u.t==='swing_door'){p.rotation.y=u.cr+(u.or-u.cr)*gR}else if(u.t==='glass_balcony'||u.t==='fd60'){let pR=Math.max(0,Math.min(1,(gR-(u.i/u.tc))*u.tc));let sR=Math.min(1,pR/0.7),fR=Math.max(0,(pR-0.7)/0.3);p.position.x=u.cx+(u.ox-u.cx)*sR;p.position.z=u.cz+(u.oz-u.cz)*fR;p.rotation.y=u.cr+(u.or-u.cr)*fR}else if(u.t==='guillotine'&&u.i!==0){p.position.y=u.cy+(u.oy-u.cy)*gR}else if(u.t!=='guillotine'&&u.i!==0){p.position.x=u.cx+(u.ox-u.cx)*gR;p.position.z=u.cz+(u.oz-u.cz)*gR}});crl.update();ren.render(scn,cam)}
-document.addEventListener('DOMContentLoaded',()=>{rG();showPage('home');document.querySelectorAll('.sys, .door, input[type=number]').forEach(e=>e.addEventListener('change',()=>{aV=0;buildSystem()}));let tL=document.getElementById('toggleLED');if(tL)tL.addEventListener('change',buildSystem);let tZ=document.getElementById('toggleRoofZip');if(tZ)tZ.addEventListener('change',buildSystem);['roofActionVal','roofZipOpenness','glassOpenness','zipOpenness'].forEach(id=>{let el=document.getElementById(id);if(el)el.addEventListener('input',()=>{document.getElementById('toggleAutoPlay').checked=false})});let pC=document.getElementById('profileColor');if(pC){pC.addEventListener('input',(e)=>{let hx=parseInt(e.target.value.replace('#','0x'));fM.color.setHex(hx);lMt.color.setHex(hx);let bc=new THREE.Color(e.target.value);bc.lerp(new THREE.Color(0xffffff),0.3);zM.color.copy(bc)});let iH=parseInt(pC.value.replace('#','0x'));fM.color.setHex(iH);lMt.color.setHex(iH);let bc=new THREE.Color(pC.value);bc.lerp(new THREE.Color(0xffffff),0.3);zM.color.copy(bc)}buildSystem();requestAnimationFrame(renderLoop)});
-</script>
+
+  <!-- HEADER -->
+  <header>
+    <div class="header-logo"><img src="logo.jpg.jpg" alt="Eva Global Logo" /></div>
+    <nav class="header-nav">
+      <a onclick="showPage('home')" class="nav-link active" id="nav-home">Home</a>
+      <a onclick="showPage('products')" class="nav-link" id="nav-products">Systems & Products</a>
+      <a onclick="showPage('configurator')" class="nav-link" id="nav-configurator">3D Design Simulator</a>
+    </nav>
+    <a href="#" class="header-contact">Contact Us</a>
+  </header>
+
+  <!-- 1. HOME -->
+  <section id="home-section" class="page-section active">
+    <!-- Cinematic Video Background Placeholder (Replaces Static Image) -->
+    <video class="hero-video" autoplay loop muted playsinline>
+      <source src="https://cdn.coverr.co/videos/coverr-architecture-and-clouds-2646/1080p.mp4" type="video/mp4">
+    </video>
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content">
+      <h1>Architectural <br><span>Perfection.</span></h1>
+      <p>Experience the ultimate outdoor living. Forte Bioclimatic pergolas, Lamella retractable roofs, and Somfy motorized Zip Flex systems designed for all seasons.</p>
+      <a onclick="showPage('configurator')" class="hero-btn">Launch 3D Simulator &rarr;</a>
+    </div>
+    <div class="tech-stats-bar">
+      <div class="stat-item"><div class="icon">🛡️</div><div><h4>6063-T5</h4><p>Aerospace Grade Aluminum</p></div></div>
+      <div class="stat-item"><div class="icon">⚙️</div><div><h4>Somfy</h4><p>Silent Automation</p></div></div>
+      <div class="stat-item"><div class="icon">❄️</div><div><h4>200 kg/m²</h4><p>Snow Load Capacity</p></div></div>
+      <div class="stat-item"><div class="icon">💨</div><div><h4>120 km/h</h4><p>Wind Test Certified</p></div></div>
+    </div>
+  </section>
+
+  <!-- 2. PRODUCTS LIST -->
+  <section id="products-section" class="page-section">
+    <div class="section-header">
+      <h2>Engineering Marvel Systems</h2>
+      <p>Outdoor solutions combining aesthetic design with superior engineering and Somfy smart home technologies.</p>
+    </div>
+    
+    <div class="products-grid">
+      <!-- Forte Bioclimatic -->
+      <div class="product-card" onclick="openProductDetail('forte')">
+        <div class="product-img">
+            <video autoplay loop muted playsinline><source src="https://cdn.coverr.co/videos/coverr-modern-building-with-glass-windows-4493/1080p.mp4" type="video/mp4"></video>
+        </div>
+        <div class="product-info">
+          <div class="tech-badges"><span class="tech-badge">110° Rotation</span><span class="tech-badge">Water Drainage</span></div>
+          <h3>Forte Bioclimatic Pergola</h3>
+          <p>Adjustable and remotely controlled mobile blades that naturally regulate light, airflow, and temperature.</p>
+          <span class="product-link">View Technical Details &rarr;</span>
+        </div>
+      </div>
+      <!-- Lamella Retractable Roof -->
+      <div class="product-card" onclick="openProductDetail('lamella')">
+        <div class="product-img">
+            <img src="https://images.unsplash.com/photo-1600607688969-a5bfcd64bd15?auto=format&fit=crop&w=800&q=80" alt="Lamella Roof">
+        </div>
+        <div class="product-info">
+          <div class="tech-badges"><span class="tech-badge">Fully Retractable</span><span class="tech-badge">Solid Aluminum</span></div>
+          <h3>Lamella Retractable Roof</h3>
+          <p>Unique design allowing blades to retract fully, offering nature-proof comfort and an unobstructed sky view.</p>
+          <span class="product-link">View Technical Details &rarr;</span>
+        </div>
+      </div>
+      <!-- Glass Systems -->
+      <div class="product-card" onclick="openProductDetail('glass')">
+        <div class="product-img">
+            <video autoplay loop muted playsinline><source src="https://cdn.coverr.co/videos/coverr-reflection-of-a-building-in-a-glass-window-4467/1080p.mp4" type="video/mp4"></video>
+        </div>
+        <div class="product-info">
+          <div class="tech-badges"><span class="tech-badge">Insulated Glass</span><span class="tech-badge">RTS116 / FD60</span></div>
+          <h3>Architectural Glazing</h3>
+          <p>Panorama sliding, Glass Balcony, and Guillotine systems that seamlessly integrate indoor and outdoor spaces.</p>
+          <span class="product-link">View Technical Details &rarr;</span>
+        </div>
+      </div>
+      <!-- Zip Screen -->
+      <div class="product-card" onclick="openProductDetail('zip')">
+        <div class="product-img">
+            <img src="https://images.unsplash.com/photo-1600573472592-401b489a3cdc?auto=format&fit=crop&w=800&q=80" alt="Zip Screen">
+        </div>
+        <div class="product-info">
+          <div class="tech-badges"><span class="tech-badge">Micro-Perforated</span><span class="tech-badge">Zip Flex</span></div>
+          <h3>Zip Flex Screens</h3>
+          <p>Motorized exterior blinds offering wind resistance, privacy, and solar protection with a secure zipper system.</p>
+          <span class="product-link">View Technical Details &rarr;</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ADVANCED PRODUCT DETAIL PAGE -->
+  <section id="product-detail-section" class="page-section">
+    <div class="detail-hero">
+      <video id="detail-hero-vid" autoplay loop muted playsinline style="display: none;"></video>
+      <img id="detail-hero-img" src="" alt="">
+      <div class="detail-overlay"></div>
+      <div class="detail-hero-content">
+        <a onclick="showPage('products')" class="back-btn">&larr; Back to All Systems</a>
+        <h1 id="detail-title">Product Title</h1>
+        <p id="detail-desc-short">Product short description will appear here.</p>
+      </div>
+    </div>
+    
+    <div class="detail-body">
+      <div class="tech-overview">
+        <h2>System and Architectural Features</h2>
+        <p id="detail-desc-long">Long description text.</p>
+        
+        <!-- Technical Visuals -->
+        <div class="tech-visual-grid">
+          <div class="tech-visual-card">
+            <img id="detail-img-1" src="" alt="Profile Detail">
+            <div>
+              <h4>Structural Engineering</h4>
+              <p>High wall thickness thermal barrier aluminum profiles and stainless 304 steel fasteners ensuring decades of durability.</p>
+            </div>
+          </div>
+          <div class="tech-visual-card">
+            <img id="detail-img-2" src="" alt="Motor Detail">
+            <div>
+              <h4>Somfy Smart Automation</h4>
+              <p>Silent motor technology working autonomously with weather sensors thanks to io-homecontrol integration.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Data Table -->
+        <div class="tech-table-container">
+          <h3>Technical Specifications</h3>
+          <table class="tech-table" id="detail-specs-table">
+            <!-- Filled via JS -->
+          </table>
+        </div>
+      </div>
+      
+      <div>
+        <div class="action-panel">
+          <div class="offer-card">
+            <h3>System Performance & Delivery</h3>
+            
+            <!-- Performance Bars -->
+            <div class="perf-bar-group">
+              <div class="perf-label"><span>Wind Resistance</span><span class="val" id="perf-wind-val">120 km/h</span></div>
+              <div class="perf-track"><div class="perf-fill" id="perf-wind-bar" style="width: 90%;"></div></div>
+            </div>
+            <div class="perf-bar-group">
+              <div class="perf-label"><span>Snow Load</span><span class="val" id="perf-snow-val">200 kg/m²</span></div>
+              <div class="perf-track"><div class="perf-fill" id="perf-snow-bar" style="width: 85%; background: #10b981;"></div></div>
+            </div>
+
+            <ul class="offer-list">
+              <li>Production Time: <span id="detail-time">3-4 Weeks</span></li>
+              <li>System Warranty: <span>5 Years Comprehensive</span></li>
+              <li>Motor Type: <span style="color: #38bdf8;">Somfy</span></li>
+              <li>Installation: <span style="color: #4ade80;">Expert Team Included</span></li>
+            </ul>
+            <button class="detail-action-btn" onclick="goToConfigurator()">
+              ⚙️ Design in 3D Simulator
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. 3D CONFIGURATOR -->
+  <section id="configurator-section" class="page-section" style="display: none;">
+    <div id="sidebar">
+      <div><h2 class="sidebar-title">3D CAD Simulator</h2><p style="color:#94a3b8; font-size:0.85rem;">Determine dimensions, roof type, and facade options.</p></div>
+
+      <div class="grid-2">
+        <div class="form-group"><label>Width (m):</label><input type="number" id="width" value="5.0" min="2.5" step="0.2" /></div>
+        <div class="form-group"><label>Depth (m):</label><input type="number" id="depth" value="3.5" min="2.0" step="0.2" /></div>
+        <div class="form-group"><label>Height (m):</label><input type="number" id="frontHeight" value="2.5" min="2.1" step="0.1" /></div>
+        <div class="form-group"><label>Profile Color:</label>
+          <select id="profileColor">
+            <option value="#1c1917">Anthracite Grey (RAL 7016)</option>
+            <option value="#09090b">Matte Black (RAL 9005)</option>
+            <option value="#f8fafc">White (RAL 9016)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>ROOF SYSTEM CONFIGURATION</label>
+        <div class="roof-selector">
+          <button class="roof-btn active" id="btn-bioclimatic" onclick="setRoofType('bioclimatic', this)">Forte Bioclimatic</button>
+          <button class="roof-btn" id="btn-rolling_roof" onclick="setRoofType('rolling_roof', this)">Lamella Retractable</button>
+          <button class="roof-btn" id="btn-pergola" onclick="setRoofType('pergola', this)">Pergola Awning</button>
+          <button class="roof-btn" id="btn-veranda" onclick="setRoofType('veranda', this)">Velura Veranda</button>
+        </div>
+      </div>
+      
+      <div class="slider-container" id="roofControls">
+        <div class="slider-header"><span id="roofSliderLabel">Louver Angle (Somfy):</span><span id="roofSliderVal">0°</span></div>
+        <input type="range" id="roofActionVal" min="0" max="100" value="0" />
+      </div>
+
+      <div class="module-box">
+        <div class="module-title">LAYER 1: ARCHITECTURAL FACADES</div>
+        <div class="facade-grid">
+          <!-- FRONT FACADE -->
+          <div class="form-group"><label>Front Facade</label>
+            <select id="glazingFront" class="side-select">
+              <option value="none">Open</option>
+              <option value="guillotine">Guillotine Glass</option>
+              <option value="sliding">Standard Sliding</option>
+              <option value="rts116">RTS116 Lift & Slide</option>
+              <option value="fd60">FD60 Folding Glass</option>
+              <option value="rwt55">RWT55 Thermal System</option>
+              <option value="rwt64">RWT64 Premium Thermal</option>
+              <option value="wall">Fixed Wall</option>
+            </select>
+          </div>
+          <!-- BACK FACADE -->
+          <div class="form-group"><label>Back Facade</label>
+            <select id="glazingBack" class="side-select">
+              <option value="none">Open</option>
+              <option value="guillotine">Guillotine Glass</option>
+              <option value="sliding">Standard Sliding</option>
+              <option value="rts116">RTS116 Lift & Slide</option>
+              <option value="fd60">FD60 Folding Glass</option>
+              <option value="rwt55">RWT55 Thermal System</option>
+              <option value="rwt64">RWT64 Premium Thermal</option>
+              <option value="wall">Fixed Wall</option>
+            </select>
+          </div>
+          <!-- LEFT FACADE -->
+          <div class="form-group"><label>Left Facade</label>
+            <select id="glazingLeft" class="side-select">
+              <option value="none">Open</option>
+              <option value="guillotine">Guillotine Glass</option>
+              <option value="sliding">Standard Sliding</option>
+              <option value="rts116">RTS116 Lift & Slide</option>
+              <option value="fd60">FD60 Folding Glass</option>
+              <option value="rwt55">RWT55 Thermal System</option>
+              <option value="rwt64">RWT64 Premium Thermal</option>
+              <option value="wall">Fixed Wall</option>
+            </select>
+          </div>
+          <!-- RIGHT FACADE -->
+          <div class="form-group"><label>Right Facade</label>
+            <select id="glazingRight" class="side-select">
+              <option value="none">Open</option>
+              <option value="guillotine">Guillotine Glass</option>
+              <option value="sliding">Standard Sliding</option>
+              <option value="rts116">RTS116 Lift & Slide</option>
+              <option value="fd60">FD60 Folding Glass</option>
+              <option value="rwt55">RWT55 Thermal System</option>
+              <option value="rwt64">RWT64 Premium Thermal</option>
+              <option value="wall">Fixed Wall</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="module-box">
+        <div class="module-title">LAYER 2: ZIP SCREENS</div>
+        <div class="checkbox-grid">
+          <label class="checkbox-label"><input type="checkbox" id="zipFront" class="zip-check"> Front Facade</label>
+          <label class="checkbox-label"><input type="checkbox" id="zipBack" class="zip-check"> Back Facade</label>
+          <label class="checkbox-label"><input type="checkbox" id="zipLeft" class="zip-check"> Left Facade</label>
+          <label class="checkbox-label"><input type="checkbox" id="zipRight" class="zip-check"> Right Facade</label>
+        </div>
+      </div>
+
+      <div class="slider-container" id="glassControls" style="display: none;">
+        <div class="slider-header"><span>Open/Close Glass Systems:</span><span id="glassVal">Closed</span></div>
+        <input type="range" id="glassOpenness" min="0" max="100" value="0" />
+      </div>
+      <div class="slider-container" id="zipControls" style="display: none;">
+        <div class="slider-header"><span>Zip Flex (Somfy Motor):</span><span id="zipVal">Up (Open)</span></div>
+        <input type="range" id="zipOpenness" min="0" max="100" value="100" />
+      </div>
+
+      <div class="summary-card">
+        <div class="area-label">Total Covered Area</div>
+        <div class="area-val" id="areaDisplay">17.50 m²</div>
+      </div>
+      <button class="btn-action" onclick="sendWhatsAppOffer()">💬 Request Project Quote</button>
+    </div>
+
+    <!-- 3D SCENE AREA & NEW HUD -->
+    <div id="canvas-container">
+      <div class="tech-hud" id="techHudPanel">
+        <h4>Live Telemetry</h4>
+        
+        <div class="hud-stat">
+          <div class="hud-label"><span>Wind Load Resistance</span><span class="val" id="hud-wind-val">120 km/h</span></div>
+          <div class="hud-bar-bg"><div class="hud-bar-fill" id="hud-wind-bar" style="width: 90%;"></div></div>
+        </div>
+        <div class="hud-stat">
+          <div class="hud-label"><span>Snow Load Capacity</span><span class="val" id="hud-snow-val">200 kg/m²</span></div>
+          <div class="hud-bar-bg"><div class="hud-bar-fill" id="hud-snow-bar" style="width: 85%; background: #10b981;"></div></div>
+        </div>
+        
+        <ul class="hud-text-list">
+          <li>Static Alloy <span>6063-T5 Extrusion</span></li>
+          <li>Automation <span>Somfy Motor</span></li>
+          <li>Thermal Insulation <span id="hud-insulation">Low (Open System)</span></li>
+        </ul>
+      </div>
+
+      <div class="overlay-tag">🖱️ Mouse: Rotate & Zoom</div>
+    </div>
+  </section>
+
+  <!-- GENERAL FOOTER -->
+  <footer id="main-footer">
+    <div class="footer-content">
+      <div class="footer-col">
+        <div class="footer-logo-wrapper">
+          <img src="logo.jpg.jpg" alt="Eva Global" style="height: 25px;">
+        </div>
+        <p>Innovative and smart aluminum architectural systems that redefine the outdoors. Superior engineering and flawless aesthetics.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Quick Links</h4>
+        <a onclick="showPage('products')">Our Systems</a>
+        <a onclick="showPage('configurator')">3D Configurator</a>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <p>📍 Çekmeköy, Istanbul, Turkey</p>
+        <p>📞 +90 (5XX) XXX XX XX</p>
+        <p>✉️ info@evaglobal.com.tr</p>
+      </div>
+    </div>
+    <div style="border-top: 1px solid #1e293b; padding-top: 20px; font-size: 0.8rem;">
+        &copy; 2026 EVA GLOBAL INSAAT. All rights reserved.
+    </div>
+  </footer>
+
+  <script>
+    // --- ADVANCED PRODUCT DATABASE (Aligned with HUUN Global Specifications) ---
+    const productData = {
+      forte: {
+        title: "Forte Bioclimatic Pergola",
+        shortDesc: "Adjustable, remotely controlled mobile blades that enhance comfort and usability.",
+        longDesc: "HUUN Climatic Forte features adjustable, remotely controlled mobile blades that naturally regulate light, airflow, and temperature. When opened, these blades allow air to circulate freely and heat to escape, creating a cooler airflow beneath the structure. It prevents the space from turning into an oven during peak summer. The roof can be fully closed to provide complete protection against rain, creating an additional modular living space suitable for year-round use.",
+        vid: "https://cdn.coverr.co/videos/coverr-modern-building-with-glass-windows-4493/1080p.mp4",
+        img: "",
+        img1: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=600&q=80",
+        img2: "https://images.unsplash.com/photo-1558002038-1055907df827?auto=format&fit=crop&w=600&q=80",
+        specs: { "Body Profile": "6063-T5 Solid Aluminum Alloy", "Motor System": "Somfy Linear Actuator", "Rotation Angle": "110 Degrees", "Water Drainage": "Integrated Hidden Gutter System", "Maximum Dimensions": "30 sqm Total Area Limit" },
+        time: "3-4 Weeks", wind: "120 km/h", windPct: "90%", snow: "200 kg/m²", snowPct: "85%", configTarget: "bioclimatic"
+      },
+      lamella: {
+        title: "Lamella Retractable Roof",
+        shortDesc: "Nature-Proof Comfort with Retractable Precision.",
+        longDesc: "Designed to adapt seamlessly to nature, the HUUN Lamella features retractable aluminum louvers. All blades, rails, and posts are made of solid aluminum alloy, resisting nature for ages without the risk of environmental damage. Unlike fabric pergolas, its color will not fade under the sun. Blades can be precisely opened for natural lighting and ventilation, or completely retracted to instantly adapt to changing weather conditions.",
+        img: "https://images.unsplash.com/photo-1600607688969-a5bfcd64bd15?auto=format&fit=crop&w=1600&q=80",
+        vid: "",
+        img1: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=600&q=80",
+        img2: "https://images.unsplash.com/photo-1558002038-1055907df827?auto=format&fit=crop&w=600&q=80",
+        specs: { "Roof Movement": "Rotation and Fully Retractable", "Durability": "Exceptional resistance to weather & corrosion", "Motor System": "Somfy Tubular Motor", "Maximum Dimensions": "35 sqm Total Area Limit", "Insulation": "Perfect Nature Insulation" },
+        time: "4-5 Weeks", wind: "100 km/h", windPct: "75%", snow: "150 kg/m²", snowPct: "70%", configTarget: "rolling_roof"
+      },
+      glass: {
+        title: "Architectural Glazing Systems",
+        shortDesc: "Panorama sliding, Glass Balcony, and Guillotine systems for seamless integration.",
+        longDesc: "With Huun glass balcony and sliding systems, you can enjoy comfortable living spaces in all seasons. Advanced thermal insulation technology protects against heat, cold, wind, and water. Compatible with multiple single and double glazing thicknesses, offering fully customizable solutions. Features include 42mm stainless-steel wheels for smooth operation, and inward-opening panels for easy cleaning.",
+        vid: "https://cdn.coverr.co/videos/coverr-reflection-of-a-building-in-a-glass-window-4467/1080p.mp4",
+        img: "",
+        img1: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=600&q=80",
+        img2: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=600&q=80",
+        specs: { "Available Systems": "Panorama, Shade On, Sliding Wall, Glass Balcony", "Glazing": "Single or Double Glazing Options", "Hardware": "42 mm Stainless-Steel Wheels", "Insulation": "Heat-Insulated Profiles & Wind Locks", "Aesthetics": "Aluminum Hinge Accessories" },
+        time: "3-4 Weeks", wind: "110 km/h", windPct: "80%", snow: "N/A (Facade)", snowPct: "0%", configTarget: "veranda"
+      },
+      rts116: {
+        title: "RTS116 Lift & Slide",
+        shortDesc: "Premium heavy-duty thermal sliding system for maximum insulation.",
+        longDesc: "The RTS116 is part of our thermal breaking architectural series, designed for large panoramic openings where maximum thermal and acoustic insulation is required. Its robust lift-and-slide mechanism allows effortless operation of heavy, oversized glass panels while providing superior weather resistance when closed.",
+        img: "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1600&q=80",
+        vid: "",
+        img1: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=600&q=80",
+        img2: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=600&q=80",
+        specs: { "Category": "Industrial Thermal Breaking", "Profile Depth": "116mm Frame Depth", "Thermal Barrier": "Polyamide Struts", "Max Panel Weight": "Up to 400kg", "Sealing": "EPDM Gaskets" },
+        time: "4-6 Weeks", wind: "130 km/h", windPct: "95%", snow: "N/A (Facade)", snowPct: "0%", configTarget: "veranda"
+      },
+      fd60: {
+        title: "FD60 Folding Glass Doors",
+        shortDesc: "Space-saving accordion style folding doors for seamless transitions.",
+        longDesc: "The FD60 folding glass door system is the ultimate solution for blending indoor and outdoor living spaces. Its accordion-style folding mechanism allows panels to stack neatly to the side, creating an unobstructed, wide-open passage while maintaining high thermal performance when closed.",
+        img: "https://images.unsplash.com/photo-1605276374104-162f154bf501?auto=format&fit=crop&w=1600&q=80",
+        vid: "",
+        img1: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=600&q=80",
+        img2: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=600&q=80",
+        specs: { "Profile Depth": "60mm Frame Depth", "Operation": "Bottom/Top Rolling Options", "Max Panel Width": "1200mm", "Sealing": "Double Weatherstripping", "Configuration": "Inward or Outward Opening" },
+        time: "4-5 Weeks", wind: "100 km/h", windPct: "75%", snow: "N/A (Facade)", snowPct: "0%", configTarget: "veranda"
+      },
+      zip: {
+        title: "Zip Flex Screens",
+        shortDesc: "Wind-resistant, motorized screen fabrics with a zippered rail system.",
+        longDesc: "The Zip Flex system resists harsh winds without derailing thanks to its special zipper design. By using high-end micro-perforated screen fabrics, it prevents the inside from being seen from the outside while allowing you to comfortably view the outside. It perfectly performs the functions of a fly screen, sunshade, and windbreak.",
+        img: "https://images.unsplash.com/photo-1600573472592-401b489a3cdc?auto=format&fit=crop&w=1600&q=80",
+        vid: "",
+        img1: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=600&q=80",
+        img2: "https://images.unsplash.com/photo-1558002038-1055907df827?auto=format&fit=crop&w=600&q=80",
+        specs: { "Series": "Zip Flex / Solar Flex", "Fabric Type": "Micro-Perforated Screen", "Zipper System": "Wind Lock (Fully Sealed)", "Motor System": "Somfy Blind Motor (Silent)", "UV Filter": "Up to 95% Harmful Ray Block" },
+        time: "2-3 Weeks", wind: "80 km/h", windPct: "60%", snow: "N/A", snowPct: "0%", configTarget: "bioclimatic"
+      }
+    };
+
+    let currentConfigTarget = 'bioclimatic';
+
+    function showPage(pageId) {
+      document.querySelectorAll('.page-section').forEach(sec => { sec.classList.remove('active'); sec.style.display = 'none'; });
+      document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+      const target = document.getElementById(pageId + '-section');
+      target.classList.add('active'); target.style.display = pageId === 'configurator' ? 'flex' : 'block';
+      const navLink = document.getElementById('nav-' + pageId);
+      if(navLink) navLink.classList.add('active');
+      document.getElementById('main-footer').style.display = pageId === 'configurator' ? 'none' : 'block';
+      if(pageId === 'configurator') { window.dispatchEvent(new Event('resize')); }
+    }
+
+    function openProductDetail(productId) {
+      const data = productData[productId];
+      
+      const heroImg = document.getElementById('detail-hero-img');
+      const heroVid = document.getElementById('detail-hero-vid');
+      
+      if(data.vid !== "") {
+          heroVid.src = data.vid;
+          heroVid.style.display = "block";
+          heroImg.style.display = "none";
+      } else {
+          heroImg.src = data.img;
+          heroImg.style.display = "block";
+          heroVid.style.display = "none";
+      }
+
+      document.getElementById('detail-img-1').src = data.img1;
+      document.getElementById('detail-img-2').src = data.img2;
+      document.getElementById('detail-title').innerText = data.title;
+      document.getElementById('detail-desc-short').innerText = data.shortDesc;
+      document.getElementById('detail-desc-long').innerText = data.longDesc;
+      document.getElementById('detail-time').innerText = data.time;
+      
+      document.getElementById('perf-wind-val').innerText = data.wind;
+      document.getElementById('perf-wind-bar').style.width = data.windPct;
+      document.getElementById('perf-snow-val').innerText = data.snow;
+      document.getElementById('perf-snow-bar').style.width = data.snowPct;
+
+      currentConfigTarget = data.configTarget;
+
+      const specsTable = document.getElementById('detail-specs-table');
+      specsTable.innerHTML = '';
+      for (const [key, value] of Object.entries(data.specs)) {
+        specsTable.innerHTML += `<tr><th>${key}</th><td>${value}</td></tr>`;
+      }
+      showPage('product-detail');
+      window.scrollTo(0,0);
+    }
+
+    function goToConfigurator() {
+      showPage('configurator');
+      const btn = document.getElementById('btn-' + currentConfigTarget);
+      if(btn) setRoofType(currentConfigTarget, btn);
+      else setRoofType('bioclimatic', document.getElementById('btn-bioclimatic'));
+    }
+
+    document.getElementById('main-footer').style.display = 'block';
+
+    // --- 3D SCENE & REALISTIC ENVIRONMENT ---
+    let currentRoof = 'bioclimatic';
+    let roofActionElements = []; let glassPanels = [], zipPanels = []; 
+    let houseWall;
+
+    const container = document.getElementById('canvas-container');
+    const scene = new THREE.Scene(); scene.background = new THREE.Color(0xdce6ef);
+    const camera = new THREE.PerspectiveCamera(40, 1, 0.1, 100); camera.position.set(10, 4, 12);
+    
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap; renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.outputEncoding = THREE.sRGBEncoding; 
+    container.appendChild(renderer.domElement);
+    
+    const controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true; controls.maxPolarAngle = Math.PI / 2 - 0.05; controls.target.set(0, 1.2, 0);
+
+    const hemiLight = new THREE.HemisphereLight(0xffffff, 0x94a3b8, 0.6); scene.add(hemiLight);
+    const sun = new THREE.DirectionalLight(0xffffff, 1.4); 
+    sun.position.set(15, 25, 15); sun.castShadow = true; 
+    sun.shadow.mapSize.width = 2048; sun.shadow.mapSize.height = 2048;
+    sun.shadow.camera.near = 0.5; sun.shadow.camera.far = 50;
+    sun.shadow.camera.left = -10; sun.shadow.camera.right = 10; sun.shadow.camera.top = 10; sun.shadow.camera.bottom = -10;
+    scene.add(sun);
+
+    const systemGroup = new THREE.Group(); scene.add(systemGroup);
+
+    const floorGeo = new THREE.BoxGeometry(25, 0.2, 25);
+    const floorMat = new THREE.MeshStandardMaterial({ color: 0x9ca3af, roughness: 0.9, metalness: 0 }); 
+    const floor = new THREE.Mesh(floorGeo, floorMat); floor.position.y = -0.1; floor.receiveShadow = true; scene.add(floor);
+
+    const wallGeo = new THREE.BoxGeometry(20, 10, 0.5);
+    const houseWallMat = new THREE.MeshStandardMaterial({ color: 0xf8fafc, roughness: 1.0 }); 
+    houseWall = new THREE.Mesh(wallGeo, houseWallMat); houseWall.receiveShadow = true; scene.add(houseWall);
+
+    const POST_SIZE = 0.12; const BEAM_HEIGHT = 0.16; const BEAM_WIDTH = 0.09;
+    const frameMat = new THREE.MeshStandardMaterial({ color: 0x1c1917, metalness: 0.2, roughness: 0.5 });
+    const louverMat = new THREE.MeshStandardMaterial({ color: 0x1c1917, metalness: 0.25, roughness: 0.4 });
+    
+    const glassMat = new THREE.MeshPhysicalMaterial({ color: 0x60a5fa, transparent: true, opacity: 0.55, roughness: 0.05, metalness: 0.1, reflectivity: 0.9, transmission: 0.5, side: THREE.DoubleSide });
+    const wallMat = new THREE.MeshStandardMaterial({ color: 0xd1d5db, roughness: 0.9, metalness: 0.0 });
+    const zipMat = new THREE.MeshStandardMaterial({ color: 0x475569, roughness: 0.85, metalness: 0.05, transparent: true, opacity: 0.85, side: THREE.DoubleSide });
+
+    function updateZipColor(hexColor) {
+        const baseColor = new THREE.Color(hexColor);
+        baseColor.lerp(new THREE.Color(0xffffff), 0.4);
+        zipMat.color.copy(baseColor);
+    }
+
+    const fabricMat = new THREE.MeshStandardMaterial({ color: 0xf1f5f9, roughness: 0.9, side: THREE.DoubleSide }); 
+
+    function createFramedGlass(pw, ph, fThick = 0.04) {
+        const grp = new THREE.Group();
+        const fMat = frameMat; const fDepth = 0.03; 
+        const glass = new THREE.Mesh(new THREE.BoxGeometry(pw, ph, 0.01), glassMat); grp.add(glass);
+        const tbGeo = new THREE.BoxGeometry(pw, fThick, fDepth);
+        const topF = new THREE.Mesh(tbGeo, fMat); topF.position.y = ph/2 - fThick/2; topF.castShadow = true;
+        const botF = new THREE.Mesh(tbGeo, fMat); botF.position.y = -ph/2 + fThick/2; botF.castShadow = true;
+        const lrGeo = new THREE.BoxGeometry(fThick, ph - fThick*2, fDepth);
+        const leftF = new THREE.Mesh(lrGeo, fMat); leftF.position.x = -pw/2 + fThick/2; leftF.castShadow = true;
+        const rightF = new THREE.Mesh(lrGeo, fMat); rightF.position.x = pw/2 - fThick/2; rightF.castShadow = true;
+        grp.add(topF); grp.add(botF); grp.add(leftF); grp.add(rightF);
+        return grp;
+    }
+
+    function buildSystem() {
+      roofActionElements = []; glassPanels = []; zipPanels = [];
+      while(systemGroup.children.length > 0) systemGroup.remove(systemGroup.children[0]);
+
+      const W = parseFloat(document.getElementById('width').value);
+      const D = parseFloat(document.getElementById('depth').value);
+      const FH = parseFloat(document.getElementById('frontHeight').value);
+      const BH = FH + 0.15; 
+
+      houseWall.position.set(0, 5, -D/2 - 0.25);
+
+      function createBox(w, h, d, x, y, z, rx=0, mat=frameMat) {
+        const mesh = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), mat);
+        mesh.position.set(x, y, z); mesh.rotation.x = rx; mesh.castShadow = true; mesh.receiveShadow = true;
+        systemGroup.add(mesh); return mesh;
+      }
+
+      createBox(POST_SIZE, FH, POST_SIZE, -W/2 + POST_SIZE/2, FH/2, D/2 - POST_SIZE/2);
+      createBox(POST_SIZE, FH, POST_SIZE,  W/2 - POST_SIZE/2, FH/2, D/2 - POST_SIZE/2);
+      createBox(POST_SIZE, BH, POST_SIZE, -W/2 + POST_SIZE/2, BH/2, -D/2 + POST_SIZE/2);
+      createBox(POST_SIZE, BH, POST_SIZE,  W/2 - POST_SIZE/2, BH/2, -D/2 + POST_SIZE/2);
+      createBox(W, BEAM_HEIGHT, BEAM_WIDTH, 0, FH - BEAM_HEIGHT/2, D/2 - BEAM_WIDTH/2);
+      createBox(W, BEAM_HEIGHT, BEAM_WIDTH, 0, BH - BEAM_HEIGHT/2, -D/2 + BEAM_WIDTH/2);
+
+      const slopeLength = Math.sqrt(Math.pow(D, 2) + Math.pow(BH - FH, 2));
+      const pitchAngle = Math.atan2(BH-FH, D);
+      const roofCenterY = (FH + BH)/2 - BEAM_HEIGHT/2 + 0.08;
+
+      createBox(BEAM_WIDTH, BEAM_HEIGHT, slopeLength, -W/2 + BEAM_WIDTH/2, roofCenterY, 0, pitchAngle);
+      createBox(BEAM_WIDTH, BEAM_HEIGHT, slopeLength, W/2 - BEAM_WIDTH/2, roofCenterY, 0, pitchAngle);
+
+      if (currentRoof === 'bioclimatic' || currentRoof === 'rolling_roof') {
+        const count = Math.ceil(D / 0.22); const step = D / count; 
+        for (let i = 0; i < count; i++) {
+          const louver = new THREE.Mesh(new THREE.BoxGeometry(W - (BEAM_WIDTH*2), 0.03, step + 0.005), louverMat);
+          const baseZ = -D/2 + step * (i + 0.5);
+          louver.position.set(0, roofCenterY, baseZ); louver.userData = { baseZ: baseZ, index: i }; 
+          louver.castShadow = true; systemGroup.add(louver); roofActionElements.push(louver);
+        }
+      } else if (currentRoof === 'pergola') {
+        const segments = 12; const segStep = D / segments;
+        for(let i = 0; i < segments; i++) {
+            const fGroup = new THREE.Group();
+            const fabric = new THREE.Mesh(new THREE.BoxGeometry(W - 0.15, 0.02, segStep * 0.95), fabricMat);
+            fGroup.add(fabric);
+            const baseZ = -D/2 + segStep * (i + 0.5); fGroup.position.set(0, roofCenterY, baseZ); fGroup.userData = { baseZ: baseZ, index: i };
+            systemGroup.add(fGroup); roofActionElements.push(fGroup);
+        }
+      } else if (currentRoof === 'veranda') {
+        const rG = new THREE.Mesh(new THREE.BoxGeometry(W-0.05, 0.02, slopeLength), glassMat);
+        rG.position.set(0, roofCenterY, 0); rG.rotation.x = pitchAngle; systemGroup.add(rG);
+        const rafterCount = Math.ceil(W / 0.85); const rafterSpacing = W / rafterCount;
+        for(let i=1; i<rafterCount; i++) {
+           const rafX = -W/2 + (i * rafterSpacing);
+           const rafter = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.12, slopeLength + 0.1), frameMat);
+           rafter.position.set(rafX, roofCenterY - 0.02, 0); rafter.rotation.x = pitchAngle; rafter.castShadow = true;
+           systemGroup.add(rafter);
+        }
+      }
+
+      const sides = [
+          { id: 'Front', w: W - (POST_SIZE*2), h: FH - BEAM_HEIGHT, posX: 0, posZ: D/2 - POST_SIZE/2, rotY: 0, xDir: 0, zDir: 1 },
+          { id: 'Back', w: W - (POST_SIZE*2), h: BH - BEAM_HEIGHT, posX: 0, posZ: -D/2 + POST_SIZE/2, rotY: 0, xDir: 0, zDir: -1 },
+          { id: 'Left', w: D - (POST_SIZE*2), h: (FH+BH)/2 - BEAM_HEIGHT, posX: -W/2 + POST_SIZE/2, posZ: 0, rotY: Math.PI/2, xDir: -1, zDir: 0 },
+          { id: 'Right', w: D - (POST_SIZE*2), h: (FH+BH)/2 - BEAM_HEIGHT, posX: W/2 - POST_SIZE/2, posZ: 0, rotY: Math.PI/2, xDir: 1, zDir: 0 }
+      ];
+
+      let hasGlass = false; let hasZip = false; let closedSides = 0;
+      let hasInsulatedSystem = false;
+
+      sides.forEach(side => {
+          const type = document.getElementById('glazing' + side.id).value;
+          if(type !== 'none') closedSides++;
+
+          if(type === 'wall') {
+              const wall = new THREE.Mesh(new THREE.BoxGeometry(side.w, side.h, 0.08), wallMat);
+              wall.position.set(side.posX, side.h/2, side.posZ); wall.rotation.y = side.rotY; wall.castShadow = true; wall.receiveShadow = true; systemGroup.add(wall);
+          } else if (type !== 'none') {
+              hasGlass = true;
+              
+              let panelCount = 3;
+              if (type === 'fd60') panelCount = 4;
+              if (type === 'rts116') panelCount = 2;
+              
+              if (type === 'rts116' || type === 'rwt64') hasInsulatedSystem = true;
+
+              for(let i=0; i<panelCount; i++) {
+                  const pGroup = new THREE.Group();
+                  
+                  let pw = side.w / panelCount;
+                  let ph = side.h;
+                  let fThick = 0.04;
+
+                  if (type === 'guillotine') {
+                      pw = side.w; ph = side.h / 3;
+                  } else if (type === 'sliding') {
+                      pw = side.w/3 + 0.05;
+                  } else if (type === 'rts116') {
+                      pw = side.w/2 + 0.08; fThick = 0.06;
+                  } else if (type === 'rwt55') {
+                      fThick = 0.055;
+                  } else if (type === 'rwt64') {
+                      fThick = 0.064;
+                  }
+
+                  const framedGlass = createFramedGlass(pw, ph, fThick);
+                  pGroup.add(framedGlass); 
+                  
+                  if (type === 'fd60') {
+                      let closedLocalX = -side.w/2 + pw/2 + (i * pw);
+                      let closedLocalZ = 0;
+                      let closedRotY = side.rotY;
+
+                      let openLocalX = -side.w/2 + (pw * 0.1) + (i * pw * 0.15);
+                      let openLocalZ = (i % 2 === 0) ? 0.3 : -0.3;
+                      let openRotY = side.rotY + ((i % 2 === 0) ? 1.2 : -1.2);
+                      
+                      pGroup.userData = { 
+                          type: 'fd60', 
+                          closedX: side.posX + (side.rotY === 0 ? closedLocalX : closedLocalZ * side.xDir),
+                          closedZ: side.posZ + (side.rotY === 0 ? closedLocalZ * side.zDir : closedLocalX),
+                          closedRotY,
+                          openX: side.posX + (side.rotY === 0 ? openLocalX : openLocalZ * side.xDir),
+                          openZ: side.posZ + (side.rotY === 0 ? openLocalZ * side.zDir : openLocalX),
+                          openRotY
+                      };
+                      pGroup.position.set(pGroup.userData.closedX, side.h/2, pGroup.userData.closedZ);
+                      pGroup.rotation.y = closedRotY;
+                  } else {
+                      pGroup.rotation.y = side.rotY;
+                      
+                      if(type === 'guillotine') {
+                          pGroup.userData = { type: 'guillotine', isFixed: (i===0), closedY: ph/2 + (i * ph), openY: ph/2 + (i * 0.05) };
+                          let localZ = (1 - i) * 0.04; 
+                          let finalX = side.posX + (side.rotY !== 0 ? localZ * side.xDir : 0);
+                          let finalZ = side.posZ + (side.rotY === 0 ? localZ * side.zDir : 0);
+                          pGroup.position.set(finalX, pGroup.userData.closedY, finalZ);
+                      } else if (type === 'sliding' || type === 'rts116') {
+                          let overlap = (type === 'rts116') ? 0.08 : 0.05;
+                          let effWidth = side.w / panelCount;
+                          let localX = -side.w/2 + pw/2 + (i * effWidth) - (i>0 ? overlap/2 : 0); 
+                          let openLocalX = -side.w/2 + pw/2 + (i * 0.05);
+                          let localZ = (1 - i) * (type === 'rts116' ? 0.06 : 0.04);
+                          
+                          let closedX = side.posX + (side.rotY === 0 ? localX : localZ * side.xDir);
+                          let closedZ = side.posZ + (side.rotY === 0 ? localZ * side.zDir : localX);
+                          let openX = side.posX + (side.rotY === 0 ? openLocalX : localZ * side.xDir);
+                          let openZ = side.posZ + (side.rotY === 0 ? localZ * side.zDir : openLocalX);
+                          
+                          pGroup.position.set(closedX, side.h/2, closedZ);
+                          pGroup.userData = { type: type, isFixed: (i===0), closedX, closedZ, openX, openZ };
+                      } else if (type === 'rwt55' || type === 'rwt64') {
+                          let localX = -side.w/2 + pw/2 + (i * pw); 
+                          let finalX = side.posX + (side.rotY === 0 ? localX : 0);
+                          let finalZ = side.posZ + (side.rotY === 0 ? 0 : localX);
+                          pGroup.position.set(finalX, side.h/2, finalZ);
+                      }
+                  }
+                  
+                  systemGroup.add(pGroup); 
+                  if (type === 'guillotine' || type === 'sliding' || type === 'rts116' || type === 'fd60') {
+                      glassPanels.push(pGroup);
+                  }
+              }
+          }
+
+          if (document.getElementById('zip' + side.id).checked) {
+              hasZip = true;
+              const offsetOut = 0.09; 
+              const casX = side.posX + (side.xDir * offsetOut); 
+              const casZ = side.posZ + (side.zDir * offsetOut);
+              
+              const cassette = new THREE.Mesh(new THREE.BoxGeometry(side.w + 0.06, 0.1, 0.1), frameMat);
+              cassette.position.set(casX, side.h + 0.05, casZ); 
+              cassette.rotation.y = side.rotY; 
+              cassette.castShadow = true; 
+              systemGroup.add(cassette);
+              
+              const zipGeo = new THREE.BoxGeometry(side.w, side.h, 0.005); 
+              const fabric = new THREE.Mesh(zipGeo, zipMat);
+              fabric.rotation.y = side.rotY; 
+              fabric.castShadow = true; 
+              fabric.userData = { fullHeight: side.h, topAnchorY: side.h };
+              fabric.position.set(casX, side.h / 2, casZ); 
+              systemGroup.add(fabric); zipPanels.push(fabric);
+          }
+      });
+
+      document.getElementById('glassControls').style.display = hasGlass ? 'block' : 'none';
+      document.getElementById('zipControls').style.display = hasZip ? 'block' : 'none';
+      
+      updateArea(W, D); updateTechHUD(currentRoof, closedSides, hasInsulatedSystem);
+      applyGlassOpenness(); applyZipOpenness(); applyRoofMechanics();
+    }
+
+    function updateTechHUD(roof, closedSides, hasInsulatedSystem) {
+        const hudSnow = document.getElementById('hud-snow-val');
+        const hudWind = document.getElementById('hud-wind-val');
+        const hudIns = document.getElementById('hud-insulation');
+        const snowBar = document.getElementById('hud-snow-bar');
+        const windBar = document.getElementById('hud-wind-bar');
+
+        if(roof === 'bioclimatic') { 
+            hudSnow.innerText = '200 kg/m²'; snowBar.style.width = '90%';
+            hudWind.innerText = '120 km/h'; windBar.style.width = '95%';
+        } else if(roof === 'rolling_roof') { 
+            hudSnow.innerText = '150 kg/m²'; snowBar.style.width = '70%';
+            hudWind.innerText = '100 km/h'; windBar.style.width = '80%';
+        } else if(roof === 'pergola') { 
+            hudSnow.innerText = 'N/A'; snowBar.style.width = '0%';
+            hudWind.innerText = '80 km/h'; windBar.style.width = '60%';
+        } else if(roof === 'veranda') { 
+            hudSnow.innerText = '250 kg/m²'; snowBar.style.width = '100%';
+            hudWind.innerText = '130 km/h'; windBar.style.width = '100%';
+        }
+
+        if(closedSides === 0) hudIns.innerText = 'Low (Open)';
+        else if(hasInsulatedSystem) hudIns.innerText = 'Premium Thermal';
+        else if(closedSides > 0 && closedSides < 4) hudIns.innerText = 'Medium (Semi-Closed)';
+        else hudIns.innerText = 'High (Standard Enclosed)';
+    }
+
+    function applyRoofMechanics() {
+        const val = parseFloat(document.getElementById('roofActionVal').value); const ratio = val / 100; 
+        if (currentRoof === 'bioclimatic') { document.getElementById('roofSliderVal').innerText = `${Math.round(val * 1.1)}°`; roofActionElements.forEach(l => l.rotation.x = (val * 1.1 * Math.PI) / 180); } 
+        else if (currentRoof === 'rolling_roof') {
+            document.getElementById('roofSliderVal').innerText = `${val}% Retracted`; const D = parseFloat(document.getElementById('depth').value); const stackSpacing = 0.06;
+            roofActionElements.forEach((louver, idx) => {
+                louver.rotation.x = ratio * (Math.PI / 3); 
+                const closedZ = louver.userData.baseZ; const stackedZ = (-D/2 + POST_SIZE/2) + (idx * stackSpacing);
+                louver.position.z = closedZ + (stackedZ - closedZ) * ratio;
+            });
+        }
+        else if (currentRoof === 'pergola') {
+            document.getElementById('roofSliderVal').innerText = `${val}% Retracted`; const D = parseFloat(document.getElementById('depth').value); const stackSpacing = 0.05;
+            roofActionElements.forEach((segment, idx) => {
+                const closedZ = segment.userData.baseZ; const stackedZ = (-D/2 + POST_SIZE/2) + (idx * stackSpacing);
+                segment.position.z = closedZ + (stackedZ - closedZ) * ratio; segment.scale.z = Math.max(0.2, 1.0 - (ratio * 0.8)); 
+            });
+        }
+    }
+    document.getElementById('roofActionVal').addEventListener('input', applyRoofMechanics);
+
+    function applyGlassOpenness() {
+        const ratio = parseFloat(document.getElementById('glassOpenness').value) / 100; document.getElementById('glassVal').innerText = ratio === 0 ? 'Closed' : (ratio === 1 ? 'Open' : `${Math.round(ratio*100)}%`);
+        glassPanels.forEach((p) => { 
+            if(p.userData.type === 'guillotine' && !p.userData.isFixed) { 
+                p.position.y = p.userData.closedY + (p.userData.openY - p.userData.closedY) * ratio; 
+            } else if ((p.userData.type === 'sliding' || p.userData.type === 'rts116') && !p.userData.isFixed) {
+                p.position.x = p.userData.closedX + (p.userData.openX - p.userData.closedX) * ratio;
+                p.position.z = p.userData.closedZ + (p.userData.openZ - p.userData.closedZ) * ratio;
+            } else if (p.userData.type === 'fd60') {
+                p.position.x = p.userData.closedX + (p.userData.openX - p.userData.closedX) * ratio;
+                p.position.z = p.userData.closedZ + (p.userData.openZ - p.userData.closedZ) * ratio;
+                p.rotation.y = p.userData.closedRotY + (p.userData.openRotY - p.userData.closedRotY) * ratio;
+            }
+        });
+    }
+    
+    function applyZipOpenness() {
+        const ratio = parseFloat(document.getElementById('zipOpenness').value) / 100; 
+        document.getElementById('zipVal').innerText = ratio === 0 ? 'Down' : (ratio === 1 ? 'Open' : `${Math.round(ratio*100)}%`);
+        zipPanels.forEach((fabric) => { 
+            const currentScaleY = Math.max(0.01, 1.0 - ratio);
+            fabric.scale.y = currentScaleY;
+            fabric.position.y = fabric.userData.topAnchorY - (fabric.userData.fullHeight * currentScaleY) / 2;
+        });
+    }
+
+    document.getElementById('glassOpenness').addEventListener('input', applyGlassOpenness); document.getElementById('zipOpenness').addEventListener('input', applyZipOpenness);
+
+    function setRoofType(type, btn) {
+      currentRoof = type; document.querySelectorAll('.roof-btn').forEach(b => b.classList.remove('active')); btn.classList.add('active');
+      const ctrl = document.getElementById('roofControls'); const label = document.getElementById('roofSliderLabel'); document.getElementById('roofActionVal').value = 0; 
+      if (type === 'bioclimatic') { ctrl.style.display = 'block'; label.innerText = 'Louver Angle (Somfy):'; }
+      else if (type === 'rolling_roof') { ctrl.style.display = 'block'; label.innerText = 'Retract Roof (Somfy):'; }
+      else if (type === 'pergola') { ctrl.style.display = 'block'; label.innerText = 'Retract Awning (Somfy):'; }
+      else { ctrl.style.display = 'none'; } buildSystem();
+    }
+    
+    document.getElementById('profileColor').addEventListener('input', (e) => { 
+        const hex = parseInt(e.target.value.replace('#', '0x')); 
+        frameMat.color.setHex(hex); 
+        louverMat.color.setHex(hex);
+        updateZipColor(hex);
+    });
+
+    ['width', 'depth', 'frontHeight'].forEach(id => document.getElementById(id).addEventListener('change', buildSystem));
+    document.querySelectorAll('.side-select').forEach(el => el.addEventListener('change', buildSystem)); document.querySelectorAll('.zip-check').forEach(el => el.addEventListener('change', buildSystem));
+
+    function updateArea(w, d) {
+      const area = w * d; 
+      document.getElementById('areaDisplay').innerText = `${area.toFixed(2)} m²`; 
+    }
+
+    function sendWhatsAppOffer() {
+        const w = document.getElementById('width').value;
+        const d = document.getElementById('depth').value;
+        const area = (w * d).toFixed(2);
+        const msg = `*Eva Global 3D Project Inquiry*\n\n📐 *Dimensions:* ${w}x${d}m (${area}m²)\n🏠 *Roof:* ${currentRoof}\n\nI would like to get detailed information about this configuration.`;
+        window.open(`https://wa.me/905XXXXXXXXX?text=${encodeURIComponent(msg)}`, '_blank');
+    }
+
+    window.addEventListener('resize', () => { if(container.clientWidth > 0) { camera.aspect = container.clientWidth / container.clientHeight; camera.updateProjectionMatrix(); renderer.setSize(container.clientWidth, container.clientHeight); } });
+    function renderLoop() { requestAnimationFrame(renderLoop); controls.update(); renderer.render(scene, camera); }
+
+    updateZipColor(parseInt(document.getElementById('profileColor').value.replace('#', '0x')));
+    buildSystem(); 
+    renderLoop(); 
+    setTimeout(() => window.dispatchEvent(new Event('resize')), 100);
+  </script>
 </body>
 </html>
